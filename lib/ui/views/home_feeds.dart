@@ -36,7 +36,7 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
         ),
       ],
       location: 'Earth',
-      postedAt: DateTime(2019, 5, 23, 12, 35, 0),
+      postedAt: DateTime(2020, 5, 23, 12, 35, 0),
     ),
     Post(
       user: nickwu241,

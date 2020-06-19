@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:social_media_application/ui/views/home_feeds.dart';
 
@@ -139,39 +140,34 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 1.0,
-        backgroundColor: Colors.grey[50],
-        title: Row(
-          children: <Widget>[
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(45.0),
+        child: AppBar(
+          centerTitle: true,
+          elevation: 1.0,
+          backgroundColor: Colors.grey[50],
+          leading: Icon(
+            Icons.camera,
+            color: Colors.black,
+            size: 30,
+          ),
+          title: Text(
+            'Social Media',
+            style: GoogleFonts.meriendaOne(
+              color: Colors.black,
+              fontSize: 20.0,
+            ),
+          ),
+          actions: <Widget>[
             Builder(builder: (BuildContext context) {
-              return GestureDetector(
-                child: Icon(OMIcons.cameraAlt, color: Colors.black, size: 32.0),
-                onTap: () => {},
+              return IconButton(
+                color: Colors.black,
+                icon: Icon(OMIcons.nearMe),
+                onPressed: () => {},
               );
             }),
-            SizedBox(width: 12.0),
-            GestureDetector(
-              child: Text(
-                'Social Media',
-                style: TextStyle(
-                    fontFamily: 'Billabong',
-                    color: Colors.black,
-                    fontSize: 32.0),
-              ),
-              onTap: _scrollToTop,
-            ),
           ],
         ),
-        actions: <Widget>[
-          Builder(builder: (BuildContext context) {
-            return IconButton(
-              color: Colors.black,
-              icon: Icon(OMIcons.nearMe),
-              onPressed: () => {},
-            );
-          }),
-        ],
       ),
       body: _widgetOptions.elementAt(_tabSelectedIndex),
       bottomNavigationBar: _buildBottomNavigation(),
