@@ -42,21 +42,22 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          TextField(
-            obscureText: isPassword,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              fillColor: Color(0xfff3f3f4),
+        
+         TextFormField(
+            cursorColor: Colors.black,
+            decoration: new InputDecoration(
               filled: true,
+              fillColor: Colors.grey[200],
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              hintText: title,
             ),
-          ),
+          )
         ],
       ),
     );

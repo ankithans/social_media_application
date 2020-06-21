@@ -44,7 +44,8 @@ class _LoginPageState extends State<LoginPage> {
           TextFormField(
             cursorColor: Colors.black,
             decoration: new InputDecoration(
-              fillColor: Colors.grey,
+              filled: true,
+              fillColor: Colors.grey[200],
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
