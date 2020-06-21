@@ -25,8 +25,9 @@ class _ChatPageState extends State<ChatPage> {
         title: Text(
           "Chat",
           style: GoogleFonts.nunito(
-            fontSize: 30,
+            fontSize: 25,
             color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
         actions: <Widget>[
@@ -67,70 +68,62 @@ class _ChatPageState extends State<ChatPage> {
             child: ListView.builder(
               itemCount: list.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => ChatItemPage(),
-                      ),
-                    );
-                  },
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(100),
-                      ),
-                      image: DecorationImage(
-                        image: ExactAssetImage("assets/images/default.jpg"),
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    list[index].contact.name,
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  subtitle: list[index].isTyping
-                      ? Row(
-                          children: <Widget>[
-                            SpinKitThreeBounce(
-                              color: AppColors.blueColor,
-                              size: 20.0,
-                            ),
-                          ],
-                        )
-                      : Row(
-                          children: <Widget>[
-                            Text(
-                              list[index].lastMessage,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 25),
-                            Text(
-                              list[index].lastMessageTime + " days ago",
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
+                return Column(
+                  children: <Widget>[
+                    ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => ChatItemPage(),
+                          ),
+                        );
+                      },
+                      leading: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(100),
+                          ),
+                          image: DecorationImage(
+                            image: ExactAssetImage("assets/images/default.jpg"),
+                          ),
                         ),
+                      ),
+                      title: Text(
+                        list[index].contact.name,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      subtitle: Row(
+                        children: <Widget>[
+                          Text(
+                            list[index].lastMessage,
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(width: 25),
+                          Text(
+                            list[index].lastMessageTime + " days ago",
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Colors.grey[200],
+                    ),
+                  ],
                 );
               },
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.add,
-        ),
-        backgroundColor: AppColors.blueColor,
       ),
     );
   }

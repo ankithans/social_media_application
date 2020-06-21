@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:social_media_application/models/models.dart';
 import 'package:social_media_application/ui/widgets/avatar_widget.dart';
 import 'package:social_media_application/ui/widgets/post_widget.dart';
@@ -62,16 +64,54 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: BouncingScrollPhysics(),
-      itemBuilder: (ctx, i) {
-        if (i == 0) {
-          return StoriesBarWidget();
-        }
-        return PostWidget(_posts[i - 1]);
-      },
-      itemCount: _posts.length + 1,
-      controller: widget.scrollController,
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 1.0,
+        backgroundColor: Colors.grey[50],
+        leading: Icon(
+          Icons.camera,
+          color: Colors.black,
+          size: 30,
+        ),
+        title: Text(
+          'Social Media',
+          style: GoogleFonts.meriendaOne(
+            color: Colors.black,
+            fontSize: 20.0,
+          ),
+        ),
+        actions: <Widget>[
+          Builder(builder: (BuildContext context) {
+            return IconButton(
+              color: Colors.black,
+              icon: Icon(OMIcons.nearMe),
+              onPressed: () => {},
+            );
+          }),
+        ],
+      ),
+      body: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (ctx, i) {
+          if (i == 0) {
+            return Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 8,
+                ),
+                StoriesBarWidget(),
+                SizedBox(
+                  height: 8,
+                ),
+              ],
+            );
+          }
+          return PostWidget(_posts[i - 1]);
+        },
+        itemCount: _posts.length + 1,
+        controller: widget.scrollController,
+      ),
     );
   }
 }

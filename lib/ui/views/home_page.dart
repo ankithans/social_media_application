@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:social_media_application/ui/views/home_feeds.dart';
+import 'package:social_media_application/ui/views/notifications.dart';
+import 'package:social_media_application/ui/views/profile.dart';
+import 'package:social_media_application/ui/views/search.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -40,43 +43,6 @@ class _HomePageState extends State<HomePage> {
       _lastFeedScrollOffset = _scrollController.offset;
       _scrollController.dispose();
       _scrollController = null;
-    }
-  }
-
-  Widget _buildPlaceHolderTab(String tabName) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 64.0),
-        child: Column(
-          children: <Widget>[
-            Text(
-              'Oops, the $tabName tab is\n under construction!',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 28.0),
-            ),
-            Image.asset('assets/images/building.gif'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBody() {
-    switch (_tabSelectedIndex) {
-      case 0:
-        _scrollController =
-            ScrollController(initialScrollOffset: _lastFeedScrollOffset);
-        return HomeFeedPage(scrollController: _scrollController);
-      default:
-        const tabIndexToNameMap = {
-          0: 'Home',
-          1: 'Search',
-          2: 'Add Photo',
-          3: 'Notifications',
-          4: 'Profile',
-        };
-        _disposeScrollController();
-        return _buildPlaceHolderTab(tabIndexToNameMap[_tabSelectedIndex]);
     }
   }
 
@@ -122,10 +88,10 @@ class _HomePageState extends State<HomePage> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeFeedPage(),
-    Text('Search'),
+    Search(),
     Text('add Post'),
-    Text('Notifications'),
-    Text('Profile'),
+    Notifications(),
+    Profile(),
   ];
 
   void _onTabTapped(BuildContext context, int index) {
@@ -140,35 +106,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.0),
-        child: AppBar(
-          centerTitle: true,
-          elevation: 1.0,
-          backgroundColor: Colors.grey[50],
-          leading: Icon(
-            Icons.camera,
-            color: Colors.black,
-            size: 30,
-          ),
-          title: Text(
-            'Social Media',
-            style: GoogleFonts.meriendaOne(
-              color: Colors.black,
-              fontSize: 20.0,
-            ),
-          ),
-          actions: <Widget>[
-            Builder(builder: (BuildContext context) {
-              return IconButton(
-                color: Colors.black,
-                icon: Icon(OMIcons.nearMe),
-                onPressed: () => {},
-              );
-            }),
-          ],
-        ),
-      ),
       body: _widgetOptions.elementAt(_tabSelectedIndex),
       bottomNavigationBar: _buildBottomNavigation(),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_application/ui/views/chats/chat_page.dart';
 import 'package:social_media_application/ui/views/home_page.dart';
+import 'package:social_media_application/ui/views/settings.dart';
 
 class PageControl extends StatefulWidget {
   @override
@@ -26,11 +27,10 @@ class _PageControlState extends State<PageControl> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: BouncingScrollPhysics(),
         controller: controller,
         children: <Widget>[
-          Container(
-            color: Colors.red,
-          ),
+          SettingsScreen(),
           HomePage(),
           ChatPage(),
         ],

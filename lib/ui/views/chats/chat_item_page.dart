@@ -132,22 +132,7 @@ class _ChatItemPageState extends State<ChatItemPage> {
               padding: EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      SpinKitThreeBounce(
-                        color: AppColors.blueColor,
-                        size: 20.0,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "${currentChat.contact.name} is typing...",
-                    style: TextStyle(
-                      color: Colors.black87,
-                    ),
-                  )
-                ],
+                children: <Widget>[],
               ),
             ),
           _buildInput(),
@@ -188,7 +173,7 @@ class _ChatItemPageState extends State<ChatItemPage> {
           ),
           IconButton(
             icon: Icon(
-              Icons.alternate_email,
+              Icons.send,
               color: AppColors.blueColor,
             ),
             onPressed: null,
