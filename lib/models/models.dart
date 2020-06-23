@@ -72,7 +72,6 @@ class Post {
 
 class User {
   final String name;
-
   final String imageUrl;
   final List<Story> stories;
 
