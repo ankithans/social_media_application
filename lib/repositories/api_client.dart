@@ -67,4 +67,25 @@ class ApiClient {
       throw e.error;
     }
   }
+
+  Future<User> socialSignIn(String email, String registration_token,
+      String name, int mobile, String profile_pic) async {
+    FormData formData = FormData.fromMap({
+      'email': email,
+      'registration_token': registration_token,
+      'name': name,
+      'mobile': mobile,
+      'profile_pic': profile_pic,
+    });
+
+    try {
+      Response response =
+          await dio.post('${url}user/sociallogin', data: formData);
+      print(response);
+      return User.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.error);
+      throw e.error;
+    }
+  }
 }

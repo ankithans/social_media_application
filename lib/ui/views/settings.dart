@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -52,6 +54,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 trailing: Icon(Icons.keyboard_arrow_right),
               ),
               SettingsTile(
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.remove("isLoggedIn");
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WelcomePage(),
+                    ),
+                  );
+                },
                 title: 'Sign out',
                 leading: Icon(Icons.exit_to_app),
                 trailing: Icon(Icons.keyboard_arrow_right),

@@ -21,4 +21,10 @@ class ApiRepository {
   Future<Default> resendOtp(String mobile) async {
     return apiClient.resendOtp(mobile);
   }
+
+  Future<User> socialSignIn(String email, String registration_token,
+      String name, int mobile, String profile_pic) async {
+    return apiClient.socialSignIn(
+        email, registration_token, name, mobile, profile_pic);
+  }
 }
