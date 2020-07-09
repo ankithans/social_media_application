@@ -1,6 +1,7 @@
 import 'package:social_media_application/models/default.dart';
-import 'package:social_media_application/models/login/user.dart';
+import 'package:social_media_application/models/user.dart';
 import 'package:social_media_application/repositories/api_client.dart';
+import 'package:social_media_application/models/profile.dart';
 
 class ApiRepository {
   final ApiClient apiClient;
@@ -23,8 +24,13 @@ class ApiRepository {
   }
 
   Future<User> socialSignIn(String email, String registration_token,
-      String name, int mobile, String profile_pic) async {
+      String name, String mobile, String profile_pic) async {
     return apiClient.socialSignIn(
         email, registration_token, name, mobile, profile_pic);
+  }
+
+  Future<Profile> UpdateProfile(
+      String user_id, String photo, String name, String bio) async {
+    return apiClient.UpdateProfile(user_id, photo, name, bio);
   }
 }

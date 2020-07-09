@@ -51,7 +51,7 @@ class Result {
 
   final int userId;
   final String name;
-  final int mobile;
+  final String mobile;
   final String uniqueKey;
   final String email;
   final String otherMobile;
@@ -65,7 +65,7 @@ class Result {
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         userId: json["user_id"] == null ? null : json["user_id"],
         name: json["name"] == null ? null : json["name"],
-        mobile: json["mobile"] == null ? null : json["mobile"],
+        mobile: json["mobile"],
         uniqueKey: json["unique_key"] == null ? null : json["unique_key"],
         email: json["email"] == null ? null : json["email"],
         otherMobile: json["other_mobile"] == null ? null : json["other_mobile"],

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/default.dart';
-import 'package:social_media_application/models/login/user.dart';
+import 'package:social_media_application/models/user.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/ui/views/page_controller.dart';
@@ -43,6 +43,12 @@ class _LoginPageState extends State<LoginPage> {
     prefs.setBool('isLoggedIn', true);
   }
 
+  getSharedPF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int user_Id = prefs.getInt('userId');
+    print(user_Id);
+  }
+
   void verifyOtp() async {
     setState(() {
       _isloading = true;
@@ -52,6 +58,9 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isloading = false;
     });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('userId', _user.result.userId);
+
     if (_user.error == false) {
       Navigator.pushReplacement(
         context,
@@ -59,9 +68,9 @@ class _LoginPageState extends State<LoginPage> {
           builder: (context) => PageControl(),
         ),
       );
-      addBoolToSF();
     }
     print(_user.result.mobile);
+    getSharedPF();
   }
 
   void resendOtp() async {
@@ -81,23 +90,37 @@ class _LoginPageState extends State<LoginPage> {
         'https://www.googleapis.com/auth/contacts.readonly',
       ],
     );
-    try {
-      final user = await _googleSignIn.signIn();
 
-      print(user.email);
-      print(user.displayName);
-      print(user.photoUrl);
-      addBoolToSF();
+    SharedPreferences myPrefs = await SharedPreferences.getInstance();
+
+    final user = await _googleSignIn.signIn();
+
+    // print(user.email);
+    // print(user.displayName);
+    // print(user.photoUrl);
+    // addBoolToSF();
+
+    _user = await apiRepository.socialSignIn(
+      user.email,
+      'mfkkenf',
+      user.displayName,
+      '',
+      user.photoUrl,
+    );
+    myPrefs.setInt('uid', _user.result.userId);
+    navigateToHome();
+    addBoolToSF();
+    getSharedPF();
+  }
+
+  void navigateToHome() {
+    if (_user.error == false) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => PageControl(),
         ),
       );
-      _user = await apiRepository.socialSignIn(
-          user.email, 'mfkkenf', user.displayName, null, user.photoUrl);
-    } catch (error) {
-      print(error);
     }
   }
 

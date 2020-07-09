@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/models.dart';
 import 'package:social_media_application/ui/widgets/avatar_widget.dart';
 import 'package:social_media_application/ui/widgets/post_widget.dart';
@@ -15,6 +16,19 @@ class HomeFeedPage extends StatefulWidget {
 }
 
 class _HomeFeedPageState extends State<HomeFeedPage> {
+  getSharedPF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int uid = prefs.getInt('uid');
+    print(uid);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSharedPF();
+  }
+
   final _posts = <Post>[
     Post(
       user: grootlover,

@@ -58,6 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.remove("isLoggedIn");
+                  prefs.remove('userId');
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
