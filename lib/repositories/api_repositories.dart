@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:social_media_application/models/default.dart';
+import 'package:social_media_application/models/profile/profile.dart';
 import 'package:social_media_application/models/user.dart';
 import 'package:social_media_application/repositories/api_client.dart';
-import 'package:social_media_application/models/profile.dart';
+import 'package:social_media_application/models/profile/profile_update_result.dart';
 
 class ApiRepository {
   final ApiClient apiClient;
@@ -29,8 +32,26 @@ class ApiRepository {
         email, registration_token, name, mobile, profile_pic);
   }
 
-  Future<Profile> UpdateProfile(
-      String user_id, String photo, String name, String bio) async {
-    return apiClient.UpdateProfile(user_id, photo, name, bio);
+  Future<ProfileUpdate> UpdateProfile(
+      int user_id, File file, String name, String bio) async {
+    return apiClient.UpdateProfile(
+      user_id,
+      file,
+      name,
+      bio,
+    );
+  }
+
+  Future<ProfileUpdate> UpdateProfileWithoutPic(
+      int user_id, String name, String bio) async {
+    return apiClient.UpdateProfileWithoutPic(
+      user_id,
+      name,
+      bio,
+    );
+  }
+
+  Future<Profile> getProfile(int user_id) async {
+    return apiClient.getProfile(user_id);
   }
 }

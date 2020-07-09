@@ -1,16 +1,17 @@
 // To parse this JSON data, do
 //
-//     final profile = profileFromJson(jsonString);
+//     final profileUpdate = profileUpdateFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
+ProfileUpdate profileUpdateFromJson(String str) =>
+    ProfileUpdate.fromJson(json.decode(str));
 
-String profileToJson(Profile data) => json.encode(data.toJson());
+String profileUpdateToJson(ProfileUpdate data) => json.encode(data.toJson());
 
-class Profile {
-  Profile({
+class ProfileUpdate {
+  ProfileUpdate({
     @required this.error,
     @required this.errorMsg,
     @required this.pic,
@@ -24,7 +25,7 @@ class Profile {
   final String name;
   final String bio;
 
-  factory Profile.fromJson(Map<String, dynamic> json) => Profile(
+  factory ProfileUpdate.fromJson(Map<String, dynamic> json) => ProfileUpdate(
         error: json["error"] == null ? null : json["error"],
         errorMsg: json["error_msg"] == null ? null : json["error_msg"],
         pic: json["pic"] == null ? null : json["pic"],

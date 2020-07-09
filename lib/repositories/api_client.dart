@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/default.dart';
-import 'package:social_media_application/models/profile.dart';
+import 'package:social_media_application/models/profile/profile_update_result.dart';
 import 'package:social_media_application/models/user.dart';
+import 'package:social_media_application/models/profile/profile.dart';
 
 class ApiClient {
   static const url = 'https://www.mustdiscovertech.co.in/social/v1/';
@@ -91,17 +93,50 @@ class ApiClient {
     }
   }
 
-  Future<Profile> UpdateProfile(
-      String user_id, String photo, String name, String bio) async {
+  Future<ProfileUpdate> UpdateProfile(
+      int user_id, File file, String name, String bio) async {
     FormData formData = FormData.fromMap({
       'user_id': user_id,
-      'photo': photo,
+      'photo': await MultipartFile.fromFile(file.path, filename: 'pic'),
       'name': name,
       'bio': bio,
     });
 
     try {
       Response response = await dio.post('${url}user/update', data: formData);
+      print(response);
+      return ProfileUpdate.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.error);
+      throw (e.error);
+    }
+  }
+
+  Future<ProfileUpdate> UpdateProfileWithoutPic(
+      int user_id, String name, String bio) async {
+    FormData formData = FormData.fromMap({
+      'user_id': user_id,
+      'name': name,
+      'bio': bio,
+    });
+
+    try {
+      Response response = await dio.post('${url}user/update', data: formData);
+      print(response);
+      return ProfileUpdate.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.error);
+      throw (e.error);
+    }
+  }
+
+  Future<Profile> getProfile(int user_id) async {
+    FormData formData = FormData.fromMap({
+      'user_id': user_id,
+    });
+
+    try {
+      Response response = await dio.post('${url}user/profile', data: formData);
       print(response);
       return Profile.fromJson(response.data);
     } on DioError catch (e) {

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:social_media_application/ui/views/home_feeds.dart';
 import 'package:social_media_application/ui/views/notifications.dart';
-import 'package:social_media_application/ui/views/profile.dart';
+import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/views/search.dart';
 
 class HomePage extends StatefulWidget {
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
     Search(),
     Text('add Post'),
     Notifications(),
-    Profile(),
+    ProfilePage(),
   ];
 
   void _onTabTapped(BuildContext context, int index) {
