@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:social_media_application/models/default.dart';
+import 'package:social_media_application/models/posts/post_default.dart';
 import 'package:social_media_application/models/profile/profile_update_result.dart';
 import 'package:social_media_application/models/user.dart';
 import 'package:social_media_application/models/profile/profile.dart';
@@ -139,6 +140,25 @@ class ApiClient {
       Response response = await dio.post('${url}user/profile', data: formData);
       print(response);
       return Profile.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.error);
+      throw (e.error);
+    }
+  }
+
+  Future<PostDefault> postUpload(int user_id, String title,
+      List<MultipartFile> photo, String description) async {
+    FormData formData = FormData.fromMap({
+      'user_id': user_id,
+      'title': title,
+      'photo[]': photo,
+      'description': description,
+    });
+
+    try {
+      Response response = await dio.post('${url}post/upload', data: formData);
+      print(response);
+      return PostDefault.fromJson(response.data);
     } on DioError catch (e) {
       print(e.error);
       throw (e.error);

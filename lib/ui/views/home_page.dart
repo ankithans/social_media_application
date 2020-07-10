@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:social_media_application/ui/views/home_feeds.dart';
 import 'package:social_media_application/ui/views/notifications.dart';
+import 'package:social_media_application/ui/views/posts/create_post.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/views/search.dart';
 
@@ -12,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const _kAddPhotoTabIndex = 2;
+  static const _kAddPhotoTabIndex = 1;
   int _tabSelectedIndex = 0;
 
   // Save the home page scrolling offset,
@@ -89,14 +90,13 @@ class _HomePageState extends State<HomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeFeedPage(),
     Search(),
-    Text('add Post'),
+    CreatePostScreen(),
     Notifications(),
     ProfilePage(),
   ];
 
   void _onTabTapped(BuildContext context, int index) {
-    if (index == _kAddPhotoTabIndex) {
-    } else if (index == _tabSelectedIndex) {
+    if (index == _tabSelectedIndex) {
       _scrollToTop();
     } else {
       setState(() => _tabSelectedIndex = index);

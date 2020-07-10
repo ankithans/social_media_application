@@ -1,8 +1,14 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_media_application/models/posts/post_default.dart';
+import 'package:social_media_application/repositories/api_client.dart';
+import 'package:social_media_application/repositories/api_repositories.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:dio/dio.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override
@@ -14,6 +20,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController _captionController = TextEditingController();
   String _caption = '';
   bool _isLoading = false;
+
+  final ApiRepository apiRepository = ApiRepository(
+    apiClient: ApiClient(),
+  );
+
+  PostDefault postDefault;
 
   _showSelectImageDialog() {
     return Platform.isIOS ? _iosBottomSheet() : _androidDialog();
@@ -76,13 +88,43 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   _handleImage(ImageSource source) async {
     Navigator.pop(context);
-    File imageFile = await ImagePicker.pickImage(source: source);
-    if (imageFile != null) {
-      imageFile = await _cropImage(imageFile);
-      setState(() {
-        _image = imageFile;
-      });
+    // File imageFile = await ImagePicker.pickImage(source: source);
+    // if (imageFile != null) {
+    //   imageFile = await _cropImage(imageFile);
+    //   setState(() {
+    //     _image = imageFile;
+    //   });
+    // }
+
+    Future<List<Asset>> selectImagesFromGallery() async {
+      return await MultiImagePicker.pickImages(
+        maxImages: 65536,
+        enableCamera: true,
+        materialOptions: MaterialOptions(
+          actionBarColor: "#FF147cfa",
+          statusBarColor: "#FF147cfa",
+        ),
+      );
     }
+
+    List<File> _files;
+
+    List<Asset> assets = await selectImagesFromGallery();
+    List<File> files = [];
+    for (Asset asset in assets) {
+      final filePath =
+          await FlutterAbsolutePath.getAbsolutePath(asset.identifier);
+      files.add(File(filePath));
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _files = files;
+    });
   }
 
   _cropImage(File imageFile) async {
@@ -100,6 +142,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       });
 
       // Create post
+      // postDefault = await
 
       // Reset data
       _captionController.clear();
