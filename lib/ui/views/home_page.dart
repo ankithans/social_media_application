@@ -4,6 +4,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:social_media_application/ui/views/home_feeds.dart';
 import 'package:social_media_application/ui/views/notifications.dart';
 import 'package:social_media_application/ui/views/posts/create_post.dart';
+import 'package:social_media_application/ui/views/posts/home_feeds.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/views/search.dart';
 
@@ -88,7 +89,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   static List<Widget> _widgetOptions = <Widget>[
-    HomeFeedPage(),
+    HomeFeeds(),
     Search(),
     CreatePostScreen(),
     Notifications(),

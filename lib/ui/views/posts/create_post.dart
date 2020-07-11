@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -211,7 +212,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               Icons.add,
               color: Colors.black,
             ),
-            onPressed: _submit,
+            onPressed: () {
+              if (_captionController.text == '') {
+                FlutterToast.showToast(
+                    msg: 'Please Enter a Caption for your post');
+              } else {
+                _submit();
+              }
+            },
           ),
         ],
       ),

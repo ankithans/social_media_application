@@ -56,7 +56,7 @@ class Result {
   final int postId;
   final int userId;
   final String title;
-  final List<Image> images;
+  final List<Images> images;
   final String video;
   final String description;
   final List<String> author;
@@ -72,7 +72,7 @@ class Result {
         title: json["title"] == null ? null : json["title"],
         images: json["images"] == null
             ? null
-            : List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+            : List<Images>.from(json["images"].map((x) => Images.fromJson(x))),
         video: json["video"] == null ? null : json["video"],
         description: json["description"] == null ? null : json["description"],
         author: json["author"] == null
@@ -157,8 +157,8 @@ class Comment {
       };
 }
 
-class Image {
-  Image({
+class Images {
+  Images({
     @required this.original,
     @required this.thumbnail,
   });
@@ -166,7 +166,7 @@ class Image {
   final String original;
   final String thumbnail;
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory Images.fromJson(Map<String, dynamic> json) => Images(
         original: json["original"] == null ? null : json["original"],
         thumbnail: json["thumbnail"] == null ? null : json["thumbnail"],
       );
