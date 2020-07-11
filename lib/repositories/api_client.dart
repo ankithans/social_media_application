@@ -74,12 +74,11 @@ class ApiClient {
   }
 
   Future<User> socialSignIn(String email, String registration_token,
-      String name, String mobile, String profile_pic) async {
+      String name, String profile_pic) async {
     FormData formData = FormData.fromMap({
       'email': email,
       'registration_token': registration_token,
       'name': name,
-      'mobile': mobile,
       'profile_pic': profile_pic,
     });
 

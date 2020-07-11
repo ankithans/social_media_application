@@ -27,9 +27,8 @@ class ApiRepository {
   }
 
   Future<User> socialSignIn(String email, String registration_token,
-      String name, String mobile, String profile_pic) async {
-    return apiClient.socialSignIn(
-        email, registration_token, name, mobile, profile_pic);
+      String name, String profile_pic) async {
+    return apiClient.socialSignIn(email, registration_token, name, profile_pic);
   }
 
   Future<ProfileUpdate> UpdateProfile(

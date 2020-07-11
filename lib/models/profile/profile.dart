@@ -56,7 +56,7 @@ class Result {
 
   final int userId;
   final String name;
-  final String mobile;
+  var mobile;
   final String uniqueKey;
   final String email;
   final String otherMobile;

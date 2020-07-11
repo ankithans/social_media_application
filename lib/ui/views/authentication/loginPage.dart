@@ -59,16 +59,9 @@ class _LoginPageState extends State<LoginPage> {
       _isloading = false;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('userId', _user.result.userId);
+    prefs.setInt('uid', _user.result.userId);
 
-    if (_user.error == false) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PageControl(),
-        ),
-      );
-    }
+    navigateToHome();
     print(_user.result.mobile);
     getSharedPF();
   }
@@ -104,7 +97,6 @@ class _LoginPageState extends State<LoginPage> {
       user.email,
       'mfkkenf',
       user.displayName,
-      '',
       user.photoUrl,
     );
     myPrefs.setInt('uid', _user.result.userId);
