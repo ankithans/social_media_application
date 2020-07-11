@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -30,6 +31,9 @@ class _ProfilePageState extends State<ProfilePage> {
     int uid = prefs.getInt('uid');
     _profile = await apiRepository.getProfile(uid);
     print(_profile);
+    images = [];
+    listImages();
+
     setState(() {
       _isLoading = false;
     });
@@ -39,6 +43,23 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     getProfile();
+  }
+
+  List images = new List();
+  void listImages() async {
+    for (var i = 0; i < _profile.result.posts.length; i++) {
+      images.add(
+        CachedNetworkImage(
+          imageUrl: _profile.result.posts[i].images[0].thumbnail,
+          progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+            child: CircularProgressIndicator(
+              value: downloadProgress.progress,
+            ),
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
+      );
+    }
   }
 
   static Random random = Random();
@@ -89,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: 10),
                     Text(
                       _profile.result.name,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
@@ -97,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: 3),
                     Text(
                       _profile.result.bio,
-                      style: TextStyle(),
+                      style: GoogleFonts.poppins(),
                     ),
                     SizedBox(height: 20),
                     Row(
@@ -115,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         FlatButton(
                           child: Text(
                             'Edit',
-                            style: TextStyle(color: Colors.white),
+                            style: GoogleFonts.poppins(color: Colors.white),
                           ),
                           color: Theme.of(context).accentColor,
                           onPressed: () {
@@ -132,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 50),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           _buildPosts("Posts"),
                           _buildFollowers("Followers"),
@@ -146,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       physics: NeverScrollableScrollPhysics(),
                       primary: false,
                       padding: EdgeInsets.all(5),
-                      itemCount: 10,
+                      itemCount: images.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         childAspectRatio: 200 / 200,
@@ -158,10 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Image.asset(
-                              "assets/images/gamora.jpg",
-                              fit: BoxFit.cover,
-                            ),
+                            child: images[index],
                           ),
                         );
                       },
@@ -179,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
       children: <Widget>[
         Text(
           '${_profile.result.noOfPost}',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
@@ -187,7 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
         SizedBox(height: 4),
         Text(
           title,
-          style: TextStyle(),
+          style: GoogleFonts.poppins(),
         ),
       ],
     );
@@ -198,7 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
       children: <Widget>[
         Text(
           '${_profile.result.followers}',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
@@ -206,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
         SizedBox(height: 4),
         Text(
           title,
-          style: TextStyle(),
+          style: GoogleFonts.poppins(),
         ),
       ],
     );

@@ -176,6 +176,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         Response response = await dio.post('${url}post/upload', data: formData);
         print(response);
 
+        FlutterToast.showToast(msg: 'Your post is uploaded successfully!');
         // Reset data
         _captionController.clear();
 
@@ -188,6 +189,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         return PostDefault.fromJson(response.data);
       } on DioError catch (e) {
         print(e.error);
+        FlutterToast.showToast(msg: 'Not able to upload your post');
+
         throw (e.error);
       }
     }

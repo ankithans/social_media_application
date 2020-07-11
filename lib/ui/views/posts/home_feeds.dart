@@ -60,6 +60,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           centerTitle: true,
           title: Text(
             'Home Screen',
@@ -177,7 +178,7 @@ class _SinglePostViewState extends State<SinglePostView> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(5.0),
           child: Container(
             color: Colors.grey[100],
             child: Padding(
@@ -194,7 +195,10 @@ class _SinglePostViewState extends State<SinglePostView> {
                       SizedBox(
                         width: 15,
                       ),
-                      Text(_listPosts.result[widget.count].author[0]),
+                      Text(
+                        _listPosts.result[widget.count].author[0],
+                        style: GoogleFonts.poppins(),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -205,8 +209,7 @@ class _SinglePostViewState extends State<SinglePostView> {
                       alignment: Alignment.center,
                       children: <Widget>[
                         SizedBox(
-                          height: 200.0,
-                          width: 350.0,
+                          height: 310.0,
                           child: Carousel(
                             images: images,
                             dotSize: 4.0,
@@ -215,6 +218,7 @@ class _SinglePostViewState extends State<SinglePostView> {
                             indicatorBgPadding: 5.0,
                             borderRadius: true,
                             autoplay: false,
+                            boxFit: BoxFit.fill,
                           ),
                         ),
                       ],
