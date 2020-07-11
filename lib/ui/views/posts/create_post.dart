@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/post_default.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
@@ -18,7 +19,9 @@ class CreatePostScreen extends StatefulWidget {
 class _CreatePostScreenState extends State<CreatePostScreen> {
   File _image;
   TextEditingController _captionController = TextEditingController();
+  TextEditingController _decriptionController = TextEditingController();
   String _caption = '';
+  String _description = '';
   bool _isLoading = false;
 
   final ApiRepository apiRepository = ApiRepository(
@@ -86,6 +89,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
+  List<File> _files;
+  List<MultipartFile> uploadList = new List<MultipartFile>();
+  List<Asset> assets = [];
+
   _handleImage(ImageSource source) async {
     Navigator.pop(context);
     // File imageFile = await ImagePicker.pickImage(source: source);
@@ -107,14 +114,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       );
     }
 
-    List<File> _files;
-
-    List<Asset> assets = await selectImagesFromGallery();
+    assets = await selectImagesFromGallery();
     List<File> files = [];
     for (Asset asset in assets) {
       final filePath =
           await FlutterAbsolutePath.getAbsolutePath(asset.identifier);
+      print(filePath);
       files.add(File(filePath));
+      fileName = filePath.split('/').last;
+      print(fileName);
+      uploadList
+          .add(await MultipartFile.fromFile(filePath, filename: fileName));
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -125,7 +135,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {
       _files = files;
     });
+
+    // for (var imageFiles in files) {
+    //   fileName = imageFiles.path.split('/').last;
+    //   uploadList.add(
+    //       await MultipartFile.fromFile(imageFiles.path, filename: fileName));
+    // }
   }
+
+  String fileName;
 
   _cropImage(File imageFile) async {
     File croppedImage = await ImageCropper.cropImage(
@@ -136,22 +154,41 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _submit() async {
-    if (!_isLoading && _image != null && _caption.isNotEmpty) {
+    if (!_isLoading) {
       setState(() {
         _isLoading = true;
       });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      int uid = prefs.getInt('uid');
 
       // Create post
-      // postDefault = await
-
-      // Reset data
-      _captionController.clear();
-
-      setState(() {
-        _caption = '';
-        _image = null;
-        _isLoading = false;
+      FormData formData = FormData.fromMap({
+        'user_id': uid,
+        'title': _captionController.text,
+        'photo': uploadList,
+        'description': _decriptionController.text,
       });
+      const url = 'https://www.mustdiscovertech.co.in/social/v1/';
+      Dio dio = new Dio();
+      try {
+        Response response = await dio.post('${url}post/upload', data: formData);
+        print(response);
+
+        // Reset data
+        _captionController.clear();
+
+        setState(() {
+          _caption = '';
+          _image = null;
+          _isLoading = false;
+        });
+
+        return PostDefault.fromJson(response.data);
+      } on DioError catch (e) {
+        print(e.error);
+        throw (e.error);
+      }
     }
   }
 
@@ -170,7 +207,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
+            icon: Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
             onPressed: _submit,
           ),
         ],
@@ -219,6 +259,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       labelText: 'Caption',
                     ),
                     onChanged: (input) => _caption = input,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: TextField(
+                    controller: _decriptionController,
+                    style: TextStyle(fontSize: 18.0),
+                    decoration: InputDecoration(
+                      labelText: 'Description',
+                    ),
+                    onChanged: (input) => _description = input,
                   ),
                 ),
               ],
