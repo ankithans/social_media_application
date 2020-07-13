@@ -8,6 +8,7 @@ import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/models/profile/profile.dart';
 import 'package:social_media_application/ui/views/profile/edit_profile.dart';
+import 'package:social_media_application/ui/views/profile/following.dart';
 import 'package:social_media_application/utils/sizes_helpers.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -241,7 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 1.5,
+                              childAspectRatio: 2,
                             ),
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
@@ -306,24 +307,34 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildFollowing(String title) {
-    return Column(
-      children: <Widget>[
-        Text(
-          '${_profile.result.following}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
+    return FlatButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Following(),
           ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          title,
-          style: TextStyle(
-            color: Colors.white,
+        );
+      },
+      child: Column(
+        children: <Widget>[
+          Text(
+            '${_profile.result.following}',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              color: Colors.white,
+            ),
           ),
-        ),
-      ],
+          SizedBox(height: 4),
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
