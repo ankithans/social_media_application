@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
+import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
+import 'package:social_media_application/utils/sizes_helpers.dart';
 
 ListPosts _listPosts;
 int uid;
@@ -63,7 +67,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            'Home Screen',
+            'Social Media',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w500,
             ),
@@ -156,21 +160,41 @@ class _SinglePostViewState extends State<SinglePostView> {
   //   _doubleTapImageEvents.sink.add(null);
   // }
 
-  List images = new List();
+  List<Widget> images = new List();
+  List<String> img = new List();
   void listImages() async {
     for (var i = 0; i < _listPosts.result[widget.count].images.length; i++) {
+      img.add(_listPosts.result[widget.count].images[i].original);
       images.add(
-        CachedNetworkImage(
-          imageUrl: _listPosts.result[widget.count].images[i].original,
-          progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-            child: CircularProgressIndicator(
-              value: downloadProgress.progress,
+        ZoomOverlay(
+          twoTouchOnly: true,
+          child: AspectRatio(
+            aspectRatio: 16 / 9,
+            child: CachedNetworkImage(
+              fit: BoxFit.fitWidth,
+              imageUrl: _listPosts.result[widget.count].images[i].original,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Center(
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                ),
+              ),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
-          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
       );
     }
+  }
+
+  CarouselController buttonCarouselController = CarouselController();
+  int _currentIndex = 0;
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
   }
 
   @override
@@ -178,11 +202,11 @@ class _SinglePostViewState extends State<SinglePostView> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(8.0),
           child: Container(
             color: Colors.grey[100],
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(5.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -202,34 +226,98 @@ class _SinglePostViewState extends State<SinglePostView> {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 8,
                   ),
-                  GestureDetector(
-                    child: Stack(
-                      alignment: Alignment.center,
+                  // GestureDetector(
+                  //   child: Stack(
+                  //     alignment: Alignment.center,
+                  //     children: <Widget>[
+                  //       SizedBox(
+                  //         height: 220.0,
+                  //         child: Carousel(
+                  //           images: images,
+                  //           dotSize: 4.0,
+                  //           dotSpacing: 15.0,
+                  //           dotColor: Colors.lightGreenAccent,
+                  //           indicatorBgPadding: 5.0,
+                  //           borderRadius: true,
+                  //           autoplay: false,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   onDoubleTap: () {},
+                  // ),
+                  // CarouselSlider(
+                  //   items: images,
+                  //   carouselController: buttonCarouselController,
+                  //   options: CarouselOptions(
+                  //     height: 250,
+                  //     autoPlay: false,
+                  //     enlargeCenterPage: true,
+                  //     viewportFraction: 1,
+                  //     aspectRatio: 2.0,
+                  //     initialPage: 1,
+
+                  //     pauseAutoPlayInFiniteScroll: false,
+                  //     enableInfiniteScroll: false,
+                  //     onPageChanged: (index, reason) {
+                  //       setState(() {
+                  //         _currentIndex = index;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+
+                  GFCarousel(
+                    items: images,
+                    activeIndicator: Colors.black,
+                    passiveIndicator: Colors.grey,
+                    enableInfiniteScroll: false,
+                    enlargeMainPage: true,
+                    viewportFraction: 1.0,
+                    height: 200,
+                    scrollPhysics: BouncingScrollPhysics(),
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: map<Widget>(images, (index, url) {
+                      return Container(
+                        width: 10.0,
+                        height: 10.0,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 5.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentIndex == index
+                              ? Colors.blueAccent
+                              : Colors.grey,
+                        ),
+                      );
+                    }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(9.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(
-                          height: 310.0,
-                          child: Carousel(
-                            images: images,
-                            dotSize: 4.0,
-                            dotSpacing: 15.0,
-                            dotColor: Colors.lightGreenAccent,
-                            indicatorBgPadding: 5.0,
-                            borderRadius: true,
-                            autoplay: false,
-                            boxFit: BoxFit.fill,
+                        Text(
+                          _listPosts.result[widget.count].title,
+                          style: GoogleFonts.poppins(),
+                        ),
+                        Text(
+                          _listPosts.result[widget.count].description,
+                          style: GoogleFonts.poppins(
+                            color: Colors.grey[600],
+                            fontSize: 12,
                           ),
                         ),
                       ],
-                    ),
-                    onDoubleTap: () {},
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      _listPosts.result[widget.count].title,
-                      style: GoogleFonts.poppins(),
                     ),
                   ),
                   Row(
