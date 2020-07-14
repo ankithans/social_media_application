@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -79,32 +81,67 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void googleSignIn() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
+    // GoogleSignIn _googleSignIn = GoogleSignIn(
+    //   scopes: [
+    //     'email',
+    //   ],
+    // );
+
+    // final user = await _googleSignIn.signIn();
+    // print(user.email);
+
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
     );
 
-    final user = await _googleSignIn.signIn();
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
     SharedPreferences myPrefs = await SharedPreferences.getInstance();
 
     // print(user.email);
     // print(user.displayName);
     // print(user.photoUrl);
     // addBoolToSF();
+    const url = 'https://www.mustdiscovertech.co.in/social/v1/';
+    Dio dio = new Dio();
+    FormData formData = FormData.fromMap({
+      'email': user.email,
+      'registration_token': 'aaaa',
+      'name': user.displayName,
+      'profile_pic': user.photoUrl,
+    });
 
-    _user = await apiRepository.socialSignIn(
-      user.email,
-      'mfkkenf',
-      user.displayName,
-      user.photoUrl,
-    );
-    myPrefs.setInt('uid', _user.result.userId);
-    navigateToHome();
-    addBoolToSF();
-    getSharedPF();
+    try {
+      Response response =
+          await dio.post('${url}user/sociallogin', data: formData);
+
+      _user = User.fromJson(response.data);
+
+      myPrefs.setInt('uid', _user.result.userId);
+      navigateToHome();
+      addBoolToSF();
+      getSharedPF();
+    } on DioError catch (e) {
+      print(e.error);
+      throw e.error;
+    }
   }
+
+  // _user = await apiRepository.socialSignIn(
+  //   user.email,
+  //   'mfkkenf',
+  //   user.displayName,
+  //   user.photoUrl,
+  // );
 
   void navigateToHome() {
     if (_user.error == false) {

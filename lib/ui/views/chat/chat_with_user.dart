@@ -6,14 +6,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/ui/views/posts/home_feeds.dart';
+import 'package:social_media_application/utils/data.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatWithUser extends StatefulWidget {
   final userName;
   final uid;
+  final String pic;
 
-  const ChatWithUser({Key key, this.userName, this.uid}) : super(key: key);
+  const ChatWithUser({Key key, this.userName, this.uid, this.pic})
+      : super(key: key);
 
   @override
   _ChatWithUserState createState() => _ChatWithUserState();
@@ -33,12 +37,13 @@ class _ChatWithUserState extends State<ChatWithUser> {
             ),
             CircleAvatar(
               radius: 15,
+              backgroundImage: NetworkImage(widget.pic),
             ),
             SizedBox(
               width: 10,
             ),
             Text(
-              'Ankit Hans',
+              widget.userName,
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w500,
               ),
@@ -67,7 +72,7 @@ class _ChatWithUserState extends State<ChatWithUser> {
       ),
       body: ChatScreen(
         username: widget.userName,
-        uuid: uid.toString(),
+        uid: uid.toString(),
       ),
     );
   }
@@ -75,9 +80,9 @@ class _ChatWithUserState extends State<ChatWithUser> {
 
 class ChatScreen extends StatefulWidget {
   final String username;
-  final String uuid;
+  final String uid;
 
-  ChatScreen({this.username, this.uuid});
+  ChatScreen({this.username, this.uid});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -85,15 +90,29 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   ChatUser user = ChatUser();
+  String groupChatId;
+
+  int user_id;
+  void getUser_id() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    user_id = prefs.getInt('uid');
+  }
 
   @override
   void initState() {
     user.name = widget.username;
-    user.uid = widget.uuid;
+    user.uid = widget.uid;
     super.initState();
+    getUser_id();
   }
 
   void onSend(ChatMessage message) {
+    // if (user_id.hashCode <= widget.uid.hashCode) {
+    //   groupChatId = '${user_id}-${widget.uid}';
+    // } else {
+    //   groupChatId = '${widget.uid}-${user_id}';
+    // }
     var documentReference = Firestore.instance
         .collection('messages')
         .document(DateTime.now().millisecondsSinceEpoch.toString());
