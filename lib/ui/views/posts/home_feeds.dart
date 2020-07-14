@@ -11,6 +11,9 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
+import 'package:social_media_application/ui/views/chat/chat_list.dart';
+import 'package:social_media_application/ui/views/notifications.dart';
+import 'package:social_media_application/ui/views/profile/following.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
 import 'package:social_media_application/utils/sizes_helpers.dart';
@@ -214,7 +217,12 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Notifications(),
+                      ),
+                    );
                   },
                 ),
                 ListTile(
@@ -233,7 +241,12 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Following(),
+                      ),
+                    );
                   },
                 ),
                 ListTile(
@@ -252,7 +265,12 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatMembersList(),
+                      ),
+                    );
                   },
                 ),
                 ListTile(
@@ -271,7 +289,12 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfilePage(),
+                      ),
+                    );
                   },
                 ),
               ],

@@ -79,10 +79,12 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Color(0xFFFF8B66),
         leading: IconButton(
           icon: Icon(
-            Icons.menu,
+            Icons.keyboard_arrow_left,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: <Widget>[
           IconButton(
