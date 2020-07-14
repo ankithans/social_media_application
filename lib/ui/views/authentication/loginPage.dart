@@ -40,6 +40,13 @@ class _LoginPageState extends State<LoginPage> {
         _nameController.text, '${_phoneController.text}', 'registrationToken');
   }
 
+  void addUserDetails(String name, String bio, [String picurl]) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('name', name);
+    prefs.setString('bio', bio);
+    prefs.setString('pic', picurl);
+  }
+
   addBoolToSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', true);
@@ -63,6 +70,10 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setInt('uid', _user.result.userId);
+    addUserDetails(
+      _nameController.text,
+      'Please update your bio in profile section',
+    );
     addBoolToSF();
     getSharedPF();
     navigateToHome();
@@ -128,6 +139,8 @@ class _LoginPageState extends State<LoginPage> {
       _user = User.fromJson(response.data);
 
       myPrefs.setInt('uid', _user.result.userId);
+      addUserDetails(user.displayName,
+          'Please update your bio in profile section', user.photoUrl);
       navigateToHome();
       addBoolToSF();
       getSharedPF();

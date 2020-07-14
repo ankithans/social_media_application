@@ -32,12 +32,18 @@ class _ProfilePageState extends State<ProfilePage> {
     int uid = prefs.getInt('uid');
     _profile = await apiRepository.getProfile(uid);
     print(_profile);
+    addPic();
     images = [];
     listImages();
 
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void addPic() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('pic', _profile.result.pic);
   }
 
   @override

@@ -56,6 +56,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     getProfile();
   }
 
+  void addUserDetails(String name, String bio, String picurl) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('name', name);
+    prefs.setString('bio', bio);
+    prefs.setString('pic', picurl);
+  }
+
   String fileName;
   var imageFile;
   _handleImageFromGallery() async {
@@ -114,6 +121,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             "https://www.mustdiscovertech.co.in/social/v1/user/update",
             data: formData);
         print(response);
+
+        addUserDetails(_name, _bio, '');
         // _profileUpdate =
         //     await apiRepository.UpdateProfile(uid, _profileImage, _name, _bio);
       }

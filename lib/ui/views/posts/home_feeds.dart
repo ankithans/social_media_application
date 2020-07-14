@@ -30,6 +30,8 @@ class _HomeFeedsState extends State<HomeFeeds> {
   @override
   void initState() {
     super.initState();
+    addUserDetails();
+
     listPosts();
   }
 
@@ -60,6 +62,17 @@ class _HomeFeedsState extends State<HomeFeeds> {
       print(e.error);
       throw (e.error);
     }
+  }
+
+  String name = '';
+  String bio = '';
+  String pic = '';
+
+  void addUserDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('name');
+    bio = prefs.getString('bio');
+    pic = prefs.getString('pic');
   }
 
   final _posts = <ListPosts>[];
@@ -129,12 +142,13 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     children: <Widget>[
                       CircleAvatar(
                         radius: 40,
+                        backgroundImage: NetworkImage(pic),
                       ),
                       SizedBox(
                         height: 15,
                       ),
                       Text(
-                        'Ankit Hans',
+                        name,
                         style: GoogleFonts.poppins(
                           fontSize: 23,
                           fontWeight: FontWeight.w500,
@@ -145,7 +159,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                         height: 5,
                       ),
                       Text(
-                        'Her Bio will come',
+                        bio,
                         style: GoogleFonts.poppins(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -166,7 +180,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                   title: Text(
                     'My Profile',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                   ),
@@ -190,7 +204,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                   title: Text(
                     'Activity',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                   ),
@@ -209,7 +223,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                   title: Text(
                     'Notifications',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                   ),
@@ -233,7 +247,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                   title: Text(
                     'Friends',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                   ),
@@ -257,7 +271,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                   title: Text(
                     'Messages',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                   ),
@@ -281,7 +295,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                   title: Text(
                     'Settings',
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                   ),
