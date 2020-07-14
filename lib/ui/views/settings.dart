@@ -17,15 +17,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
+        elevation: 0,
+        centerTitle: true,
         title: Text(
           'Settings',
-          style: GoogleFonts.nunito(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Colors.black12,
+        backgroundColor: Color(0xFFFF8B66),
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {},
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SettingsList(
         sections: [

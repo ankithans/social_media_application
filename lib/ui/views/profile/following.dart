@@ -20,6 +20,12 @@ class _FollowingState extends State<Following> {
   GetFollowing _following;
   bool _isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    getFollowing();
+  }
+
   void getFollowing() async {
     const url = 'https://www.mustdiscovertech.co.in/social/v1/';
     Dio dio = new Dio();
@@ -85,7 +91,7 @@ class _FollowingState extends State<Following> {
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
               primary: false,
-              itemCount: 5,
+              itemCount: _following.result.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.7,

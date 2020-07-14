@@ -11,6 +11,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
+import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
 import 'package:social_media_application/utils/sizes_helpers.dart';
 
@@ -63,46 +64,222 @@ class _HomeFeedsState extends State<HomeFeeds> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            'Social Media',
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w500,
-            ),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          'Social Media',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w500,
           ),
-          backgroundColor: Color(0xFFFF8B66),
-          leading: IconButton(
+        ),
+        backgroundColor: Color(0xFFFF8B66),
+        // leading: IconButton(
+        //   icon: Icon(
+        //     Icons.menu,
+        //     color: Colors.white,
+        //   ),
+        //   onPressed: () {},
+        // ),
+        actions: <Widget>[
+          IconButton(
             icon: Icon(
-              Icons.menu,
+              Icons.more_vert,
               color: Colors.white,
             ),
             onPressed: () {},
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              onPressed: () {},
+        ],
+      ),
+      body: !_isLoading
+          ? ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: _listPosts.result.length,
+              itemBuilder: (BuildContext context, int index) {
+                return SinglePostView(
+                  count: index,
+                );
+              },
+            )
+          : Center(
+              child: CircularProgressIndicator(),
             ),
-          ],
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: Container(
+          color: Color(0xFFFF8B66),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 30,
+              left: 30,
+            ),
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 40,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        'Ankit Hans',
+                        style: GoogleFonts.poppins(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Her Bio will come',
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'My Profile',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfilePage(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.local_activity,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Activity',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.notifications,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Notifications',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.people,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Friends',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.chat,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Messages',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Settings',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
-        body: !_isLoading
-            ? ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: _listPosts.result.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return SinglePostView(
-                    count: index,
-                  );
-                },
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ));
+      ),
+    );
   }
 }
 

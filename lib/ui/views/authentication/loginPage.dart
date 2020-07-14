@@ -59,8 +59,10 @@ class _LoginPageState extends State<LoginPage> {
       _isloading = false;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('uid', _user.result.userId);
 
+    prefs.setInt('uid', _user.result.userId);
+    addBoolToSF();
+    getSharedPF();
     navigateToHome();
     print(_user.result.mobile);
     getSharedPF();
@@ -84,9 +86,8 @@ class _LoginPageState extends State<LoginPage> {
       ],
     );
 
-    SharedPreferences myPrefs = await SharedPreferences.getInstance();
-
     final user = await _googleSignIn.signIn();
+    SharedPreferences myPrefs = await SharedPreferences.getInstance();
 
     // print(user.email);
     // print(user.displayName);

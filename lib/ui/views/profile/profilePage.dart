@@ -263,46 +263,66 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildPosts(String title) {
-    return Column(
-      children: <Widget>[
-        Text(
-          '${_profile.result.noOfPost}',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
+    return FlatButton(
+      onPressed: () {
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => Following(),
+        //   ),
+        // );
+      },
+      child: Column(
+        children: <Widget>[
+          Text(
+            '${_profile.result.noOfPost}',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              color: Colors.white,
+            ),
           ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
+          SizedBox(height: 4),
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildFollowers(String title) {
-    return Column(
-      children: <Widget>[
-        Text(
-          '${_profile.result.followers}',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
+    return FlatButton(
+      onPressed: () {
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => Following(),
+        //   ),
+        // );
+      },
+      child: Column(
+        children: <Widget>[
+          Text(
+            '${_profile.result.followers}',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              color: Colors.white,
+            ),
           ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
+          SizedBox(height: 4),
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
