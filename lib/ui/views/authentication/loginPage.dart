@@ -118,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
       'registration_token': 'aaaa',
       'name': user.displayName,
       'profile_pic': user.photoUrl,
+      'mobile': '',
     });
 
     try {

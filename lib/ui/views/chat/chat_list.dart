@@ -124,6 +124,7 @@ class _ChatMembersListState extends State<ChatMembersList> {
                     ),
                   ),
                   FlatButton(
+                    padding: EdgeInsets.all(0),
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
