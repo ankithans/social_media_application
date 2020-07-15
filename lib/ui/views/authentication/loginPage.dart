@@ -5,6 +5,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/default.dart';
 import 'package:social_media_application/models/user.dart';
@@ -59,6 +60,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void verifyOtp() async {
+    final ProgressDialog pr = ProgressDialog(context, isDismissible: false);
+    pr.show();
     setState(() {
       _isloading = true;
     });
@@ -74,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
       _nameController.text,
       'Please update your bio in profile section',
     );
+    pr.hide();
     addBoolToSF();
     getSharedPF();
     navigateToHome();
@@ -92,6 +96,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void googleSignIn() async {
+    final ProgressDialog pr = ProgressDialog(context, isDismissible: false);
+
     // GoogleSignIn _googleSignIn = GoogleSignIn(
     //   scopes: [
     //     'email',
@@ -100,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
 
     // final user = await _googleSignIn.signIn();
     // print(user.email);
-
+    pr.show();
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -137,6 +143,7 @@ class _LoginPageState extends State<LoginPage> {
           await dio.post('${url}user/sociallogin', data: formData);
 
       _user = User.fromJson(response.data);
+      pr.hide();
 
       myPrefs.setInt('uid', _user.result.userId);
       addUserDetails(user.displayName,
@@ -145,6 +152,9 @@ class _LoginPageState extends State<LoginPage> {
       addBoolToSF();
       getSharedPF();
     } on DioError catch (e) {
+      pr.hide();
+      FlutterToast.showToast(
+          msg: 'Not able to login at this moment. Please try again.');
       print(e.error);
       throw e.error;
     }

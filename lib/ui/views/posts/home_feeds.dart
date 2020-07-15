@@ -14,6 +14,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
+import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
 import 'package:social_media_application/ui/views/chat/chat_list.dart';
 import 'package:social_media_application/ui/views/notifications.dart';
 import 'package:social_media_application/ui/views/profile/following.dart';
@@ -331,29 +332,29 @@ class _HomeFeedsState extends State<HomeFeeds> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
-                    Icons.chat,
-                    color: Colors.white,
-                  ),
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.remove("isLoggedIn");
+                    prefs.remove('userId');
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WelcomePage(),
+                      ),
+                    );
+                  },
                   title: Text(
-                    'Messages',
+                    'Sign out',
                     style: GoogleFonts.poppins(
                       fontSize: 15,
                       color: Colors.white,
                     ),
                   ),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ChatMembersList(),
-                    //   ),
-                    // );
-                    Navigator.pop(context);
-                  },
+                  leading: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                  ),
                 ),
                 ListTile(
                   leading: Icon(
