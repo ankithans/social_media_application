@@ -15,12 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
-import 'package:social_media_application/ui/views/chat/chat_list.dart';
-import 'package:social_media_application/ui/views/notifications.dart';
-import 'package:social_media_application/ui/views/profile/following.dart';
-import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
-import 'package:social_media_application/utils/sizes_helpers.dart';
 
 ListPosts _listPosts;
 int uid;
@@ -207,7 +202,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     children: <Widget>[
                       CircleAvatar(
                         radius: 40,
-                        backgroundImage: NetworkImage(pic),
+                        backgroundImage: pic != null ? NetworkImage(pic) : null,
                       ),
                       SizedBox(
                         height: 15,
