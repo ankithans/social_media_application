@@ -15,23 +15,22 @@ class _PageControlState extends State<PageControl> {
   @override
   void initState() {
     super.initState();
-    controller = PageController(initialPage: 1);
+    controller = PageController(initialPage: 0);
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        physics: BouncingScrollPhysics(),
+        physics: ScrollPhysics(),
         controller: controller,
         children: <Widget>[
-          SettingsScreen(),
           HomePage(),
           ChatMembersList(),
         ],

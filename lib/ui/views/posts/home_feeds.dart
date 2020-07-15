@@ -5,9 +5,12 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
@@ -32,7 +35,13 @@ class _HomeFeedsState extends State<HomeFeeds> {
     super.initState();
     addUserDetails();
 
-    listPosts();
+    if (_listPosts == null) listPosts();
+  }
+
+  @override
+  void dispose() {
+    // DO STUFF
+    super.dispose();
   }
 
   bool _isLoading = false;
@@ -59,6 +68,8 @@ class _HomeFeedsState extends State<HomeFeeds> {
       });
       return ListPosts.fromJson(response.data);
     } on DioError catch (e) {
+      FlutterToast.showToast(
+          msg: 'Not able to load posts at this moment. Please try again later');
       print(e.error);
       throw (e.error);
     }
@@ -70,16 +81,59 @@ class _HomeFeedsState extends State<HomeFeeds> {
 
   void addUserDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    name = prefs.getString('name');
-    bio = prefs.getString('bio');
-    pic = prefs.getString('pic');
+    setState(() {
+      name = prefs.getString('name');
+      bio = prefs.getString('bio');
+      pic = prefs.getString('pic');
+    });
   }
 
   final _posts = <ListPosts>[];
 
+  Future<ListPosts> listPostsAgain() async {
+    final ProgressDialog pr = ProgressDialog(context, isDismissible: false);
+    setState(() {
+      _isLoading = true;
+    });
+    await pr.show();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    uid = prefs.getInt('uid');
+    print(uid);
+    FormData formData = FormData.fromMap({
+      'user_id': uid,
+    });
+    const url = 'https://www.mustdiscovertech.co.in/social/v1/';
+    Dio dio = new Dio();
+    try {
+      Response response = await dio.post('${url}post/listing', data: formData);
+      print(response);
+
+      _listPosts = ListPosts.fromJson(response.data);
+      setState(() {
+        _isLoading = false;
+      });
+      await pr.hide();
+
+      return ListPosts.fromJson(response.data);
+    } on DioError catch (e) {
+      await pr.hide();
+      FlutterToast.showToast(
+          msg: 'Not able to load posts at this moment. Please try again later');
+      print(e.error);
+      throw (e.error);
+    }
+  }
+
+  Future _refresh() async {
+    listPostsAgain();
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -90,13 +144,16 @@ class _HomeFeedsState extends State<HomeFeeds> {
           ),
         ),
         backgroundColor: Color(0xFFFF8B66),
-        // leading: IconButton(
-        //   icon: Icon(
-        //     Icons.menu,
-        //     color: Colors.white,
-        //   ),
-        //   onPressed: () {},
-        // ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+            addUserDetails();
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -107,19 +164,26 @@ class _HomeFeedsState extends State<HomeFeeds> {
           ),
         ],
       ),
-      body: !_isLoading
-          ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: _listPosts.result.length,
-              itemBuilder: (BuildContext context, int index) {
-                return SinglePostView(
-                  count: index,
-                );
-              },
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: Stack(
+          children: <Widget>[
+            _isLoading == false
+                ? ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: _listPosts.result.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SinglePostView(
+                        count: index,
+                      );
+                    },
+                  )
+                : SpinKitThreeBounce(
+                    color: Color(0xFFFF8B66),
+                  ),
+          ],
+        ),
+      ),
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
@@ -128,8 +192,8 @@ class _HomeFeedsState extends State<HomeFeeds> {
           color: Color(0xFFFF8B66),
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 30,
-              left: 30,
+              top: 50,
+              left: 20,
             ),
             child: ListView(
               // Important: Remove any padding from the ListView.
@@ -188,12 +252,13 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => ProfilePage(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
                   },
                 ),
                 ListTile(
@@ -231,12 +296,13 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Notifications(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => Notifications(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
                   },
                 ),
                 ListTile(
@@ -255,12 +321,13 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Following(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => Following(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
                   },
                 ),
                 ListTile(
@@ -279,12 +346,13 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatMembersList(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => ChatMembersList(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
                   },
                 ),
                 ListTile(
@@ -303,12 +371,13 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => ProfilePage(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
                   },
                 ),
               ],
@@ -364,10 +433,6 @@ class _SinglePostViewState extends State<SinglePostView> {
       throw (e.error);
     }
   }
-
-  int _currentImageIndex = 0;
-  final StreamController<void> _doubleTapImageEvents =
-      StreamController.broadcast();
 
   // void _onDoubleTapLikePhoto() {
   //   setState(() => widget.post.addLikeIfUnlikedFor(currentUser));

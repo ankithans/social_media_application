@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,7 @@ import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:social_media_application/ui/views/posts/create_new_post.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override
@@ -91,11 +93,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   List<File> _files;
-  List<MultipartFile> uploadList = new List<MultipartFile>();
+  List<MultipartFile> uploadList = [];
   List<Asset> assets = [];
 
   _handleImage(ImageSource source) async {
-    Navigator.pop(context);
     // File imageFile = await ImagePicker.pickImage(source: source);
     // if (imageFile != null) {
     //   imageFile = await _cropImage(imageFile);
@@ -136,7 +137,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {
       _files = files;
     });
-
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreateNewPost(
+          files: _files,
+          uploadList: uploadList,
+        ),
+      ),
+    );
     // for (var imageFiles in files) {
     //   fileName = imageFiles.path.split('/').last;
     //   uploadList.add(
@@ -196,98 +205,144 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFFF8B66),
         title: Text(
           'Create Post',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              if (_captionController.text == '') {
-                FlutterToast.showToast(
-                    msg: 'Please Enter a Caption for your post');
-              } else {
-                _submit();
-              }
-            },
-          ),
-        ],
-      ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          child: Container(
-            height: height,
-            child: Column(
-              children: <Widget>[
-                _isLoading
-                    ? Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
-                        child: LinearProgressIndicator(
-                          backgroundColor: Colors.blue[200],
-                          valueColor: AlwaysStoppedAnimation(Colors.blue),
-                        ),
-                      )
-                    : SizedBox.shrink(),
-                GestureDetector(
-                  onTap: _showSelectImageDialog,
-                  child: Container(
-                    height: width,
-                    width: width,
-                    color: Colors.grey[300],
-                    child: _image == null
-                        ? Icon(
-                            Icons.add_a_photo,
-                            color: Colors.white70,
-                            size: 150.0,
-                          )
-                        : Image(
-                            image: FileImage(_image),
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                ),
-                SizedBox(height: 20.0),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0),
-                  child: TextField(
-                    controller: _captionController,
-                    style: TextStyle(fontSize: 18.0),
-                    decoration: InputDecoration(
-                      labelText: 'Caption',
-                    ),
-                    onChanged: (input) => _caption = input,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0),
-                  child: TextField(
-                    controller: _decriptionController,
-                    style: TextStyle(fontSize: 18.0),
-                    decoration: InputDecoration(
-                      labelText: 'Description',
-                    ),
-                    onChanged: (input) => _description = input,
-                  ),
-                ),
-              ],
-            ),
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
           ),
         ),
       ),
+      body: Center(
+        child: RaisedButton.icon(
+          icon: Icon(
+            Icons.image,
+            color: Colors.white,
+          ),
+          label: Text(
+            'Select Images',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+            ),
+          ),
+          color: Color(0xFFFF8B66),
+          onPressed: () {
+            _handleImage(ImageSource.gallery);
+          },
+        ),
+      ),
+      // body: GestureDetector(
+      //   onTap: () => FocusScope.of(context).unfocus(),
+      //   child: SingleChildScrollView(
+      //     child: Container(
+      //       height: height,
+      //       child: Column(
+      //         children: <Widget>[
+      //           _isLoading
+      //               ? Padding(
+      //                   padding: EdgeInsets.only(bottom: 10.0),
+      //                   child: LinearProgressIndicator(
+      //                     backgroundColor: Colors.blue[200],
+      //                     valueColor: AlwaysStoppedAnimation(Colors.blue),
+      //                   ),
+      //                 )
+      //               : SizedBox.shrink(),
+      //           GestureDetector(
+      //             onTap: _showSelectImageDialog,
+      //             child: Container(
+      //               height: width,
+      //               width: width,
+      //               color: Colors.grey[300],
+      //               child: _image == null
+      //                   ? Icon(
+      //                       Icons.add_a_photo,
+      //                       color: Colors.white70,
+      //                       size: 150.0,
+      //                     )
+      //                   : Image(
+      //                       image: FileImage(_image),
+      //                       fit: BoxFit.cover,
+      //                     ),
+      //             ),
+      //           ),
+      //           SizedBox(height: 20.0),
+      //           Padding(
+      //             padding: EdgeInsets.symmetric(horizontal: 30.0),
+      //             child: TextField(
+      //               controller: _captionController,
+      //               style: TextStyle(fontSize: 18.0),
+      //               decoration: InputDecoration(
+      //                 labelText: 'Caption',
+      //               ),
+      //               onChanged: (input) => _caption = input,
+      //             ),
+      //           ),
+      //           Padding(
+      //             padding: EdgeInsets.symmetric(horizontal: 30.0),
+      //             child: TextField(
+      //               controller: _decriptionController,
+      //               style: TextStyle(fontSize: 18.0),
+      //               decoration: InputDecoration(
+      //                 labelText: 'Description',
+      //               ),
+      //               onChanged: (input) => _description = input,
+      //             ),
+      //           ),
+      //           _files != null
+      //               ? Expanded(
+      //                   flex: 2,
+      //                   child: GridView.builder(
+      //                     shrinkWrap: true,
+      //                     physics: AlwaysScrollableScrollPhysics(),
+      //                     primary: false,
+      //                     itemCount: _files.length,
+      //                     gridDelegate:
+      //                         SliverGridDelegateWithFixedCrossAxisCount(
+      //                       crossAxisCount: 1,
+      //                       childAspectRatio: 1,
+      //                     ),
+      //                     itemBuilder: (BuildContext context, int index) {
+      //                       return Padding(
+      //                         padding: EdgeInsets.all(5.0),
+      //                         child: Stack(
+      //                           children: <Widget>[
+      //                             Image.file(_files[index]),
+      //                             IconButton(
+      //                               icon: Icon(
+      //                                 Icons.cancel,
+      //                                 color: Colors.red,
+      //                                 size: 30,
+      //                               ),
+      //                               onPressed: () {
+      //                                 setState(() {
+      //                                   _files.removeAt(index);
+      //                                 });
+      //                               },
+      //                             ),
+      //                           ],
+      //                         ),
+      //                       );
+      //                     },
+      //                   ),
+      //                 )
+      //               : Container(),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
