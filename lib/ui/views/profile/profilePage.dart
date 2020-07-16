@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           Positioned(
-                            top: 110,
+                            top: 90,
                             left: 10,
                             child: Padding(
                               padding: const EdgeInsets.all(14.0),
@@ -169,10 +169,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                   SizedBox(height: 3),
-                                  Text(
-                                    _profile.result.bio,
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white,
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: Text(
+                                      _profile.result.bio,
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        height: 1,
+                                      ),
                                     ),
                                   ),
                                 ],

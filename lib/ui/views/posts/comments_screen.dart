@@ -161,7 +161,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Row(
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
                                           _listComments
@@ -174,11 +176,17 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Text(
-                                          _listComments.result[index].comment,
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14,
-                                            color: Colors.grey[700],
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.73,
+                                          child: Text(
+                                            _listComments.result[index].comment,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 14,
+                                              color: Colors.grey[700],
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -245,11 +253,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           color: Color(0xFFFF8B66),
                           size: 15,
                         )
-                      : Text(
-                          'Post',
-                          style: GoogleFonts.poppins(
-                            color: Colors.blue,
-                          ),
+                      : Icon(
+                          Icons.send,
+                          color: Colors.blue,
                         ),
                   onPressed: () async {
                     if (_commentController.text != '') {

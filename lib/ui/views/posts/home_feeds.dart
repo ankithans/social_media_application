@@ -235,103 +235,103 @@ class _HomeFeedsState extends State<HomeFeeds> {
                 SizedBox(
                   height: 25,
                 ),
-                // ListTile(
-                //   leading: Icon(
-                //     Icons.person,
-                //     color: Colors.white,
-                //   ),
-                //   title: Text(
-                //     'My Profile',
-                //     style: GoogleFonts.poppins(
-                //       fontSize: 15,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                //   onTap: () {
-                //     // Update the state of the app
-                //     // ...
-                //     // Then close the drawer
-                //     // Navigator.push(
-                //     //   context,
-                //     //   MaterialPageRoute(
-                //     //     builder: (context) => ProfilePage(),
-                //     //   ),
-                //     // );
-                //     Navigator.pop(context);
-                //   },
-                // ),
-                // ListTile(
-                //   leading: Icon(
-                //     Icons.local_activity,
-                //     color: Colors.white,
-                //   ),
-                //   title: Text(
-                //     'Activity',
-                //     style: GoogleFonts.poppins(
-                //       fontSize: 15,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                //   onTap: () {
-                //     // Update the state of the app
-                //     // ...
-                //     // Then close the drawer
-                //     Navigator.pop(context);
-                //   },
-                // ),
-                // ListTile(
-                //   leading: Icon(
-                //     Icons.notifications,
-                //     color: Colors.white,
-                //   ),
-                //   title: Text(
-                //     'Notifications',
-                //     style: GoogleFonts.poppins(
-                //       fontSize: 15,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                //   onTap: () {
-                //     // Update the state of the app
-                //     // ...
-                //     // Then close the drawer
-                //     // Navigator.push(
-                //     //   context,
-                //     //   MaterialPageRoute(
-                //     //     builder: (context) => Notifications(),
-                //     //   ),
-                //     // );
-                //     Navigator.pop(context);
-                //   },
-                // ),
-                // ListTile(
-                //   leading: Icon(
-                //     Icons.people,
-                //     color: Colors.white,
-                //   ),
-                //   title: Text(
-                //     'Friends',
-                //     style: GoogleFonts.poppins(
-                //       fontSize: 15,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                //   onTap: () {
-                //     // Update the state of the app
-                //     // ...
-                //     // Then close the drawer
-                //     // Navigator.push(
-                //     //   context,
-                //     //   MaterialPageRoute(
-                //     //     builder: (context) => Following(),
-                //     //   ),
-                //     // );
-                //     Navigator.pop(context);
-                //   },
-                // ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 2.2,
+                ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'My Profile',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => ProfilePage(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
+                  },
                 ),
+                ListTile(
+                  leading: Icon(
+                    Icons.local_activity,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Activity',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.notifications,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Notifications',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => Notifications(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.people,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Friends',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => Following(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
+                  },
+                ),
+                // SizedBox(
+                //   height: MediaQuery.of(context).size.height / 2.2,
+                // ),
                 ListTile(
                   onTap: () async {
                     SharedPreferences prefs =
@@ -357,31 +357,31 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     color: Colors.white,
                   ),
                 ),
-                // ListTile(
-                //   leading: Icon(
-                //     Icons.settings,
-                //     color: Colors.white,
-                //   ),
-                //   title: Text(
-                //     'Settings',
-                //     style: GoogleFonts.poppins(
-                //       fontSize: 15,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                //   onTap: () {
-                //     // Update the state of the app
-                //     // ...
-                //     // Then close the drawer
-                //     // Navigator.push(
-                //     //   context,
-                //     //   MaterialPageRoute(
-                //     //     builder: (context) => ProfilePage(),
-                //     //   ),
-                //     // );
-                //     Navigator.pop(context);
-                //   },
-                // ),
+                ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Settings',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => ProfilePage(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
+                  },
+                ),
               ],
             ),
           ),
