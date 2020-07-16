@@ -133,71 +133,81 @@ class _CommentsScreenState extends State<CommentsScreen> {
       ),
       body: Column(
         children: <Widget>[
-          _isLoading == false
-              ? Expanded(
-                  child: ListView.builder(
-                    reverse: false,
-                    itemCount: _listComments.result.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                _listComments.result[index].commentBy[1],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: _isLoading == false
+                ? _listComments.result.length == 0
+                    ? Center(
+                        child: Text(
+                          'No Comments yet!',
+                          style: GoogleFonts.poppins(),
+                        ),
+                      )
+                    : ListView.builder(
+                        reverse: false,
+                        itemCount: _listComments.result.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
                               children: <Widget>[
-                                Row(
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    _listComments.result[index].commentBy[1],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      _listComments.result[index].commentBy[0],
-                                      style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13,
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          _listComments
+                                              .result[index].commentBy[0],
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          _listComments.result[index].comment,
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 14,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      height: 2,
                                     ),
                                     Text(
-                                      _listComments.result[index].comment,
+                                      DateTimeFormat.format(
+                                          _listComments.result[index].updatedAt,
+                                          format: DateTimeFormats.american),
                                       style: GoogleFonts.openSans(
-                                        fontSize: 14,
-                                        color: Colors.grey[700],
+                                        color: Colors.grey[500],
+                                        fontSize: 11,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  DateTimeFormat.format(
-                                      _listComments.result[index].updatedAt,
-                                      format: DateTimeFormats.american),
-                                  style: GoogleFonts.openSans(
-                                    color: Colors.grey[500],
-                                    fontSize: 11,
-                                  ),
-                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
+                          );
+                        },
+                      )
+                : Center(
+                    child: SpinKitThreeBounce(
+                      color: Color(0xFFFF8B66),
+                    ),
                   ),
-                )
-              : Center(
-                  child: CircularProgressIndicator(),
-                ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

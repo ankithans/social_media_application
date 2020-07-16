@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media_application/models/notifications/notifications_listing.dart';
 import 'package:social_media_application/utils/data.dart';
 
 class Notifications extends StatefulWidget {
@@ -9,6 +12,36 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+  NotificationListing notificationListing;
+
+  void listNotifications() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int uid = prefs.getInt('uid');
+    FormData formData = FormData.fromMap({
+      'user_id': uid,
+    });
+    const url = 'https://www.mustdiscovertech.co.in/social/v1/';
+    Dio dio = new Dio();
+    try {
+      Response response =
+          await dio.post('${url}notify/listing', data: formData);
+      print(response);
+      setState(() {
+        notificationListing = NotificationListing.fromJson(response.data);
+      });
+    } on DioError catch (e) {
+      print(e.error);
+      throw (e.error);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,22 +84,18 @@ class _NotificationsState extends State<Notifications> {
             ),
           );
         },
-        itemCount: notifications.length,
+        itemCount: 10,
         itemBuilder: (BuildContext context, int index) {
-          Map notif = notifications[index];
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage(
-                  notif['dp'],
-                ),
                 radius: 25,
               ),
               contentPadding: EdgeInsets.all(0),
-              title: Text(notif['notif']),
+              title: Text('dcfdgd'),
               trailing: Text(
-                notif['time'],
+                'sfssfsf',
                 style: TextStyle(
                   fontWeight: FontWeight.w300,
                   fontSize: 11,

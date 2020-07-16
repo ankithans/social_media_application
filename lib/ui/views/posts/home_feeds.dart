@@ -13,6 +13,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
+import 'package:social_media_application/models/posts/listLikes.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
 import 'package:social_media_application/ui/views/posts/comments_screen.dart';
@@ -195,6 +196,7 @@ class _HomeFeedsState extends State<HomeFeeds> {
             child: ListView(
               // Important: Remove any padding from the ListView.
               padding: EdgeInsets.zero,
+
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -233,99 +235,102 @@ class _HomeFeedsState extends State<HomeFeeds> {
                 SizedBox(
                   height: 25,
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'My Profile',
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ProfilePage(),
-                    //   ),
-                    // );
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.local_activity,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Activity',
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.notifications,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Notifications',
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => Notifications(),
-                    //   ),
-                    // );
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.people,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Friends',
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => Following(),
-                    //   ),
-                    // );
-                    Navigator.pop(context);
-                  },
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.person,
+                //     color: Colors.white,
+                //   ),
+                //   title: Text(
+                //     'My Profile',
+                //     style: GoogleFonts.poppins(
+                //       fontSize: 15,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                //   onTap: () {
+                //     // Update the state of the app
+                //     // ...
+                //     // Then close the drawer
+                //     // Navigator.push(
+                //     //   context,
+                //     //   MaterialPageRoute(
+                //     //     builder: (context) => ProfilePage(),
+                //     //   ),
+                //     // );
+                //     Navigator.pop(context);
+                //   },
+                // ),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.local_activity,
+                //     color: Colors.white,
+                //   ),
+                //   title: Text(
+                //     'Activity',
+                //     style: GoogleFonts.poppins(
+                //       fontSize: 15,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                //   onTap: () {
+                //     // Update the state of the app
+                //     // ...
+                //     // Then close the drawer
+                //     Navigator.pop(context);
+                //   },
+                // ),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.notifications,
+                //     color: Colors.white,
+                //   ),
+                //   title: Text(
+                //     'Notifications',
+                //     style: GoogleFonts.poppins(
+                //       fontSize: 15,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                //   onTap: () {
+                //     // Update the state of the app
+                //     // ...
+                //     // Then close the drawer
+                //     // Navigator.push(
+                //     //   context,
+                //     //   MaterialPageRoute(
+                //     //     builder: (context) => Notifications(),
+                //     //   ),
+                //     // );
+                //     Navigator.pop(context);
+                //   },
+                // ),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.people,
+                //     color: Colors.white,
+                //   ),
+                //   title: Text(
+                //     'Friends',
+                //     style: GoogleFonts.poppins(
+                //       fontSize: 15,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                //   onTap: () {
+                //     // Update the state of the app
+                //     // ...
+                //     // Then close the drawer
+                //     // Navigator.push(
+                //     //   context,
+                //     //   MaterialPageRoute(
+                //     //     builder: (context) => Following(),
+                //     //   ),
+                //     // );
+                //     Navigator.pop(context);
+                //   },
+                // ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 2.2,
                 ),
                 ListTile(
                   onTap: () async {
@@ -352,31 +357,31 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     color: Colors.white,
                   ),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Settings',
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ProfilePage(),
-                    //   ),
-                    // );
-                    Navigator.pop(context);
-                  },
-                ),
+                // ListTile(
+                //   leading: Icon(
+                //     Icons.settings,
+                //     color: Colors.white,
+                //   ),
+                //   title: Text(
+                //     'Settings',
+                //     style: GoogleFonts.poppins(
+                //       fontSize: 15,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                //   onTap: () {
+                //     // Update the state of the app
+                //     // ...
+                //     // Then close the drawer
+                //     // Navigator.push(
+                //     //   context,
+                //     //   MaterialPageRoute(
+                //     //     builder: (context) => ProfilePage(),
+                //     //   ),
+                //     // );
+                //     Navigator.pop(context);
+                //   },
+                // ),
               ],
             ),
           ),
@@ -421,10 +426,43 @@ class _SinglePostViewState extends State<SinglePostView> {
       print(response);
 
       _listPosts = ListPosts.fromJson(response.data);
+      listLikes();
+
       setState(() {
         _isLoading = false;
       });
       return ListPosts.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.error);
+      throw (e.error);
+    }
+  }
+
+  ListLikes _listLikes;
+
+  void listLikes() async {
+    setState(() {
+      _isLoading = true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    uid = prefs.getInt('uid');
+    print(uid);
+    FormData formData = FormData.fromMap({
+      'user_id': uid,
+      'post_id': _listPosts.result[widget.count].postId,
+    });
+    const url = 'https://www.mustdiscovertech.co.in/social/v1/';
+    Dio dio = new Dio();
+    try {
+      Response response =
+          await dio.post('${url}post/like/listing', data: formData);
+      print(response);
+      setState(() {
+        _listLikes = ListLikes.fromJson(response.data);
+      });
+      setState(() {
+        _isLoading = false;
+      });
     } on DioError catch (e) {
       print(e.error);
       throw (e.error);
@@ -556,7 +594,7 @@ class _SinglePostViewState extends State<SinglePostView> {
                     enlargeMainPage: true,
                     viewportFraction: 1.0,
                     height: 300,
-                    scrollPhysics: BouncingScrollPhysics(),
+                    scrollPhysics: ScrollPhysics(),
                     onPageChanged: (index) {
                       setState(() {
                         _currentIndex = index;
@@ -572,20 +610,28 @@ class _SinglePostViewState extends State<SinglePostView> {
                           Row(
                             children: <Widget>[
                               IconButton(
-                                icon: _isLiked
-                                    ? Icon(
-                                        OMIcons.favorite,
-                                        color: Colors.red,
-                                        size: 28,
-                                      )
-                                    : Icon(
-                                        OMIcons.favoriteBorder,
-                                        color: Colors.black,
-                                        size: 28,
-                                      ),
+                                icon:
+                                    _listPosts.result[widget.count].userLike ==
+                                                1 ||
+                                            _isLiked
+                                        ? Icon(
+                                            OMIcons.favorite,
+                                            color: Colors.red,
+                                            size: 28,
+                                          )
+                                        : Icon(
+                                            OMIcons.favoriteBorder,
+                                            color: Colors.black,
+                                            size: 28,
+                                          ),
                                 onPressed: () async {
                                   setState(() {
                                     _isLiked = !_isLiked;
+                                    // if (backendLike == 1) {
+                                    //   backendLike = 0;
+                                    // } else {
+                                    //   backendLike = 1;
+                                    // }
                                   });
                                   FormData formData = FormData.fromMap({
                                     'user_id': uid,
@@ -600,17 +646,12 @@ class _SinglePostViewState extends State<SinglePostView> {
                                         '${url}post/like',
                                         data: formData);
                                     print(response);
+                                    setState(() {
+                                      listPosts();
+                                    });
                                     LikePosts likePosts =
                                         LikePosts.fromJson(response.data);
-                                    if (likePosts.result == 1) {
-                                      setState(() {
-                                        _isLiked = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        _isLiked = false;
-                                      });
-                                    }
+                                    listLikes();
                                   } on DioError catch (e) {
                                     print(e.error);
                                     throw (e.error);
@@ -638,15 +679,23 @@ class _SinglePostViewState extends State<SinglePostView> {
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 12.0),
-                            child: Text(
-                              "${_listPosts.result[widget.count].totalLike} likes",
-                              style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
+                          _isLoading == false
+                              ? Padding(
+                                  padding: EdgeInsets.only(left: 12.0),
+                                  child: Text(
+                                    "${_listPosts.result[widget.count].totalLike} likes",
+                                    style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.only(left: 12.0),
+                                  child: SpinKitThreeBounce(
+                                    color: Color(0xFFFF8B66),
+                                    size: 10,
+                                  ),
+                                ),
                         ],
                       ),
                       SizedBox(
