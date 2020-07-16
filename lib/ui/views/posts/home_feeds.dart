@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
+import 'package:social_media_application/ui/views/posts/comments_screen.dart';
 import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
 
 ListPosts _listPosts;
@@ -477,28 +478,31 @@ class _SinglePostViewState extends State<SinglePostView> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Container(
             color: Colors.grey[100],
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(0.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            _listPosts.result[widget.count].author[1]),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        _listPosts.result[widget.count].author[0],
-                        style: GoogleFonts.poppins(),
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              _listPosts.result[widget.count].author[1]),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          _listPosts.result[widget.count].author[0],
+                          style: GoogleFonts.poppins(),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 8,
@@ -551,7 +555,7 @@ class _SinglePostViewState extends State<SinglePostView> {
                     enableInfiniteScroll: false,
                     enlargeMainPage: true,
                     viewportFraction: 1.0,
-                    height: 200,
+                    height: 300,
                     scrollPhysics: BouncingScrollPhysics(),
                     onPageChanged: (index) {
                       setState(() {
@@ -559,25 +563,116 @@ class _SinglePostViewState extends State<SinglePostView> {
                       });
                     },
                   ),
+
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: map<Widget>(images, (index, url) {
-                      return Container(
-                        width: 10.0,
-                        height: 10.0,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 2.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentIndex == index
-                              ? Colors.blueAccent
-                              : Colors.grey,
-                        ),
-                      );
-                    }),
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: _isLiked
+                                    ? Icon(
+                                        OMIcons.favorite,
+                                        color: Colors.red,
+                                        size: 28,
+                                      )
+                                    : Icon(
+                                        OMIcons.favoriteBorder,
+                                        color: Colors.black,
+                                        size: 28,
+                                      ),
+                                onPressed: () async {
+                                  setState(() {
+                                    _isLiked = !_isLiked;
+                                  });
+                                  FormData formData = FormData.fromMap({
+                                    'user_id': uid,
+                                    'post_id':
+                                        _listPosts.result[widget.count].postId,
+                                  });
+                                  const url =
+                                      'https://www.mustdiscovertech.co.in/social/v1/';
+                                  Dio dio = new Dio();
+                                  try {
+                                    Response response = await dio.post(
+                                        '${url}post/like',
+                                        data: formData);
+                                    print(response);
+                                    LikePosts likePosts =
+                                        LikePosts.fromJson(response.data);
+                                    if (likePosts.result == 1) {
+                                      setState(() {
+                                        _isLiked = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _isLiked = false;
+                                      });
+                                    }
+                                  } on DioError catch (e) {
+                                    print(e.error);
+                                    throw (e.error);
+                                  }
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  OMIcons.chatBubbleOutline,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CommentsScreen(
+                                        index: widget.count,
+                                        listPosts: _listPosts,
+                                        uid: uid,
+                                        post_id: _listPosts
+                                            .result[widget.count].postId,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 12.0),
+                            child: Text(
+                              "${_listPosts.result[widget.count].totalLike} likes",
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 70,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: map<Widget>(images, (index, url) {
+                          return Container(
+                            width: 10.0,
+                            height: 10.0,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 2.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _currentIndex == index
+                                  ? Colors.blueAccent
+                                  : Colors.grey,
+                            ),
+                          );
+                        }),
+                      ),
+                    ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(9.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -592,61 +687,46 @@ class _SinglePostViewState extends State<SinglePostView> {
                             fontSize: 12,
                           ),
                         ),
+                        FlatButton(
+                          padding: EdgeInsets.all(0),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CommentsScreen(
+                                  index: widget.count,
+                                  listPosts: _listPosts,
+                                  uid: uid,
+                                  post_id:
+                                      _listPosts.result[widget.count].postId,
+                                ),
+                              ),
+                            );
+                          },
+                          child:
+                              _listPosts.result[widget.count].comments.length >
+                                      1
+                                  ? Text(
+                                      'View all ${_listPosts.result[widget.count].comments.length} comments',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 13,
+                                        color: Colors.grey[500],
+                                      ),
+                                    )
+                                  : _listPosts.result[widget.count].comments
+                                              .length ==
+                                          0
+                                      ? Container()
+                                      : Text(
+                                          'View ${_listPosts.result[widget.count].comments.length} comment',
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 13,
+                                            color: Colors.grey[500],
+                                          ),
+                                        ),
+                        ),
                       ],
                     ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: _isLiked
-                            ? Icon(
-                                OMIcons.favorite,
-                                color: Colors.red,
-                                size: 28,
-                              )
-                            : Icon(
-                                OMIcons.favoriteBorder,
-                                color: Colors.black,
-                                size: 28,
-                              ),
-                        onPressed: () async {
-                          setState(() {
-                            _isLiked = !_isLiked;
-                          });
-                          FormData formData = FormData.fromMap({
-                            'user_id': uid,
-                            'post_id': _listPosts.result[widget.count].postId,
-                          });
-                          const url =
-                              'https://www.mustdiscovertech.co.in/social/v1/';
-                          Dio dio = new Dio();
-                          try {
-                            Response response = await dio
-                                .post('${url}post/like', data: formData);
-                            print(response);
-                            LikePosts likePosts =
-                                LikePosts.fromJson(response.data);
-                            if (likePosts.result == 1) {
-                              setState(() {
-                                _isLiked = true;
-                              });
-                            } else {
-                              setState(() {
-                                _isLiked = false;
-                              });
-                            }
-                          } on DioError catch (e) {
-                            print(e.error);
-                            throw (e.error);
-                          }
-                        },
-                      ),
-                      IconButton(
-                          icon: Icon(
-                            OMIcons.chatBubbleOutline,
-                          ),
-                          onPressed: () {})
-                    ],
                   ),
                 ],
               ),
