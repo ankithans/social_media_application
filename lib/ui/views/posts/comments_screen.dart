@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:date_time_format/date_time_format.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media_application/models/posts/listComments.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 
 class CommentsScreen extends StatefulWidget {
@@ -28,25 +30,33 @@ class CommentsScreen extends StatefulWidget {
 
 class _CommentsScreenState extends State<CommentsScreen> {
   final _commentController = TextEditingController();
-  StreamController _commentListController = new StreamController();
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   String pic = '';
+  bool _isLoading = false;
+  ListComments _listComments;
 
   void listComments() async {
+    setState(() {
+      _isLoading = true;
+    });
     FormData formData = FormData.fromMap({
       'user_id': widget.uid,
       'post_id': widget.post_id,
-      'comment': _commentController.text,
     });
     const url = 'https://www.mustdiscovertech.co.in/social/v1/';
     Dio dio = new Dio();
     try {
       Response response =
-          await dio.post('${url}post/listcomment', data: formData);
-      _commentListController.add(response);
+          await dio.post('${url}post/comment/listing', data: formData);
+      _listComments = ListComments.fromJson(response.data);
       print(response);
+      setState(() {
+        _isLoading = false;
+      });
     } on DioError catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       print(e.error);
       throw (e.error);
     }
@@ -61,7 +71,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
     });
   }
 
+  bool postLoading = false;
+
   void postComment() async {
+    setState(() {
+      postLoading = true;
+    });
     FormData formData = FormData.fromMap({
       'user_id': widget.uid,
       'post_id': widget.post_id,
@@ -71,6 +86,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
     Dio dio = new Dio();
     try {
       Response response = await dio.post('${url}post/comment', data: formData);
+      setState(() {
+        _listComments = ListComments.fromJson(response.data);
+      });
+      setState(() {
+        postLoading = false;
+      });
       print(response);
     } on DioError catch (e) {
       print(e.error);
@@ -83,6 +104,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     // TODO: implement initState
     super.initState();
     addUserDetails();
+    listComments();
   }
 
   @override
@@ -111,24 +133,20 @@ class _CommentsScreenState extends State<CommentsScreen> {
       ),
       body: Column(
         children: <Widget>[
-          StreamBuilder(
-              stream: _commentListController.stream,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                return Expanded(
+          _isLoading == false
+              ? Expanded(
                   child: ListView.builder(
-                    itemCount:
-                        widget.listPosts.result[widget.index].comments.length,
+                    reverse: false,
+                    itemCount: _listComments.result.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: <Widget>[
                             CircleAvatar(
-                              backgroundImage: NetworkImage(widget
-                                  .listPosts
-                                  .result[widget.index]
-                                  .comments[index]
-                                  .commentBy[1]),
+                              backgroundImage: NetworkImage(
+                                _listComments.result[index].commentBy[1],
+                              ),
                             ),
                             SizedBox(
                               width: 20,
@@ -139,8 +157,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                 Row(
                                   children: <Widget>[
                                     Text(
-                                      widget.listPosts.result[widget.index]
-                                          .comments[index].commentBy[0],
+                                      _listComments.result[index].commentBy[0],
                                       style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 13,
@@ -150,8 +167,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                       width: 10,
                                     ),
                                     Text(
-                                      widget.listPosts.result[widget.index]
-                                          .comments[index].comment,
+                                      _listComments.result[index].comment,
                                       style: GoogleFonts.openSans(
                                         fontSize: 14,
                                         color: Colors.grey[700],
@@ -164,8 +180,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                 ),
                                 Text(
                                   DateTimeFormat.format(
-                                      widget.listPosts.result[widget.index]
-                                          .comments[index].updatedAt,
+                                      _listComments.result[index].updatedAt,
                                       format: DateTimeFormats.american),
                                   style: GoogleFonts.openSans(
                                     color: Colors.grey[500],
@@ -179,8 +194,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
                       );
                     },
                   ),
-                );
-              }),
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -213,15 +230,21 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 ),
                 FlatButton(
                   padding: EdgeInsets.all(0),
-                  child: Text(
-                    'Post',
-                    style: GoogleFonts.poppins(
-                      color: Colors.blue,
-                    ),
-                  ),
+                  child: postLoading
+                      ? SpinKitThreeBounce(
+                          color: Color(0xFFFF8B66),
+                          size: 15,
+                        )
+                      : Text(
+                          'Post',
+                          style: GoogleFonts.poppins(
+                            color: Colors.blue,
+                          ),
+                        ),
                   onPressed: () async {
                     if (_commentController.text != '') {
                       postComment();
+
                       _commentController.text = '';
                     } else
                       FlutterToast.showToast(msg: 'Please Enter a Comment');
