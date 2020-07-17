@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/profile/search_users.dart';
 import 'package:social_media_application/ui/views/profile/search_users.dart';
@@ -46,9 +48,14 @@ class _SearchState extends State<Search> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    searchUsers();
+    if (_searchUsers == null) searchUsers();
+  }
+
+  @override
+  void dispose() {
+    // DO STUFF
+    super.dispose();
   }
 
   @override
@@ -64,16 +71,39 @@ class _SearchState extends State<Search> {
                 Radius.circular(10),
               )),
           child: _isLoading == false
-              ? FlatButton(
-                  onPressed: () {
-                    showSearch(
-                      context: context,
-                      delegate: SearchDistricts(_searchUsers),
-                    );
-                  },
-                  child: Text('Search Users'),
+              ? SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: FlatButton(
+                          onPressed: () {
+                            showSearch(
+                              context: context,
+                              delegate: SearchDistricts(_searchUsers),
+                            );
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.search),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                'Search Users',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               : Container(),
+
           // child: TextField(
           //   decoration: InputDecoration(
           //     border: InputBorder.none,
@@ -89,6 +119,13 @@ class _SearchState extends State<Search> {
           // ),
         ),
       ),
+      body: _isLoading
+          ? Center(
+              child: SpinKitThreeBounce(
+                color: Color(0xFFFF8B66),
+              ),
+            )
+          : Container(),
     );
   }
 }

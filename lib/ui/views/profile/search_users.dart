@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:social_media_application/models/profile/search_users.dart';
 
 class SearchDistricts extends SearchDelegate {
@@ -37,7 +38,7 @@ class SearchDistricts extends SearchDelegate {
     final suggestionList = query.isEmpty
         ? searchUsers.result
         : searchUsers.result
-            .where((element) => element.name.startsWith(query))
+            .where((element) => element.name.toLowerCase().startsWith(query))
             .toList();
 
     return ListView.builder(
@@ -46,18 +47,37 @@ class SearchDistricts extends SearchDelegate {
       itemBuilder: (context, index) {
         return Container(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(
-                    searchUsers.result[index].pic,
+                    suggestionList[index].pic,
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(searchUsers.result[index].name),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      suggestionList[index].name,
+                      style: GoogleFonts.poppins(),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.78,
+                      child: Text(
+                        suggestionList[index].bio,
+                        style: GoogleFonts.poppins(
+                          fontSize: 13,
+                          color: Colors.grey[500],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
