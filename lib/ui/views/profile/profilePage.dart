@@ -134,111 +134,111 @@ class _ProfilePageState extends State<ProfilePage> {
                                 right: 16.0,
                                 bottom: 16,
                               ),
-                              child: Row(
+                              child: Column(
                                 children: <Widget>[
                                   CircleAvatar(
                                     radius: 40,
                                     backgroundImage:
                                         NetworkImage(_profile.result.pic),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 17.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Text(
-                                              _profile.result.name,
-                                              style: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 22,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            FlatButton.icon(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              color: Color(0xFFffb399),
-                                              label: Text(
-                                                'Edit',
-                                                style: GoogleFonts.poppins(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              icon: Icon(
-                                                Icons.edit,
-                                                size: 20,
-                                                color: Colors.white,
-                                              ),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              EditProfileScreen(),
-                                                        ))
-                                                    .whenComplete(
-                                                        () => {getProfile()});
-                                              },
-                                            ),
-                                          ],
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        _profile.result.name,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 22,
+                                          color: Colors.white,
                                         ),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.50,
-                                          child: Text(
-                                            _profile.result.bio,
-                                            style: GoogleFonts.poppins(
-                                              color: Colors.grey[200],
-                                              fontSize: 13,
-                                              height: 1,
-                                            ),
+                                      ),
+                                      Container(
+                                        // width:
+                                        //     MediaQuery.of(context).size.width *
+                                        //         0.50,
+                                        child: Text(
+                                          _profile.result.bio,
+                                          style: GoogleFonts.poppins(
+                                            color: Colors.grey[200],
+                                            fontSize: 13,
+                                            height: 1,
                                           ),
                                         ),
-                                      ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.02,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                        top: 5,
+                                        bottom: 5,
+                                        left: 15,
+                                        right: 15,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFffb399),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          _buildPosts("Posts"),
+                                          _buildFollowers("Followers"),
+                                          _buildFollowing("Following"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.85,
+                                    child: FlatButton.icon(
+                                      label: Text(
+                                        'Edit Profile',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        side: BorderSide(
+                                          color: Color(0xFFffd9cc),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditProfileScreen(),
+                                                ))
+                                            .whenComplete(() => {getProfile()});
+                                      },
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                  top: 5,
-                                  bottom: 5,
-                                  left: 15,
-                                  right: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFffb399),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    _buildPosts("Posts"),
-                                    _buildFollowers("Followers"),
-                                    _buildFollowing("Following"),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
                           ],
                         ),
+                      ),
+                      SizedBox(
+                        height: 16,
                       ),
                       // Container(
                       //   width: double.infinity,
@@ -358,7 +358,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       //   ],
                       // ),
                       SizedBox(
-                        height: 20,
+                        height: 0,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
