@@ -81,36 +81,36 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          'Profile',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        backgroundColor: Color(0xFFFF8B66),
-        leading: Icon(
-          Icons.person,
-          color: Colors.white,
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditProfileScreen(),
-                  )).whenComplete(() => {getProfile()});
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   // title: Text(
+      //   //   'Profile',
+      //   //   style: GoogleFonts.poppins(
+      //   //     fontWeight: FontWeight.w500,
+      //   //   ),
+      //   // ),
+      //   backgroundColor: Color(0xFFFF8B66),
+      //   leading: Icon(
+      //     Icons.person,
+      //     color: Colors.white,
+      //   ),
+      //   actions: <Widget>[
+      //     IconButton(
+      //       icon: Icon(
+      //         Icons.edit,
+      //         color: Colors.white,
+      //       ),
+      //       onPressed: () {
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => EditProfileScreen(),
+      //             )).whenComplete(() => {getProfile()});
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: !_isLoading
@@ -123,93 +123,208 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Color(0xFFFF8B66),
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned(
+                              left: 20,
+                              top: 50,
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Positioned(
+                              right: 10,
+                              top: 30,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditProfileScreen(),
+                                      )).whenComplete(() => {getProfile()});
+                                },
+                              ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.07,
+                                ),
+                                CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: NetworkImage(
+                                    _profile.result.pic,
+                                    // width: displayWidth(context),
+                                    // fit: BoxFit.fitWidth,
+                                    // height: displayHeight(context) * 0.30,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 14.0,
+                                    // left: 5,
+                                    // right: 5,
+                                    bottom: 10,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        _profile.result.name,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 22,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.8,
+                                        child: Text(
+                                          _profile.result.bio,
+                                          style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            height: 1,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      top: 8,
+                                      bottom: 8,
+                                      left: 15,
+                                      right: 15,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFffb399),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        _buildPosts("Posts"),
+                                        _buildFollowers("Followers"),
+                                        _buildFollowing("Following"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                       // Container(
                       //   width: double.infinity,
                       //   padding: EdgeInsets.all(0),
                       //   margin: EdgeInsets.all(0),
                       //   child: Image.network(_profile.result.pic),
                       // ),
-                      Stack(
-                        alignment: Alignment.bottomLeft,
-                        children: <Widget>[
-                          Stack(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.center,
-                                child: Column(
-                                  children: <Widget>[
-                                    Image.network(
-                                      _profile.result.pic,
-                                      width: displayWidth(context),
-                                      fit: BoxFit.fitWidth,
-                                      height: displayHeight(context) * 0.30,
-                                    ),
-                                    SizedBox(
-                                      height: 50,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                            top: 90,
-                            left: 10,
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    _profile.result.name,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 22,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  SizedBox(height: 3),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    child: Text(
-                                      _profile.result.bio,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        height: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                top: 8,
-                                bottom: 8,
-                                left: 15,
-                                right: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFFF8B66),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  _buildPosts("Posts"),
-                                  _buildFollowers("Followers"),
-                                  _buildFollowing("Following"),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Stack(
+                      //   alignment: Alignment.bottomLeft,
+                      //   children: <Widget>[
+                      //     Stack(
+                      //       children: <Widget>[
+                      //         Align(
+                      //           alignment: Alignment.center,
+                      //           child: Column(
+                      //             children: <Widget>[
+                      //               CircleAvatar(
+                      //                 backgroundImage: NetworkImage(
+                      //                   _profile.result.pic,
+                      //                   // width: displayWidth(context),
+                      //                   // fit: BoxFit.fitWidth,
+                      //                   // height: displayHeight(context) * 0.30,
+                      //                 ),
+                      //               ),
+                      //               SizedBox(
+                      //                 height: 50,
+                      //               )
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     Positioned(
+                      //       top: 90,
+                      //       left: 10,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(14.0),
+                      //         child: Column(
+                      //           crossAxisAlignment: CrossAxisAlignment.start,
+                      //           children: <Widget>[
+                      //             Text(
+                      //               _profile.result.name,
+                      //               style: GoogleFonts.poppins(
+                      //                 fontWeight: FontWeight.w600,
+                      //                 fontSize: 22,
+                      //                 color: Colors.white,
+                      //               ),
+                      //             ),
+                      //             SizedBox(height: 3),
+                      //             Container(
+                      //               width:
+                      //                   MediaQuery.of(context).size.width * 0.8,
+                      //               child: Text(
+                      //                 _profile.result.bio,
+                      //                 style: GoogleFonts.poppins(
+                      //                   color: Colors.white,
+                      //                   height: 1,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: 20),
+                      //       child: Container(
+                      //         padding: EdgeInsets.only(
+                      //           top: 8,
+                      //           bottom: 8,
+                      //           left: 15,
+                      //           right: 15,
+                      //         ),
+                      //         decoration: BoxDecoration(
+                      //           color: Color(0xFFFF8B66),
+                      //           borderRadius: BorderRadius.circular(8),
+                      //         ),
+                      //         child: Row(
+                      //           mainAxisAlignment:
+                      //               MainAxisAlignment.spaceBetween,
+                      //           children: <Widget>[
+                      //             _buildPosts("Posts"),
+                      //             _buildFollowers("Followers"),
+                      //             _buildFollowing("Following"),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
 
                       // SizedBox(height: 10),
 
@@ -261,7 +376,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                childAspectRatio: 2,
+                                childAspectRatio: 1,
                               ),
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
