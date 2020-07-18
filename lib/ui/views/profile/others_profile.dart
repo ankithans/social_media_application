@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media_application/models/profile/others_profile.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/models/profile/profile.dart';
-import 'package:social_media_application/ui/views/profile/edit_profile.dart';
 import 'package:social_media_application/ui/views/profile/following.dart';
 
 Profile _profile;
@@ -14,14 +15,17 @@ List images = new List();
 
 class OthersProfile extends StatefulWidget {
   final int userId;
+  final bool following;
 
-  const OthersProfile({Key key, this.userId}) : super(key: key);
+  const OthersProfile({Key key, this.userId, this.following}) : super(key: key);
 
   @override
   _OthersProfileState createState() => _OthersProfileState();
 }
 
 class _OthersProfileState extends State<OthersProfile> {
+  ProfileOthers profileOthers;
+  bool _progress = false;
   final ApiRepository apiRepository = ApiRepository(
     apiClient: ApiClient(),
   );
@@ -34,6 +38,26 @@ class _OthersProfileState extends State<OthersProfile> {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // int uid = prefs.getInt('uid');
+
+    const url = 'https://www.mustdiscovertech.co.in/social/v1/';
+    Dio dio = new Dio();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int uid = prefs.getInt('uid');
+    FormData formData = FormData.fromMap({
+      'login_user_id': uid,
+      'user_id': widget.userId,
+    });
+
+    try {
+      Response response =
+          await dio.post('${url}user/profile/other', data: formData);
+      profileOthers = ProfileOthers.fromJson(response.data);
+      print(response);
+    } on DioError catch (e) {
+      print(e.error);
+      throw e.error;
+    }
+
     _profile = await apiRepository.getProfile(widget.userId);
     print(_profile);
     addPic();
@@ -208,30 +232,87 @@ class _OthersProfileState extends State<OthersProfile> {
                                     width: MediaQuery.of(context).size.width *
                                         0.85,
                                     child: FlatButton.icon(
-                                      label: Text(
-                                        'Follow',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      icon: Icon(
-                                        Icons.person_add,
-                                        color: Colors.white,
-                                      ),
+                                      label: _progress == true
+                                          ? SpinKitThreeBounce(
+                                              color: Colors.white,
+                                              size: 15,
+                                            )
+                                          : Text(
+                                              profileOthers.result.follow == 1
+                                                  ? 'Unfollow'
+                                                  : 'Follow',
+                                              style: GoogleFonts.poppins(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                      icon: _progress == true
+                                          ? Icon(null)
+                                          : Icon(
+                                              profileOthers.result.follow == 1
+                                                  ? Icons.remove_circle_outline
+                                                  : Icons.person_add,
+                                              color: Colors.white,
+                                            ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                         side: BorderSide(
                                           color: Color(0xFFffd9cc),
                                         ),
                                       ),
-                                      onPressed: () {
-                                        // Navigator.push(
-                                        //         context,
-                                        //         MaterialPageRoute(
-                                        //           builder: (context) =>
-                                        //               EditProfileScreen(),
-                                        //         ))
-                                        //     .whenComplete(() => {getProfile()});
+                                      onPressed: () async {
+                                        setState(() {
+                                          _progress = true;
+                                        });
+                                        const url =
+                                            'https://www.mustdiscovertech.co.in/social/v1/';
+                                        Dio dio = new Dio();
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        int uid = prefs.getInt('uid');
+                                        FormData formData = FormData.fromMap({
+                                          'follow_by': uid,
+                                          'follow_to': widget.userId,
+                                        });
+
+                                        try {
+                                          Response response = await dio.post(
+                                              '${url}user/follow',
+                                              data: formData);
+                                          print(response);
+                                        } on DioError catch (e) {
+                                          setState(() {
+                                            _progress = false;
+                                          });
+                                          print(e.error);
+                                          throw e.error;
+                                        }
+
+                                        FormData formData1 = FormData.fromMap({
+                                          'login_user_id': uid,
+                                          'user_id': widget.userId,
+                                        });
+
+                                        try {
+                                          Response response = await dio.post(
+                                              '${url}user/profile/other',
+                                              data: formData1);
+                                          setState(() {
+                                            profileOthers =
+                                                ProfileOthers.fromJson(
+                                                    response.data);
+                                          });
+                                          setState(() {
+                                            _progress = false;
+                                          });
+                                          print(response);
+                                        } on DioError catch (e) {
+                                          setState(() {
+                                            _progress = false;
+                                          });
+                                          print(e.error);
+                                          throw e.error;
+                                        }
                                       },
                                     ),
                                   ),

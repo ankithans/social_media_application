@@ -128,8 +128,8 @@ class _FollowingState extends State<Following> {
                                 _following.result[index].bio,
                                 maxLines: 4,
                                 style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontSize: 12,
+                                  color: Colors.grey[300],
+                                  fontSize: 11,
                                 ),
                               ),
                             ],

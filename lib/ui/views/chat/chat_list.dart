@@ -52,6 +52,12 @@ class _ChatMembersListState extends State<ChatMembersList> {
   }
 
   @override
+  void dispose() {
+    // DO STUFF
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

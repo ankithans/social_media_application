@@ -46,6 +46,8 @@ class Result {
     @required this.email,
     @required this.pic,
     @required this.bio,
+    @required this.following,
+    @required this.followers,
   });
 
   final int userId;
@@ -54,6 +56,8 @@ class Result {
   final String email;
   final String pic;
   final String bio;
+  final int following;
+  final int followers;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         userId: json["user_id"] == null ? null : json["user_id"],
@@ -62,6 +66,8 @@ class Result {
         email: json["email"] == null ? null : json["email"],
         pic: json["pic"] == null ? null : json["pic"],
         bio: json["bio"] == null ? null : json["bio"],
+        following: json["following"] == null ? null : json["following"],
+        followers: json["followers"] == null ? null : json["followers"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,5 +77,7 @@ class Result {
         "email": email == null ? null : email,
         "pic": pic == null ? null : pic,
         "bio": bio == null ? null : bio,
+        "following": following == null ? null : following,
+        "followers": followers == null ? null : followers,
       };
 }

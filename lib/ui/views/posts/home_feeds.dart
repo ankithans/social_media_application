@@ -18,6 +18,8 @@ import 'package:social_media_application/models/posts/listLikes.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
 import 'package:social_media_application/ui/views/posts/comments_screen.dart';
+import 'package:social_media_application/ui/views/profile/others_profile.dart';
+import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
 
 ListPosts _listPosts;
@@ -525,22 +527,43 @@ class _SinglePostViewState extends State<SinglePostView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              _listPosts.result[widget.count].author[1]),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          _listPosts.result[widget.count].author[0],
-                          style: GoogleFonts.poppins(),
-                        ),
-                      ],
+                  FlatButton(
+                    onPressed: () {
+                      _listPosts.result[widget.count].userId == uid
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfilePage(),
+                              ),
+                            )
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OthersProfile(
+                                  userId:
+                                      _listPosts.result[widget.count].userId,
+                                ),
+                              ),
+                            );
+                    },
+                    padding: EdgeInsets.all(0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                _listPosts.result[widget.count].author[1]),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            _listPosts.result[widget.count].author[0],
+                            style: GoogleFonts.poppins(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(

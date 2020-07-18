@@ -1,17 +1,17 @@
 // To parse this JSON data, do
 //
-//     final getFollowing = getFollowingFromJson(jsonString);
+//     final profileOthers = profileOthersFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-GetFollowing getFollowingFromJson(String str) =>
-    GetFollowing.fromJson(json.decode(str));
+ProfileOthers profileOthersFromJson(String str) =>
+    ProfileOthers.fromJson(json.decode(str));
 
-String getFollowingToJson(GetFollowing data) => json.encode(data.toJson());
+String profileOthersToJson(ProfileOthers data) => json.encode(data.toJson());
 
-class GetFollowing {
-  GetFollowing({
+class ProfileOthers {
+  ProfileOthers({
     @required this.error,
     @required this.errorMsg,
     @required this.result,
@@ -19,22 +19,18 @@ class GetFollowing {
 
   final bool error;
   final String errorMsg;
-  final List<Result> result;
+  final Result result;
 
-  factory GetFollowing.fromJson(Map<String, dynamic> json) => GetFollowing(
+  factory ProfileOthers.fromJson(Map<String, dynamic> json) => ProfileOthers(
         error: json["error"] == null ? null : json["error"],
         errorMsg: json["error_msg"] == null ? null : json["error_msg"],
-        result: json["result"] == null
-            ? null
-            : List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
+        result: json["result"] == null ? null : Result.fromJson(json["result"]),
       );
 
   Map<String, dynamic> toJson() => {
         "error": error == null ? null : error,
         "error_msg": errorMsg == null ? null : errorMsg,
-        "result": result == null
-            ? null
-            : List<dynamic>.from(result.map((x) => x.toJson())),
+        "result": result == null ? null : result.toJson(),
       };
 }
 

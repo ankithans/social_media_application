@@ -53,6 +53,8 @@ class SearchDistricts extends SearchDelegate {
               MaterialPageRoute(
                 builder: (context) => OthersProfile(
                   userId: suggestionList[index].userId,
+                  following:
+                      suggestionList[index].following == 1 ? true : false,
                 ),
               ),
             );

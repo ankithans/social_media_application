@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/repositories/api_client.dart';
@@ -12,6 +13,7 @@ class Followers extends StatefulWidget {
 }
 
 class _FollowersState extends State<Followers> {
+  bool _progress = false;
   final ApiRepository apiRepository = ApiRepository(
     apiClient: ApiClient(),
   );
@@ -126,14 +128,17 @@ class _FollowersState extends State<Followers> {
                               Text(
                                 _following.result[index].bio,
                                 style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontSize: 12,
+                                  color: Colors.grey[300],
+                                  fontSize: 11,
                                 ),
                               ),
                             ],
                           ),
                           RaisedButton(
                             onPressed: () async {
+                              setState(() {
+                                _progress = true;
+                              });
                               const url =
                                   'https://www.mustdiscovertech.co.in/social/v1/';
                               Dio dio = new Dio();
@@ -150,6 +155,9 @@ class _FollowersState extends State<Followers> {
                                     .post('${url}user/follow', data: formData);
                                 print(response);
                               } on DioError catch (e) {
+                                setState(() {
+                                  _progress = false;
+                                });
                                 print(e.error);
                                 throw e.error;
                               }
@@ -160,7 +168,7 @@ class _FollowersState extends State<Followers> {
 
                               try {
                                 Response response = await dio.post(
-                                    '${url}user/following',
+                                    '${url}user/followers',
                                     data: formData1);
                                 print(response);
 
@@ -168,7 +176,13 @@ class _FollowersState extends State<Followers> {
                                   _following =
                                       GetFollowing.fromJson(response.data);
                                 });
+                                setState(() {
+                                  _progress = false;
+                                });
                               } on DioError catch (e) {
+                                setState(() {
+                                  _progress = false;
+                                });
                                 print(e.error);
                                 throw (e.error);
                               }
@@ -183,7 +197,9 @@ class _FollowersState extends State<Followers> {
                               ),
                             ),
                             child: Text(
-                              'Follow',
+                              _following.result[index].follow == 1
+                                  ? 'Unfollow'
+                                  : 'Follow',
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 color: Colors.white,

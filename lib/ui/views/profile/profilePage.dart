@@ -115,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
         onRefresh: _refresh,
         child: !_isLoading
             ? SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: ScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -375,7 +375,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             GridView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: ScrollPhysics(),
                               primary: false,
                               itemCount: images.length,
                               gridDelegate:

@@ -149,6 +149,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           return Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 CircleAvatar(
                                   backgroundImage: NetworkImage(
