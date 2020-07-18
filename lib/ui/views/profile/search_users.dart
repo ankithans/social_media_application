@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:social_media_application/models/profile/search_users.dart';
+import 'package:social_media_application/ui/views/profile/others_profile.dart';
 
 class SearchDistricts extends SearchDelegate {
   final SearchUsers searchUsers;
@@ -45,41 +46,54 @@ class SearchDistricts extends SearchDelegate {
       physics: BouncingScrollPhysics(),
       itemCount: suggestionList.length,
       itemBuilder: (context, index) {
-        return Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    suggestionList[index].pic,
+        return FlatButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => OthersProfile(
+                  userId: suggestionList[index].userId,
+                ),
+              ),
+            );
+          },
+          padding: EdgeInsets.all(0),
+          child: Container(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      suggestionList[index].pic,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      suggestionList[index].name,
-                      style: GoogleFonts.poppins(),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.78,
-                      child: Text(
-                        suggestionList[index].bio,
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          color: Colors.grey[500],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        suggestionList[index].name,
+                        style: GoogleFonts.poppins(),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.78,
+                        child: Text(
+                          suggestionList[index].bio,
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: Colors.grey[500],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

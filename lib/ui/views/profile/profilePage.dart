@@ -7,6 +7,7 @@ import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/models/profile/profile.dart';
 import 'package:social_media_application/ui/views/profile/edit_profile.dart';
+import 'package:social_media_application/ui/views/profile/followers.dart';
 import 'package:social_media_application/ui/views/profile/following.dart';
 
 Profile _profile;
@@ -440,12 +441,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildFollowers(String title) {
     return FlatButton(
       onPressed: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => Following(),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Followers(),
+          ),
+        );
       },
       child: Column(
         children: <Widget>[

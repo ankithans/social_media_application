@@ -5,14 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/models/profile/following.dart';
-import 'package:social_media_application/ui/views/profile/following_card.dart';
 
-class Following extends StatefulWidget {
+class Followers extends StatefulWidget {
   @override
-  _FollowingState createState() => _FollowingState();
+  _FollowersState createState() => _FollowersState();
 }
 
-class _FollowingState extends State<Following> {
+class _FollowersState extends State<Followers> {
   final ApiRepository apiRepository = ApiRepository(
     apiClient: ApiClient(),
   );
@@ -41,7 +40,7 @@ class _FollowingState extends State<Following> {
         _isLoading = true;
       });
       Response response =
-          await dio.post('${url}user/following', data: formData);
+          await dio.post('${url}user/followers', data: formData);
       print(response);
 
       _following = GetFollowing.fromJson(response.data);
@@ -61,7 +60,7 @@ class _FollowingState extends State<Following> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'Following',
+          'Followers',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
           ),
@@ -126,7 +125,6 @@ class _FollowingState extends State<Following> {
                               ),
                               Text(
                                 _following.result[index].bio,
-                                maxLines: 4,
                                 style: GoogleFonts.poppins(
                                   color: Colors.white,
                                   fontSize: 12,
@@ -185,7 +183,7 @@ class _FollowingState extends State<Following> {
                               ),
                             ),
                             child: Text(
-                              'Unfollow',
+                              'Follow',
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 color: Colors.white,
