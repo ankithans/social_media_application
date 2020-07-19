@@ -611,6 +611,7 @@ class _SinglePostViewState extends State<SinglePostView> {
                   // ),
 
                   FlatButton(
+                    padding: EdgeInsets.all(0),
                     onPressed: () {},
                     child: GFCarousel(
                       items: images,

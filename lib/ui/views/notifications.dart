@@ -181,6 +181,17 @@ class _NotificationsState extends State<Notifications> {
                                               ),
                                             ),
                                           ),
+                                          SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            notificationListing
+                                                .result[index].postedAt,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 9,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
