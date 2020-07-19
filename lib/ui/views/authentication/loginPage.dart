@@ -13,6 +13,7 @@ import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/ui/views/page_controller.dart';
 import 'package:social_media_application/ui/widgets/authentication/bezierContainer.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -24,6 +25,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  String deviceId;
+  getDeviceId() async {
+    deviceId = await _firebaseMessaging.getToken();
+    print(deviceId);
+  }
+
   bool otpSent = false;
   final _phoneController = TextEditingController();
   final _otpController = TextEditingController();
@@ -38,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void loginWithPhone() async {
     _default = await apiRepository.signInWithMobile(
-        _nameController.text, '${_phoneController.text}', 'registrationToken');
+        _nameController.text, '${_phoneController.text}', deviceId);
   }
 
   void addUserDetails(String name, String bio, [String picurl]) async {
@@ -132,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
     Dio dio = new Dio();
     FormData formData = FormData.fromMap({
       'email': user.email,
-      'registration_token': 'aaaa',
+      'registration_token': deviceId,
       'name': user.displayName,
       'profile_pic': user.photoUrl,
       'mobile': '',
@@ -181,6 +190,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    getDeviceId();
   }
 
   Widget _entryField(String title, TextEditingController controller,

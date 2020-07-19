@@ -32,7 +32,7 @@ class _PageControlState extends State<PageControl> {
         controller: controller,
         children: <Widget>[
           HomePage(),
-          ChatMembersList(),
+          // ChatMembersList(),
         ],
       ),
     );

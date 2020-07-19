@@ -57,6 +57,7 @@ dependencies:
   progress_dialog: ^1.2.4
   date_time_format: ^1.0.0+4
   like_button: ^1.0.1
+  firebase_messaging: ^6.0.16
 
 dev_dependencies:
   flutter_test:
