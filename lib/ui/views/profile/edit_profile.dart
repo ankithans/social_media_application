@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/profile/profile.dart';
@@ -71,8 +73,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     fileName = imageFile.path.split('/').last;
 
     if (imageFile != null) {
+      File croppedImage = await ImageCropper.cropImage(
+        sourcePath: imageFile.path,
+        aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      );
+
       setState(() {
-        profileImage = File(imageFile.path);
+        profileImage = croppedImage;
       });
     }
   }
@@ -134,6 +141,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       });
     }
   }
+
+  // _cropImage(File imageFile) async {
+
+  // }
 
   @override
   Widget build(BuildContext context) {

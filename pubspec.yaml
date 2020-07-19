@@ -58,6 +58,7 @@ dependencies:
   date_time_format: ^1.0.0+4
   like_button: ^1.0.1
   firebase_messaging: ^6.0.16
+  image_editor_pro: ^1.0.6
 
 dev_dependencies:
   flutter_test:

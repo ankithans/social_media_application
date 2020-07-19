@@ -610,20 +610,23 @@ class _SinglePostViewState extends State<SinglePostView> {
                   //   ),
                   // ),
 
-                  GFCarousel(
-                    items: images,
-                    activeIndicator: Colors.black,
-                    passiveIndicator: Colors.grey,
-                    enableInfiniteScroll: false,
-                    enlargeMainPage: true,
-                    viewportFraction: 1.0,
-                    height: 300,
-                    scrollPhysics: ScrollPhysics(),
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
+                  FlatButton(
+                    onPressed: () {},
+                    child: GFCarousel(
+                      items: images,
+                      activeIndicator: Colors.black,
+                      passiveIndicator: Colors.grey,
+                      enableInfiniteScroll: false,
+                      enlargeMainPage: true,
+                      viewportFraction: 1.0,
+                      height: 300,
+                      scrollPhysics: ScrollPhysics(),
+                      onPageChanged: (index) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                    ),
                   ),
 
                   Row(

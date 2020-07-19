@@ -119,24 +119,31 @@ class _CreateNewPostState extends State<CreateNewPost> {
                 child: PageView.builder(
                     itemCount: widget.files.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Stack(
-                          children: <Widget>[
-                            Image.file(widget.files[index]),
-                            IconButton(
-                              icon: Icon(
-                                Icons.cancel,
-                                color: Colors.red,
+                      return FlatButton(
+                        onPressed: () {
+                          FlutterToast.showToast(msg: 'null');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Stack(
+                            children: <Widget>[
+                              Image.file(
+                                widget.files[index],
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  widget.files.removeAt(index);
-                                  widget.uploadList.removeAt(index);
-                                });
-                              },
-                            ),
-                          ],
+                              IconButton(
+                                icon: Icon(
+                                  Icons.cancel,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    widget.files.removeAt(index);
+                                    widget.uploadList.removeAt(index);
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
