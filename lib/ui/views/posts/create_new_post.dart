@@ -2,8 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:photofilters/photofilters.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image/image.dart' as imageLib;
+import 'package:path/path.dart';
 
 class CreateNewPost extends StatefulWidget {
   final List uploadList;
@@ -21,6 +24,9 @@ class _CreateNewPostState extends State<CreateNewPost> {
   String _caption = '';
   String _description = '';
   bool _isLoading = false;
+
+  Filter _filter;
+  List<Filter> filters;
 
   _submit() async {}
 
@@ -119,31 +125,64 @@ class _CreateNewPostState extends State<CreateNewPost> {
                 child: PageView.builder(
                     itemCount: widget.files.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return FlatButton(
-                        onPressed: () {
-                          FlutterToast.showToast(msg: 'null');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Image.file(
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: <Widget>[
+                            FlatButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () async {
+                                var image = imageLib.decodeImage(
+                                    widget.files[index].readAsBytesSync());
+                                image = imageLib.copyResize(image, width: 600);
+                                String fileName =
+                                    basename(widget.files[index].path);
+
+                                Map imagefile = await Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                    builder: (context) =>
+                                        new PhotoFilterSelector(
+                                      title: Text("Photo Filter Example"),
+                                      image: image,
+                                      filters: presetFiltersList,
+                                      filename: fileName,
+                                      loader: Center(
+                                          child: CircularProgressIndicator()),
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                );
+                                if (imagefile != null &&
+                                    imagefile.containsKey('image_filtered')) {
+                                  setState(() {
+                                    widget.files[index] =
+                                        imagefile['image_filtered'];
+                                  });
+                                  widget.uploadList[index] =
+                                      await MultipartFile.fromFile(
+                                          widget.files[index].path,
+                                          filename: fileName);
+                                  print(widget.files[index].path);
+                                }
+                              },
+                              child: Image.file(
                                 widget.files[index],
                               ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.cancel,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    widget.files.removeAt(index);
-                                    widget.uploadList.removeAt(index);
-                                  });
-                                },
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.cancel,
+                                color: Colors.red,
                               ),
-                            ],
-                          ),
+                              onPressed: () {
+                                setState(() {
+                                  widget.files.removeAt(index);
+                                  widget.uploadList.removeAt(index);
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       );
                     },
