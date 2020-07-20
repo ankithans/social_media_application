@@ -18,11 +18,11 @@ class _PageControlState extends State<PageControl> {
     controller = PageController(initialPage: 0);
   }
 
-  // @override
-  // void dispose() {
-  //   controller.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _PageControlState extends State<PageControl> {
         controller: controller,
         children: <Widget>[
           HomePage(),
-          // ChatMembersList(),
+          ChatMembersList(),
         ],
       ),
     );

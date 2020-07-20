@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/chat/user_friends_list.dart';
-import 'package:social_media_application/models/models.dart';
 import 'package:social_media_application/ui/views/chat/chat_with_user.dart';
 import 'package:social_media_application/utils/flutter_icons.dart';
 import 'package:social_media_application/utils/ui_utils.dart';
@@ -18,6 +17,9 @@ class _ChatMembersListState extends State<ChatMembersList> {
   bool _isLoading = false;
 
   void getUserFriendList() async {
+    setState(() {
+      _isLoading = true;
+    });
     const url = 'https://www.mustdiscovertech.co.in/social/v1/';
     Dio dio = new Dio();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -28,9 +30,6 @@ class _ChatMembersListState extends State<ChatMembersList> {
     });
 
     try {
-      setState(() {
-        _isLoading = true;
-      });
       Response response = await dio.post('${url}user/friends', data: formData);
       print(response);
 
@@ -39,6 +38,9 @@ class _ChatMembersListState extends State<ChatMembersList> {
         _isLoading = false;
       });
     } on DioError catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       print(e.error);
       throw (e.error);
     }
@@ -46,14 +48,12 @@ class _ChatMembersListState extends State<ChatMembersList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getUserFriendList();
   }
 
   @override
   void dispose() {
-    // DO STUFF
     super.dispose();
   }
 
@@ -129,20 +129,20 @@ class _ChatMembersListState extends State<ChatMembersList> {
                       fontSize: 15,
                     ),
                   ),
-                  FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatWithUser(
-                          userName: 'Group Chat',
-                          uid: 1,
-                          pic: '',
-                        ),
-                      ),
-                    ),
-                    child: GroupChat(),
-                  ),
+                  // FlatButton(
+                  //   padding: EdgeInsets.all(0),
+                  //   onPressed: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => ChatWithUser(
+                  //         userName: 'Group Chat',
+                  //         uid: 1,
+                  //         pic: '',
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   child: GroupChat(),
+                  // ),
                   Expanded(
                     child: ListView.builder(
                       physics: BouncingScrollPhysics(),
@@ -156,7 +156,7 @@ class _ChatMembersListState extends State<ChatMembersList> {
                               MaterialPageRoute(
                                 builder: (context) => ChatWithUser(
                                   userName: userFriendList.result[index].name,
-                                  uid: userFriendList.result[index].userId,
+                                  user_id: userFriendList.result[index].userId,
                                   pic: userFriendList.result[index].pic,
                                 ),
                               ),
@@ -222,58 +222,6 @@ class _ChatMemberItemState extends State<ChatMemberItem> {
                     ),
                     Text(
                       widget.userFriendList.result[widget.index].email,
-                      style: GoogleFonts.poppins(
-                        color: Colors.grey[700],
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class GroupChat extends StatefulWidget {
-  const GroupChat({Key key}) : super(key: key);
-
-  @override
-  _GroupChatState createState() => _GroupChatState();
-}
-
-class _GroupChatState extends State<GroupChat> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 24,
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Group Chat',
-                      style: GoogleFonts.poppins(
-                        color: Colors.grey[700],
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      'This is a Group Chat',
                       style: GoogleFonts.poppins(
                         color: Colors.grey[700],
                         fontSize: 13,
