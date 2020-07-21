@@ -13,6 +13,10 @@ import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:social_media_application/ui/views/posts/create_new_post.dart';
+import 'package:social_media_application/ui/views/posts/create_post_video.dart';
+import 'package:video_trimmer/trim_editor.dart';
+import 'package:video_trimmer/video_trimmer.dart';
+import 'package:video_trimmer/video_viewer.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override
@@ -210,6 +214,88 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   //   super.initState();
   // }
 
+  File _video;
+  final picker = ImagePicker();
+
+  Future getVideo() async {
+    final pickedFile = await picker.getVideo(source: ImageSource.gallery);
+
+    setState(() {
+      _video = File(pickedFile.path);
+    });
+    print(_video.path);
+    String filename = _video.path.split('/').last;
+    print(filename);
+
+    MultipartFile file =
+        await MultipartFile.fromFile(_video.path, filename: fileName);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreatePostVideo(video: _video, file: file),
+      ),
+    );
+  }
+
+  void _handleVideo() async {
+    // File imageFile = await ImagePicker.pickImage(source: source);
+    // if (imageFile != null) {
+    //   imageFile = await _cropImage(imageFile);
+    //   setState(() {
+    //     _image = imageFile;
+    //   });
+    // }
+
+    // Future<List<Asset>> selectImagesFromGallery() async {
+    //   return await MultiImagePicker.pickImages(
+    //     maxImages: 65536,
+
+    //     enableCamera: true,
+    //     materialOptions: MaterialOptions(
+    //       actionBarColor: "#FF147cfa",
+    //       statusBarColor: "#FF147cfa",
+    //     ),
+    //   );
+    // }
+
+    // assets = await selectImagesFromGallery();
+    // List<File> files = [];
+    // for (Asset asset in assets) {
+    //   final filePath =
+    //       await FlutterAbsolutePath.getAbsolutePath(asset.identifier);
+    //   print(filePath);
+    //   files.add(File(filePath));
+    //   fileName = filePath.split('/').last;
+    //   print(fileName);
+    //   uploadList
+    //       .add(await MultipartFile.fromFile(filePath, filename: fileName));
+    // }
+
+    // // If the widget was removed from the tree while the asynchronous platform
+    // // message was in flight, we want to discard the reply rather than calling
+    // // setState to update our non-existent appearance.
+    // if (!mounted) return;
+
+    // setState(() {
+    //   _files = files;
+    // });
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => CreateNewPost(
+    //       files: _files,
+    //       uploadList: uploadList,
+    //     ),
+    //   ),
+    // );
+    // for (var imageFiles in files) {
+    //   fileName = imageFiles.path.split('/').last;
+    //   uploadList.add(
+    //       await MultipartFile.fromFile(imageFiles.path, filename: fileName));
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -226,21 +312,42 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
       ),
       body: Center(
-        child: RaisedButton.icon(
-          icon: Icon(
-            Icons.image,
-            color: Colors.white,
-          ),
-          label: Text(
-            'Select Images',
-            style: GoogleFonts.poppins(
-              color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton.icon(
+              icon: Icon(
+                Icons.image,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Select Images',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                ),
+              ),
+              color: Color(0xFFFF8B66),
+              onPressed: () {
+                _handleImage(ImageSource.gallery);
+              },
             ),
-          ),
-          color: Color(0xFFFF8B66),
-          onPressed: () {
-            _handleImage(ImageSource.gallery);
-          },
+            RaisedButton.icon(
+              icon: Icon(
+                Icons.image,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Select Video',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                ),
+              ),
+              color: Color(0xFFFF8B66),
+              onPressed: () {
+                getVideo();
+              },
+            ),
+          ],
         ),
       ),
       // body: GestureDetector(
@@ -346,3 +453,145 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 }
+
+// class TrimmerView extends StatefulWidget {
+//   final Trimmer _trimmer;
+//   final File video;
+//   TrimmerView(this._trimmer, this.video);
+//   @override
+//   _TrimmerViewState createState() => _TrimmerViewState();
+// }
+
+// class _TrimmerViewState extends State<TrimmerView> {
+//   double _startValue = 0.0;
+//   double _endValue = 0.0;
+
+//   bool _isPlaying = false;
+//   bool _progressVisibility = false;
+
+//   String _value;
+
+//   _saveVideo() async {
+//     setState(() {
+//       _progressVisibility = true;
+//     });
+
+//     String filePath;
+
+//     await widget._trimmer
+//         .saveTrimmedVideo(startValue: _startValue, endValue: _endValue)
+//         .then((value) {
+//       setState(() {
+//         _progressVisibility = false;
+//         _value = value;
+//       });
+//     });
+//     // filePath = await FlutterAbsolutePath.getAbsolutePath(_value);
+//     // print('TTTTTTTTTTTTTTTTTTTTTTTTT $_value');
+//     // print('TTTTTTTTTTTTT $filePath');
+//     return _value;
+//   }
+
+//   void navigate() async {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => CreatePostVideo(video: _value),
+//       ),
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Video Trimmer"),
+//       ),
+//       body: Builder(
+//         builder: (context) => Center(
+//           child: Container(
+//             padding: EdgeInsets.only(bottom: 30.0),
+//             color: Colors.black,
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               mainAxisSize: MainAxisSize.max,
+//               children: <Widget>[
+//                 Visibility(
+//                   visible: _progressVisibility,
+//                   child: LinearProgressIndicator(
+//                     backgroundColor: Colors.red,
+//                   ),
+//                 ),
+//                 RaisedButton(
+//                   onPressed: _progressVisibility
+//                       ? null
+//                       : () async {
+//                           var path;
+//                           await _saveVideo().then((outputPath) async {
+//                             path = outputPath;
+
+//                             print('OUTPUT PATH: $outputPath');
+
+//                             final snackBar = SnackBar(
+//                                 content: Text('Video Saved successfully'));
+//                             Scaffold.of(context).showSnackBar(snackBar);
+//                           });
+//                           navigate();
+
+//                           // path == null
+//                           //     ? null
+//                           //     :
+//                         },
+//                   child: Text("SAVE"),
+//                 ),
+//                 Expanded(
+//                   child: VideoViewer(),
+//                 ),
+//                 Center(
+//                   child: TrimEditor(
+//                     viewerHeight: 50.0,
+//                     viewerWidth: MediaQuery.of(context).size.width,
+//                     onChangeStart: (value) {
+//                       _startValue = value;
+//                     },
+//                     onChangeEnd: (value) {
+//                       _endValue = value;
+//                     },
+//                     onChangePlaybackState: (value) {
+//                       setState(() {
+//                         _isPlaying = value;
+//                       });
+//                     },
+//                   ),
+//                 ),
+//                 FlatButton(
+//                   child: _isPlaying
+//                       ? Icon(
+//                           Icons.pause,
+//                           size: 80.0,
+//                           color: Colors.white,
+//                         )
+//                       : Icon(
+//                           Icons.play_arrow,
+//                           size: 80.0,
+//                           color: Colors.white,
+//                         ),
+//                   onPressed: () async {
+//                     bool playbackState =
+//                         await widget._trimmer.videPlaybackControl(
+//                       startValue: _startValue,
+//                       endValue: _endValue,
+//                     );
+//                     setState(() {
+//                       _isPlaying = playbackState;
+//                     });
+//                   },
+//                 )
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

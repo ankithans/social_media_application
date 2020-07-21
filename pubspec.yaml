@@ -59,6 +59,10 @@ dependencies:
   like_button: ^1.0.1
   firebase_messaging: ^6.0.16
   photofilters: ^1.0.5
+  chewie: ^0.9.10
+  video_player: ^0.10.11+2
+  video_trimmer: ^0.2.5
+  flutter_ffmpeg: ^0.2.10
 
 dev_dependencies:
   flutter_test:
