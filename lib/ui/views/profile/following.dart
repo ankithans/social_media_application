@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
@@ -136,6 +137,10 @@ class _FollowingState extends State<Following> {
                           ),
                           RaisedButton(
                             onPressed: () async {
+                              final ProgressDialog pr =
+                                  ProgressDialog(context, isDismissible: false);
+                              await pr.show();
+
                               const url =
                                   'https://www.mustdiscovertech.co.in/social/v1/';
                               Dio dio = new Dio();
@@ -170,7 +175,10 @@ class _FollowingState extends State<Following> {
                                   _following =
                                       GetFollowing.fromJson(response.data);
                                 });
+                                await pr.hide();
                               } on DioError catch (e) {
+                                await pr.hide();
+
                                 print(e.error);
                                 throw (e.error);
                               }

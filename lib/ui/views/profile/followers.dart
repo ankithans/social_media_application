@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
@@ -136,6 +137,10 @@ class _FollowersState extends State<Followers> {
                           ),
                           RaisedButton(
                             onPressed: () async {
+                              final ProgressDialog pr =
+                                  ProgressDialog(context, isDismissible: false);
+                              await pr.show();
+
                               setState(() {
                                 _progress = true;
                               });
@@ -179,7 +184,10 @@ class _FollowersState extends State<Followers> {
                                 setState(() {
                                   _progress = false;
                                 });
+                                await pr.hide();
                               } on DioError catch (e) {
+                                await pr.hide();
+
                                 setState(() {
                                   _progress = false;
                                 });
