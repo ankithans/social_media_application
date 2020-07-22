@@ -18,6 +18,7 @@ import 'package:social_media_application/models/posts/listLikes.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
 import 'package:social_media_application/ui/views/posts/comments_screen.dart';
+import 'package:social_media_application/ui/views/posts/video_player.dart';
 import 'package:social_media_application/ui/views/profile/others_profile.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
@@ -610,26 +611,82 @@ class _SinglePostViewState extends State<SinglePostView> {
                   //   ),
                   // ),
 
-                  FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {},
-                    child: GFCarousel(
-                      items: images,
-                      activeIndicator: Colors.black,
-                      passiveIndicator: Colors.grey,
-                      enableInfiniteScroll: false,
-                      enlargeMainPage: true,
-                      viewportFraction: 1.0,
-                      height: 300,
-                      scrollPhysics: ScrollPhysics(),
-                      onPageChanged: (index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
+                  if (_listPosts.result[widget.count].images.length != 0)
+                    FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {},
+                      child: GFCarousel(
+                        items: images,
+                        activeIndicator: Colors.black,
+                        passiveIndicator: Colors.grey,
+                        enableInfiniteScroll: false,
+                        enlargeMainPage: true,
+                        viewportFraction: 1.0,
+                        height: 300,
+                        scrollPhysics: ScrollPhysics(),
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                      ),
                     ),
-                  ),
 
+                  if (_listPosts.result[widget.count].video != null &&
+                      _listPosts.result[widget.count].images.length == 0)
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return VideoPlayer(
+                                video: _listPosts.result[widget.count].video,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      padding: EdgeInsets.all(0),
+                      child: Card(
+                        child: Column(
+                          children: <Widget>[
+                            Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                CachedNetworkImage(
+                                    imageUrl: _listPosts
+                                        .result[widget.count].videoThumb),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.play_circle_outline,
+                                    color: Colors.white,
+                                  ),
+                                  iconSize: 64,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return VideoPlayer(
+                                            video: _listPosts
+                                                .result[widget.count].video,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            // ListTile(
+                            //   title: Text(_li),
+                            //   subtitle: Text(Uri.parse(video.videoImageUrl).host),
+                            // ),
+                          ],
+                        ),
+                      ),
+                    ),
                   Row(
                     children: <Widget>[
                       Column(

@@ -44,6 +44,7 @@ class Result {
     @required this.title,
     @required this.images,
     @required this.video,
+    @required this.videoThumb,
     @required this.description,
     @required this.author,
     @required this.totalLike,
@@ -58,6 +59,7 @@ class Result {
   final String title;
   final List<Images> images;
   final String video;
+  final String videoThumb;
   final String description;
   final List<String> author;
   final int totalLike;
@@ -74,6 +76,7 @@ class Result {
             ? null
             : List<Images>.from(json["images"].map((x) => Images.fromJson(x))),
         video: json["video"] == null ? null : json["video"],
+        videoThumb: json["video_thumb"] == null ? null : json["video_thumb"],
         description: json["description"] == null ? null : json["description"],
         author: json["author"] == null
             ? null
@@ -100,6 +103,7 @@ class Result {
             ? null
             : List<dynamic>.from(images.map((x) => x.toJson())),
         "video": video == null ? null : video,
+        "video_thumb": videoThumb == null ? null : videoThumb,
         "description": description == null ? null : description,
         "author":
             author == null ? null : List<dynamic>.from(author.map((x) => x)),

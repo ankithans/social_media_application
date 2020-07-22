@@ -234,7 +234,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     final thumbnailPath = await VideoThumbnail.thumbnailFile(
       video: _video.path,
       imageFormat: ImageFormat.JPEG,
-      maxWidth: 128,
+      maxWidth: MediaQuery.of(context).size.width.toInt(),
       quality: 25,
     );
 
