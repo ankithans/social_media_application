@@ -63,6 +63,7 @@ dependencies:
   video_player: ^0.10.11+2
   video_trimmer: ^0.2.5
   flutter_ffmpeg: ^0.2.10
+  video_thumbnail: ^0.2.2
 
 dev_dependencies:
   flutter_test:

@@ -16,11 +16,13 @@ import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 class CreatePostVideo extends StatefulWidget {
   final File video;
   final MultipartFile file;
+  final MultipartFile thumbnail;
 
   const CreatePostVideo({
     Key key,
     this.video,
     this.file,
+    this.thumbnail,
   }) : super(key: key);
 
   @override
@@ -143,6 +145,7 @@ class _CreatePostVideoState extends State<CreatePostVideo> {
                     'user_id': uid,
                     'title': _captionController.text,
                     'video': widget.file,
+                    'video_thumb': widget.thumbnail,
                     'description': _decriptionController.text,
                   });
                   const url = 'https://www.mustdiscovertech.co.in/social/v1/';
