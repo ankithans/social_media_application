@@ -17,9 +17,9 @@ import 'package:social_media_application/ui/views/posts/create_post_video.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'package:video_trimmer/trim_editor.dart';
-import 'package:video_trimmer/video_trimmer.dart';
-import 'package:video_trimmer/video_viewer.dart';
+// import 'package:video_trimmer/trim_editor.dart';
+// import 'package:video_trimmer/video_trimmer.dart';
+// import 'package:video_trimmer/video_viewer.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override

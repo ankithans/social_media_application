@@ -61,11 +61,11 @@ dependencies:
   photofilters: ^1.0.5
   chewie: ^0.9.10
   video_player: ^0.10.11+2
-  video_trimmer: ^0.2.5
-  flutter_ffmpeg: ^0.2.10
+  # video_trimmer: ^0.2.5
+  # flutter_ffmpeg: ^0.2.10
   video_thumbnail: ^0.2.2
   emoji_picker: ^0.1.0
-  chat_pickers: ^0.2.2
+  file_picker: ^1.13.0+1
 
 dev_dependencies:
   flutter_test:
