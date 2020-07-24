@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/chat/user_friends_list.dart';
@@ -174,7 +175,9 @@ class _ChatMembersListState extends State<ChatMembersList> {
               ),
             )
           : Center(
-              child: CircularProgressIndicator(),
+              child: SpinKitThreeBounce(
+                color: Color(0xFFFF8B66),
+              ),
             ),
     );
   }

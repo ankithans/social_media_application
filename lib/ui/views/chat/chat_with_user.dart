@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -226,6 +227,8 @@ class _ChatScreenState extends State<ChatScreen> {
     addUserDetails();
   }
 
+  bool showEmoji = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -357,37 +360,56 @@ class _ChatScreenState extends State<ChatScreen> {
               SizedBox(
                 width: 15,
               ),
-              FlatButton(
-                padding: EdgeInsets.all(0),
-                // child: postLoading
-                //     ? SpinKitThreeBounce(
-                //         color: Color(0xFFFF8B66),
-                //         size: 15,
-                //       )
-                //     :
-                child: _isLoading == false
-                    ? Icon(
-                        Icons.send,
-                        color: Colors.blue,
-                      )
-                    : Center(
-                        child: SpinKitThreeBounce(
-                          color: Color(0xFFFF8B66),
-                          size: 15,
-                        ),
-                      ),
-                onPressed: () async {
-                  if (_chatController.text != '') {
-                    sendChat();
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        showEmoji = !showEmoji;
+                      });
+                    },
+                    icon: Icon(Icons.insert_emoticon),
+                  ),
+                  IconButton(
+                    icon: _isLoading == false
+                        ? Icon(
+                            Icons.send,
+                            color: Colors.blue,
+                          )
+                        : Center(
+                            child: SpinKitThreeBounce(
+                              color: Color(0xFFFF8B66),
+                              size: 15,
+                            ),
+                          ),
+                    onPressed: () async {
+                      if (_chatController.text != '') {
+                        sendChat();
 
-                    _chatController.text = '';
-                  } else
-                    FlutterToast.showToast(msg: 'Please Enter something');
-                },
+                        _chatController.text = '';
+                      } else
+                        FlutterToast.showToast(msg: 'Please Enter something');
+                    },
+                  ),
+                ],
               ),
             ],
           ),
         ),
+        showEmoji
+            ? EmojiPicker(
+                rows: 3,
+                columns: 7,
+                // recommendKeywords: ["racing", "horse"],
+                numRecommended: 10,
+                onEmojiSelected: (emoji, category) {
+                  setState(() {
+                    _chatController.text = _chatController.text + emoji.emoji;
+                  });
+                  print(emoji);
+                },
+              )
+            : Container(),
       ],
     );
   }
