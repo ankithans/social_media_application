@@ -60,7 +60,7 @@ class _OthersProfileState extends State<OthersProfile> {
 
     _profile = await apiRepository.getProfile(widget.userId);
     print(_profile);
-    addPic();
+    // addPic();
     images = [];
     listImages();
 
@@ -69,10 +69,10 @@ class _OthersProfileState extends State<OthersProfile> {
     });
   }
 
-  void addPic() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('pic', _profile.result.pic);
-  }
+  // void addPic() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setString('pic', _profile.result.pic);
+  // }
 
   @override
   void initState() {
