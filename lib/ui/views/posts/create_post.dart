@@ -15,6 +15,8 @@ import 'package:dio/dio.dart';
 import 'package:social_media_application/ui/views/posts/create_new_post.dart';
 import 'package:social_media_application/ui/views/posts/create_post_video.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:file_picker/file_picker.dart';
+
 import 'package:video_trimmer/trim_editor.dart';
 import 'package:video_trimmer/video_trimmer.dart';
 import 'package:video_trimmer/video_viewer.dart';
@@ -216,13 +218,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   // }
 
   File _video;
-  final picker = ImagePicker();
+  // final picker = ImagePicker();
 
   Future getVideo() async {
-    final pickedFile = await picker.getVideo(source: ImageSource.gallery);
+    // final pickedFile = await picker.getVideo(source: ImageSource.gallery);
+
+    File videoFile = await FilePicker.getFile(type: FileType.video);
 
     setState(() {
-      _video = File(pickedFile.path);
+      _video = videoFile;
     });
     print(_video.path);
     String filename = _video.path.split('/').last;
@@ -253,63 +257,63 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  void _handleVideo() async {
-    // File imageFile = await ImagePicker.pickImage(source: source);
-    // if (imageFile != null) {
-    //   imageFile = await _cropImage(imageFile);
-    //   setState(() {
-    //     _image = imageFile;
-    //   });
-    // }
+  // void _handleVideo() async {
+  //   // File imageFile = await ImagePicker.pickImage(source: source);
+  //   // if (imageFile != null) {
+  //   //   imageFile = await _cropImage(imageFile);
+  //   //   setState(() {
+  //   //     _image = imageFile;
+  //   //   });
+  //   // }
 
-    // Future<List<Asset>> selectImagesFromGallery() async {
-    //   return await MultiImagePicker.pickImages(
-    //     maxImages: 65536,
+  //   // Future<List<Asset>> selectImagesFromGallery() async {
+  //   //   return await MultiImagePicker.pickImages(
+  //   //     maxImages: 65536,
 
-    //     enableCamera: true,
-    //     materialOptions: MaterialOptions(
-    //       actionBarColor: "#FF147cfa",
-    //       statusBarColor: "#FF147cfa",
-    //     ),
-    //   );
-    // }
+  //   //     enableCamera: true,
+  //   //     materialOptions: MaterialOptions(
+  //   //       actionBarColor: "#FF147cfa",
+  //   //       statusBarColor: "#FF147cfa",
+  //   //     ),
+  //   //   );
+  //   // }
 
-    // assets = await selectImagesFromGallery();
-    // List<File> files = [];
-    // for (Asset asset in assets) {
-    //   final filePath =
-    //       await FlutterAbsolutePath.getAbsolutePath(asset.identifier);
-    //   print(filePath);
-    //   files.add(File(filePath));
-    //   fileName = filePath.split('/').last;
-    //   print(fileName);
-    //   uploadList
-    //       .add(await MultipartFile.fromFile(filePath, filename: fileName));
-    // }
+  //   // assets = await selectImagesFromGallery();
+  //   // List<File> files = [];
+  //   // for (Asset asset in assets) {
+  //   //   final filePath =
+  //   //       await FlutterAbsolutePath.getAbsolutePath(asset.identifier);
+  //   //   print(filePath);
+  //   //   files.add(File(filePath));
+  //   //   fileName = filePath.split('/').last;
+  //   //   print(fileName);
+  //   //   uploadList
+  //   //       .add(await MultipartFile.fromFile(filePath, filename: fileName));
+  //   // }
 
-    // // If the widget was removed from the tree while the asynchronous platform
-    // // message was in flight, we want to discard the reply rather than calling
-    // // setState to update our non-existent appearance.
-    // if (!mounted) return;
+  //   // // If the widget was removed from the tree while the asynchronous platform
+  //   // // message was in flight, we want to discard the reply rather than calling
+  //   // // setState to update our non-existent appearance.
+  //   // if (!mounted) return;
 
-    // setState(() {
-    //   _files = files;
-    // });
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => CreateNewPost(
-    //       files: _files,
-    //       uploadList: uploadList,
-    //     ),
-    //   ),
-    // );
-    // for (var imageFiles in files) {
-    //   fileName = imageFiles.path.split('/').last;
-    //   uploadList.add(
-    //       await MultipartFile.fromFile(imageFiles.path, filename: fileName));
-    // }
-  }
+  //   // setState(() {
+  //   //   _files = files;
+  //   // });
+  //   // Navigator.push(
+  //   //   context,
+  //   //   MaterialPageRoute(
+  //   //     builder: (context) => CreateNewPost(
+  //   //       files: _files,
+  //   //       uploadList: uploadList,
+  //   //     ),
+  //   //   ),
+  //   // );
+  //   // for (var imageFiles in files) {
+  //   //   fileName = imageFiles.path.split('/').last;
+  //   //   uploadList.add(
+  //   //       await MultipartFile.fromFile(imageFiles.path, filename: fileName));
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {

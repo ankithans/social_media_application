@@ -56,7 +56,7 @@ class Result {
 
   final int userId;
   final String name;
-  var mobile;
+  final String mobile;
   final String uniqueKey;
   final String email;
   final String otherMobile;
@@ -124,6 +124,7 @@ class Post {
     @required this.title,
     @required this.images,
     @required this.video,
+    @required this.videoThumb,
     @required this.description,
     @required this.author,
     @required this.totalLike,
@@ -137,8 +138,9 @@ class Post {
   final int postId;
   final int userId;
   final String title;
-  final List<Images> images;
+  final List<Image> images;
   final String video;
+  final String videoThumb;
   final String description;
   final List<String> author;
   final int totalLike;
@@ -154,8 +156,9 @@ class Post {
         title: json["title"] == null ? null : json["title"],
         images: json["images"] == null
             ? null
-            : List<Images>.from(json["images"].map((x) => Images.fromJson(x))),
+            : List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
         video: json["video"] == null ? null : json["video"],
+        videoThumb: json["video_thumb"] == null ? null : json["video_thumb"],
         description: json["description"] == null ? null : json["description"],
         author: json["author"] == null
             ? null
@@ -183,6 +186,7 @@ class Post {
             ? null
             : List<dynamic>.from(images.map((x) => x.toJson())),
         "video": video == null ? null : video,
+        "video_thumb": videoThumb == null ? null : videoThumb,
         "description": description == null ? null : description,
         "author":
             author == null ? null : List<dynamic>.from(author.map((x) => x)),
@@ -241,8 +245,8 @@ class Comment {
       };
 }
 
-class Images {
-  Images({
+class Image {
+  Image({
     @required this.original,
     @required this.thumbnail,
   });
@@ -250,7 +254,7 @@ class Images {
   final String original;
   final String thumbnail;
 
-  factory Images.fromJson(Map<String, dynamic> json) => Images(
+  factory Image.fromJson(Map<String, dynamic> json) => Image(
         original: json["original"] == null ? null : json["original"],
         thumbnail: json["thumbnail"] == null ? null : json["thumbnail"],
       );

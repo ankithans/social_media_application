@@ -57,7 +57,9 @@ class _ProfilePageState extends State<ProfilePage> {
     for (var i = 0; i < _profile.result.posts.length; i++) {
       images.add(
         CachedNetworkImage(
-          imageUrl: _profile.result.posts[i].images[0].thumbnail,
+          imageUrl: _profile.result.posts[i].images.length != 0
+              ? _profile.result.posts[i].images[0].thumbnail
+              : _profile.result.posts[i].videoThumb,
           progressIndicatorBuilder: (context, url, downloadProgress) => Center(
             child: CircularProgressIndicator(
               value: downloadProgress.progress,

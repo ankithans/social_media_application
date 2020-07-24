@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chewie/chewie.dart';
 import 'package:dio/dio.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -89,6 +90,9 @@ class _CreatePostVideoState extends State<CreatePostVideo> {
     _chewieController.dispose();
     super.dispose();
   }
+
+  bool showEmojiTitle = false;
+  bool showEmojiDescription = false;
 
   @override
   Widget build(BuildContext context) {
@@ -298,28 +302,101 @@ class _CreatePostVideoState extends State<CreatePostVideo> {
               Chewie(
                 controller: _chewieController,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: TextField(
-                  controller: _captionController,
-                  style: TextStyle(fontSize: 18.0),
-                  decoration: InputDecoration(
-                    labelText: 'Caption',
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          child: TextField(
+                            controller: _captionController,
+                            style: TextStyle(fontSize: 18.0),
+                            decoration: InputDecoration(
+                              labelText: 'Caption',
+                            ),
+                            onChanged: (input) => _caption = input,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.insert_emoticon),
+                        onPressed: () {
+                          setState(() {
+                            showEmojiTitle = !showEmojiTitle;
+                            showEmojiDescription == true
+                                ? showEmojiDescription = !showEmojiDescription
+                                : showEmojiDescription = showEmojiDescription;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                  onChanged: (input) => _caption = input,
-                ),
+                  showEmojiTitle
+                      ? EmojiPicker(
+                          rows: 3,
+                          columns: 7,
+                          // recommendKeywords: ["racing", "horse"],
+                          numRecommended: 10,
+                          onEmojiSelected: (emoji, category) {
+                            setState(() {
+                              _captionController.text =
+                                  _captionController.text + emoji.emoji;
+                            });
+                            print(emoji);
+                          },
+                        )
+                      : Container(),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: TextField(
-                  controller: _decriptionController,
-                  style: TextStyle(fontSize: 18.0),
-                  decoration: InputDecoration(
-                    labelText: 'Description',
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          child: TextField(
+                            controller: _decriptionController,
+                            style: TextStyle(fontSize: 18.0),
+                            decoration: InputDecoration(
+                              labelText: 'Description',
+                            ),
+                            onChanged: (input) => _description = input,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.insert_emoticon),
+                        onPressed: () {
+                          setState(() {
+                            showEmojiDescription = !showEmojiDescription;
+                            showEmojiTitle == true
+                                ? showEmojiTitle = !showEmojiTitle
+                                : showEmojiTitle = showEmojiTitle;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                  onChanged: (input) => _description = input,
-                ),
+                  showEmojiDescription
+                      ? EmojiPicker(
+                          rows: 3,
+                          columns: 7,
+                          // recommendKeywords: ["racing", "horse"],
+                          numRecommended: 10,
+                          onEmojiSelected: (emoji, category) {
+                            setState(() {
+                              _decriptionController.text =
+                                  _decriptionController.text + emoji.emoji;
+                            });
+                            print(emoji);
+                          },
+                        )
+                      : Container(),
+                ],
               ),
+
               SizedBox(
                 height: 100,
               ),
