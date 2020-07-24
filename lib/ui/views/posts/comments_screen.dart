@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:date_time_format/date_time_format.dart';
 import 'package:dio/dio.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -98,6 +99,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
       throw (e.error);
     }
   }
+
+  bool showEmoji = false;
 
   @override
   void initState() {
@@ -247,29 +250,55 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 SizedBox(
                   width: 15,
                 ),
-                FlatButton(
-                  padding: EdgeInsets.all(0),
-                  child: postLoading
-                      ? SpinKitThreeBounce(
-                          color: Color(0xFFFF8B66),
-                          size: 15,
-                        )
-                      : Icon(
-                          Icons.send,
-                          color: Colors.blue,
-                        ),
-                  onPressed: () async {
-                    if (_commentController.text != '') {
-                      postComment();
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          showEmoji = !showEmoji;
+                        });
+                      },
+                      icon: Icon(Icons.insert_emoticon),
+                    ),
+                    IconButton(
+                      icon: postLoading
+                          ? SpinKitThreeBounce(
+                              color: Color(0xFFFF8B66),
+                              size: 15,
+                            )
+                          : Icon(
+                              Icons.send,
+                              color: Colors.blue,
+                            ),
+                      onPressed: () async {
+                        if (_commentController.text != '') {
+                          postComment();
 
-                      _commentController.text = '';
-                    } else
-                      FlutterToast.showToast(msg: 'Please Enter a Comment');
-                  },
+                          _commentController.text = '';
+                        } else
+                          FlutterToast.showToast(msg: 'Please Enter a Comment');
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          showEmoji
+              ? EmojiPicker(
+                  rows: 3,
+                  columns: 7,
+                  // recommendKeywords: ["racing", "horse"],
+                  numRecommended: 10,
+                  onEmojiSelected: (emoji, category) {
+                    setState(() {
+                      _commentController.text =
+                          _commentController.text + emoji.emoji;
+                    });
+                    print(emoji);
+                  },
+                )
+              : Container(),
         ],
       ),
     );
