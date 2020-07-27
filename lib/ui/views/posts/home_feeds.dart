@@ -561,7 +561,7 @@ class _SinglePostViewState extends State<SinglePostView> {
                                 style: GoogleFonts.poppins(),
                               ),
                               Text(
-                                '_listPosts.result[widget.count].location',
+                                _listPosts.result[widget.count].location,
                                 style: GoogleFonts.poppins(
                                   color: Colors.grey[500],
                                   fontSize: 12,
