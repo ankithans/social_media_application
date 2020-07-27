@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/models/profile/following.dart';
-import 'package:social_media_application/ui/views/profile/following_card.dart';
 
 class Following extends StatefulWidget {
   @override

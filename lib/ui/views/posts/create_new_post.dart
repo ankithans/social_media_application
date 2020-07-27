@@ -22,8 +22,10 @@ class CreateNewPost extends StatefulWidget {
 class _CreateNewPostState extends State<CreateNewPost> {
   TextEditingController _captionController = TextEditingController();
   TextEditingController _decriptionController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
   String _caption = '';
   String _description = '';
+  String _location = '';
   bool _isLoading = false;
 
   Filter _filter;
@@ -86,6 +88,7 @@ class _CreateNewPostState extends State<CreateNewPost> {
                     'title': _captionController.text,
                     'photo': widget.uploadList,
                     'description': _decriptionController.text,
+                    'location': _locationController.text,
                   });
                   const url = 'https://www.mustdiscovertech.co.in/social/v1/';
                   Dio dio = new Dio();
@@ -325,6 +328,27 @@ class _CreateNewPostState extends State<CreateNewPost> {
                           },
                         )
                       : Container(),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          child: TextField(
+                            controller: _locationController,
+                            style: TextStyle(fontSize: 18.0),
+                            decoration: InputDecoration(
+                              labelText: 'Location',
+                            ),
+                            onChanged: (input) => _location = input,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               SizedBox(

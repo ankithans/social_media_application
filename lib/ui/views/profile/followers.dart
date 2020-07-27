@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +13,6 @@ class Followers extends StatefulWidget {
 }
 
 class _FollowersState extends State<Followers> {
-  bool _progress = false;
   final ApiRepository apiRepository = ApiRepository(
     apiClient: ApiClient(),
   );
@@ -141,9 +139,9 @@ class _FollowersState extends State<Followers> {
                                   ProgressDialog(context, isDismissible: false);
                               await pr.show();
 
-                              setState(() {
-                                _progress = true;
-                              });
+                              // setState(() {
+                              //   _progress = true;
+                              // });
                               const url =
                                   'https://www.mustdiscovertech.co.in/social/v1/';
                               Dio dio = new Dio();
@@ -160,9 +158,9 @@ class _FollowersState extends State<Followers> {
                                     .post('${url}user/follow', data: formData);
                                 print(response);
                               } on DioError catch (e) {
-                                setState(() {
-                                  _progress = false;
-                                });
+                                // setState(() {
+                                //   _progress = false;
+                                // });
                                 print(e.error);
                                 throw e.error;
                               }
@@ -181,16 +179,16 @@ class _FollowersState extends State<Followers> {
                                   _following =
                                       GetFollowing.fromJson(response.data);
                                 });
-                                setState(() {
-                                  _progress = false;
-                                });
+                                // setState(() {
+                                //   _progress = false;
+                                // });
                                 await pr.hide();
                               } on DioError catch (e) {
                                 await pr.hide();
 
-                                setState(() {
-                                  _progress = false;
-                                });
+                                // setState(() {
+                                //   _progress = false;
+                                // });
                                 print(e.error);
                                 throw (e.error);
                               }

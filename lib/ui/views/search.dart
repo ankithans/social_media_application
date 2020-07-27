@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/profile/search_users.dart';
 import 'package:social_media_application/ui/views/profile/search_users.dart';
-import 'package:social_media_application/utils/flutter_icons.dart';
 import 'package:social_media_application/utils/ui_utils.dart';
 
 class Search extends StatefulWidget {

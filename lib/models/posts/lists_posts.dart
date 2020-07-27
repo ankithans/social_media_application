@@ -42,6 +42,7 @@ class Result {
     @required this.postId,
     @required this.userId,
     @required this.title,
+    @required this.location,
     @required this.images,
     @required this.video,
     @required this.videoThumb,
@@ -57,6 +58,7 @@ class Result {
   final int postId;
   final int userId;
   final String title;
+  final String location;
   final List<Images> images;
   final String video;
   final String videoThumb;
@@ -72,6 +74,7 @@ class Result {
         postId: json["post_id"] == null ? null : json["post_id"],
         userId: json["user_id"] == null ? null : json["user_id"],
         title: json["title"] == null ? null : json["title"],
+        location: json["location"] == null ? null : json["location"],
         images: json["images"] == null
             ? null
             : List<Images>.from(json["images"].map((x) => Images.fromJson(x))),
@@ -99,6 +102,7 @@ class Result {
         "post_id": postId == null ? null : postId,
         "user_id": userId == null ? null : userId,
         "title": title == null ? null : title,
+        "location": location == null ? null : location,
         "images": images == null
             ? null
             : List<dynamic>.from(images.map((x) => x.toJson())),

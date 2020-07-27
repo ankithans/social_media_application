@@ -8,11 +8,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:like_button/like_button.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:social_media_application/models/posts/like_posts.dart';
 import 'package:social_media_application/models/posts/listLikes.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
@@ -88,8 +86,6 @@ class _HomeFeedsState extends State<HomeFeeds> {
       pic = prefs.getString('pic');
     });
   }
-
-  final _posts = <ListPosts>[];
 
   Future<ListPosts> listPostsAgain() async {
     final ProgressDialog pr = ProgressDialog(context, isDismissible: false);
@@ -404,7 +400,6 @@ class SinglePostView extends StatefulWidget {
 
 class _SinglePostViewState extends State<SinglePostView> {
   bool _isLoading = false;
-  bool _isLiked = false;
 
   @override
   void initState() {
@@ -558,9 +553,21 @@ class _SinglePostViewState extends State<SinglePostView> {
                           SizedBox(
                             width: 15,
                           ),
-                          Text(
-                            _listPosts.result[widget.count].author[0],
-                            style: GoogleFonts.poppins(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                _listPosts.result[widget.count].author[0],
+                                style: GoogleFonts.poppins(),
+                              ),
+                              Text(
+                                '_listPosts.result[widget.count].location',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.grey[500],
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -724,8 +731,8 @@ class _SinglePostViewState extends State<SinglePostView> {
                                     setState(() {
                                       listPosts();
                                     });
-                                    LikePosts likePosts =
-                                        LikePosts.fromJson(response.data);
+                                    // LikePosts likePosts =
+                                    //     LikePosts.fromJson(response.data);
                                     listLikes();
                                   } on DioError catch (e) {
                                     print(e.error);
@@ -860,17 +867,21 @@ class _SinglePostViewState extends State<SinglePostView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          _listPosts.result[widget.count].title,
-                          style: GoogleFonts.poppins(),
-                        ),
-                        Text(
-                          _listPosts.result[widget.count].description,
-                          style: GoogleFonts.poppins(
-                            color: Colors.grey[600],
-                            fontSize: 12,
-                          ),
-                        ),
+                        _listPosts.result[widget.count].title == ""
+                            ? Container()
+                            : Text(
+                                _listPosts.result[widget.count].title,
+                                style: GoogleFonts.poppins(),
+                              ),
+                        _listPosts.result[widget.count].description == ""
+                            ? Container()
+                            : Text(
+                                _listPosts.result[widget.count].description,
+                                style: GoogleFonts.poppins(
+                                  color: Colors.grey[600],
+                                  fontSize: 12,
+                                ),
+                              ),
                         FlatButton(
                           padding: EdgeInsets.all(0),
                           onPressed: () {

@@ -33,8 +33,12 @@ class CreatePostVideo extends StatefulWidget {
 class _CreatePostVideoState extends State<CreatePostVideo> {
   TextEditingController _captionController = TextEditingController();
   TextEditingController _decriptionController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+
   String _caption = '';
   String _description = '';
+  String _location = '';
+
   bool _isLoading = false;
 
   Filter _filter;
@@ -151,6 +155,7 @@ class _CreatePostVideoState extends State<CreatePostVideo> {
                     'video': widget.file,
                     'video_thumb': widget.thumbnail,
                     'description': _decriptionController.text,
+                    'location': _locationController.text,
                   });
                   const url = 'https://www.mustdiscovertech.co.in/social/v1/';
                   Dio dio = new Dio();
@@ -396,7 +401,27 @@ class _CreatePostVideoState extends State<CreatePostVideo> {
                       : Container(),
                 ],
               ),
-
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          child: TextField(
+                            controller: _locationController,
+                            style: TextStyle(fontSize: 18.0),
+                            decoration: InputDecoration(
+                              labelText: 'Location',
+                            ),
+                            onChanged: (input) => _location = input,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 100,
               ),

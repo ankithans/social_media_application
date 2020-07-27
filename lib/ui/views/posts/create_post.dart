@@ -170,47 +170,47 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return croppedImage;
   }
 
-  _submit() async {
-    if (!_isLoading) {
-      setState(() {
-        _isLoading = true;
-      });
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+  // _submit() async {
+  //   if (!_isLoading) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      int uid = prefs.getInt('uid');
+  //     int uid = prefs.getInt('uid');
 
-      // Create post
-      FormData formData = FormData.fromMap({
-        'user_id': uid,
-        'title': _captionController.text,
-        'photo': uploadList,
-        'description': _decriptionController.text,
-      });
-      const url = 'https://www.mustdiscovertech.co.in/social/v1/';
-      Dio dio = new Dio();
-      try {
-        Response response = await dio.post('${url}post/upload', data: formData);
-        print(response);
+  //     // Create post
+  //     FormData formData = FormData.fromMap({
+  //       'user_id': uid,
+  //       'title': _captionController.text,
+  //       'photo': uploadList,
+  //       'description': _decriptionController.text,
+  //     });
+  //     const url = 'https://www.mustdiscovertech.co.in/social/v1/';
+  //     Dio dio = new Dio();
+  //     try {
+  //       Response response = await dio.post('${url}post/upload', data: formData);
+  //       print(response);
 
-        FlutterToast.showToast(msg: 'Your post is uploaded successfully!');
-        // Reset data
-        _captionController.clear();
+  //       FlutterToast.showToast(msg: 'Your post is uploaded successfully!');
+  //       // Reset data
+  //       _captionController.clear();
 
-        setState(() {
-          _caption = '';
-          _image = null;
-          _isLoading = false;
-        });
+  //       setState(() {
+  //         _caption = '';
+  //         _image = null;
+  //         _isLoading = false;
+  //       });
 
-        return PostDefault.fromJson(response.data);
-      } on DioError catch (e) {
-        print(e.error);
-        FlutterToast.showToast(msg: 'Not able to upload your post');
+  //       return PostDefault.fromJson(response.data);
+  //     } on DioError catch (e) {
+  //       print(e.error);
+  //       FlutterToast.showToast(msg: 'Not able to upload your post');
 
-        throw (e.error);
-      }
-    }
-  }
+  //       throw (e.error);
+  //     }
+  //   }
+  // }
 
   // @override
   // void initState() {
@@ -317,8 +317,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    // final height = MediaQuery.of(context).size.height;
+    // final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFF8B66),
