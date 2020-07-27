@@ -693,58 +693,21 @@ class _SinglePostViewState extends State<SinglePostView> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              // IconButton(
-                              //   icon:
-                              //       _listPosts.result[widget.count].userLike ==
-                              //                   1 ||
-                              //               _isLiked
-                              //           ? Icon(
-                              //               OMIcons.favorite,
-                              //               color: Colors.red,
-                              //               size: 28,
-                              //             )
-                              //           : Icon(
-                              //               OMIcons.favoriteBorder,
-                              //               color: Colors.black,
-                              //               size: 28,
-                              //             ),
-                              //   onPressed: () async {
-                              //     setState(() {
-                              //       _isLiked = !_isLiked;
-                              //       // if (backendLike == 1) {
-                              //       //   backendLike = 0;
-                              //       // } else {
-                              //       //   backendLike = 1;
-                              //       // }
-                              //     });
-                              //     FormData formData = FormData.fromMap({
-                              //       'user_id': uid,
-                              //       'post_id':
-                              //           _listPosts.result[widget.count].postId,
-                              //     });
-                              //     const url =
-                              //         'https://www.mustdiscovertech.co.in/social/v1/';
-                              //     Dio dio = new Dio();
-                              //     try {
-                              //       Response response = await dio.post(
-                              //           '${url}post/like',
-                              //           data: formData);
-                              //       print(response);
-                              //       setState(() {
-                              //         listPosts();
-                              //       });
-                              //       LikePosts likePosts =
-                              //           LikePosts.fromJson(response.data);
-                              //       listLikes();
-                              //     } on DioError catch (e) {
-                              //       print(e.error);
-                              //       throw (e.error);
-                              //     }
-                              //   },
-                              // ),
-
-                              LikeButton(
-                                onTap: (isLiked) async {
+                              IconButton(
+                                icon:
+                                    _listPosts.result[widget.count].userLike ==
+                                            1
+                                        ? Icon(
+                                            OMIcons.favorite,
+                                            color: Colors.red,
+                                            size: 28,
+                                          )
+                                        : Icon(
+                                            OMIcons.favoriteBorder,
+                                            color: Colors.black,
+                                            size: 28,
+                                          ),
+                                onPressed: () async {
                                   FormData formData = FormData.fromMap({
                                     'user_id': uid,
                                     'post_id':
@@ -768,40 +731,68 @@ class _SinglePostViewState extends State<SinglePostView> {
                                     print(e.error);
                                     throw (e.error);
                                   }
-                                  return isLiked;
-                                },
-                                circleColor: CircleColor(
-                                    start: Colors.red, end: Colors.red),
-                                bubblesColor: BubblesColor(
-                                  dotPrimaryColor: Colors.red,
-                                  dotSecondaryColor: Colors.red,
-                                ),
-                                likeBuilder: (bool isLiked) {
-                                  return Icon(
-                                    Icons.favorite,
-                                    color: isLiked ? Colors.red : Colors.black,
-                                  );
-                                },
-                                likeCount:
-                                    _listPosts.result[widget.count].totalLike,
-                                countBuilder:
-                                    (int count, bool isLiked, String text) {
-                                  var color =
-                                      isLiked ? Colors.red : Colors.black;
-                                  Widget result;
-                                  if (count == 0) {
-                                    result = Text(
-                                      "like",
-                                      style: TextStyle(color: color),
-                                    );
-                                  } else
-                                    result = Text(
-                                      text,
-                                      style: TextStyle(color: color),
-                                    );
-                                  return result;
                                 },
                               ),
+
+                              // LikeButton(
+                              //   onTap: (isLiked) async {
+                              //     FormData formData = FormData.fromMap({
+                              //       'user_id': uid,
+                              //       'post_id':
+                              //           _listPosts.result[widget.count].postId,
+                              //     });
+                              //     const url =
+                              //         'https://www.mustdiscovertech.co.in/social/v1/';
+                              //     Dio dio = new Dio();
+                              //     try {
+                              //       Response response = await dio.post(
+                              //           '${url}post/like',
+                              //           data: formData);
+                              //       print(response);
+                              //       setState(() {
+                              //         listPosts();
+                              //       });
+                              //       LikePosts likePosts =
+                              //           LikePosts.fromJson(response.data);
+                              //       listLikes();
+                              //     } on DioError catch (e) {
+                              //       print(e.error);
+                              //       throw (e.error);
+                              //     }
+                              //     return isLiked;
+                              //   },
+                              //   circleColor: CircleColor(
+                              //       start: Colors.red, end: Colors.red),
+                              //   bubblesColor: BubblesColor(
+                              //     dotPrimaryColor: Colors.red,
+                              //     dotSecondaryColor: Colors.red,
+                              //   ),
+                              //   likeBuilder: (bool isLiked) {
+                              //     return Icon(
+                              //       Icons.favorite,
+                              //       color: isLiked ? Colors.red : Colors.black,
+                              //     );
+                              //   },
+                              //   likeCount:
+                              //       _listPosts.result[widget.count].totalLike,
+                              //   countBuilder:
+                              //       (int count, bool isLiked, String text) {
+                              //     var color =
+                              //         isLiked ? Colors.red : Colors.black;
+                              //     Widget result;
+                              //     if (count == 0) {
+                              //       result = Text(
+                              //         "like",
+                              //         style: TextStyle(color: color),
+                              //       );
+                              //     } else
+                              //       result = Text(
+                              //         text,
+                              //         style: TextStyle(color: color),
+                              //       );
+                              //     return result;
+                              //   },
+                              // ),
                               IconButton(
                                 icon: Icon(
                                   OMIcons.chatBubbleOutline,
