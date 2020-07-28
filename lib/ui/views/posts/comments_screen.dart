@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:date_time_format/date_time_format.dart';
 import 'package:dio/dio.dart';
 import 'package:emoji_picker/emoji_picker.dart';
@@ -108,6 +106,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     super.initState();
     addUserDetails();
     listComments();
+    print(widget.uid);
   }
 
   @override

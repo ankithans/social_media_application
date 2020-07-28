@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/models/profile/profile.dart';
+import 'package:social_media_application/ui/views/posts/single_post_view.dart';
 import 'package:social_media_application/ui/views/profile/edit_profile.dart';
 import 'package:social_media_application/ui/views/profile/followers.dart';
 import 'package:social_media_application/ui/views/profile/following.dart';
@@ -386,9 +387,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                 childAspectRatio: 1,
                               ),
                               itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: images[index],
+                                return FlatButton(
+                                  padding: EdgeInsets.all(0),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SinglePostView(
+                                          count: index,
+                                          profile: _profile,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: images[index],
+                                  ),
                                 );
                               },
                             ),

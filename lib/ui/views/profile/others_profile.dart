@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media_application/ui/views/posts/single_post_view.dart';
+
 import 'package:social_media_application/models/profile/others_profile.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
@@ -468,9 +470,23 @@ class _OthersProfileState extends State<OthersProfile> {
                                 childAspectRatio: 1,
                               ),
                               itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: images[index],
+                                return FlatButton(
+                                  padding: EdgeInsets.all(0),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SinglePostView(
+                                          count: index,
+                                          profile: _profile,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: images[index],
+                                  ),
                                 );
                               },
                             ),
