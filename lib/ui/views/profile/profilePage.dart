@@ -398,7 +398,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           profile: _profile,
                                         ),
                                       ),
-                                    );
+                                    ).whenComplete(() => {getProfile()});
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.all(5.0),
