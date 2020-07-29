@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_application/ui/views/chat/chat_list.dart';
-import 'package:social_media_application/ui/views/chats/chat_page.dart';
 import 'package:social_media_application/ui/views/home_page.dart';
 import 'package:social_media_application/ui/views/settings.dart';
 

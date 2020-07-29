@@ -15,6 +15,7 @@ import 'package:social_media_application/models/posts/listLikes.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
 import 'package:social_media_application/ui/views/posts/comments_screen.dart';
+import 'package:social_media_application/ui/views/posts/friends.dart';
 import 'package:social_media_application/ui/views/posts/video_player.dart';
 import 'package:social_media_application/ui/views/profile/others_profile.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
@@ -325,7 +326,12 @@ class _HomeFeedsState extends State<HomeFeeds> {
                     //     builder: (context) => Following(),
                     //   ),
                     // );
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Friends(),
+                      ),
+                    );
                   },
                 ),
                 // SizedBox(

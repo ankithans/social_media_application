@@ -173,7 +173,9 @@ class _SinglePostViewState extends State<SinglePostView> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UpdatePost(),
+                  builder: (context) => UpdatePost(
+                    post_id: profile.result.posts[widget.count].postId,
+                  ),
                 ),
               );
             },
