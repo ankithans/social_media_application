@@ -5,6 +5,8 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:giphy_client/giphy_client.dart';
+import 'package:giphy_picker/giphy_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/chat/chat_list.dart';
@@ -228,6 +230,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   bool showEmoji = false;
+  GiphyGif _gif;
 
   @override
   Widget build(BuildContext context) {
@@ -283,14 +286,19 @@ class _ChatScreenState extends State<ChatScreen> {
                             //     ),
                             //   ),
                             // ),
-                            Container(
-                              child: Text(
-                                chatListing.result[index].chat,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ),
+                            chatListing.result[index].image_url == ""
+                                ? Container(
+                                    child: Text(
+                                      chatListing.result[index].chat,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  )
+                                : GiphyImage(
+                                    url: chatListing.result[index].image_url,
+                                    renderGiphyOverlay: false,
+                                  ),
                             SizedBox(
                               height: 2,
                             ),
@@ -362,6 +370,54 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               Row(
                 children: <Widget>[
+                  IconButton(
+                    onPressed: () async {
+                      final gif = await GiphyPicker.pickGif(
+                        context: context,
+                        apiKey: 'pPtm1ZREo9WK9UgmFhUEvy3y6622hu6r',
+                      );
+
+                      if (gif != null) {
+                        setState(() => _gif = gif);
+                        print(_gif.images.downsized.url);
+                      }
+
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      const url =
+                          'https://www.mustdiscovertech.co.in/social/v1/';
+                      Dio dio = new Dio();
+
+                      FormData formData = FormData.fromMap({
+                        'chat_by': uid,
+                        'chat_to': widget.user_id,
+                        'image_url': _gif.images.original.url,
+                      });
+
+                      try {
+                        Response response =
+                            await dio.post('${url}chat', data: formData);
+                        print(response);
+
+                        setState(() {
+                          chatListing = ChatListing.fromJson(response.data);
+                        });
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      } on DioError catch (e) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        print(e.error);
+                        throw (e.error);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.gif,
+                    ),
+                  ),
                   IconButton(
                     onPressed: () {
                       setState(() {

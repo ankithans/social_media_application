@@ -46,6 +46,7 @@ class Result {
     @required this.pic,
     @required this.bio,
     @required this.chat,
+    @required this.image_url,
     @required this.createdAt,
   });
 
@@ -55,6 +56,7 @@ class Result {
   final String pic;
   final String bio;
   final String chat;
+  final String image_url;
   final DateTime createdAt;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -64,6 +66,7 @@ class Result {
         pic: json["pic"] == null ? null : json["pic"],
         bio: json["bio"] == null ? null : json["bio"],
         chat: json["chat"] == null ? null : json["chat"],
+        image_url: json["image_url"] == null ? null : json["image_url"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -76,6 +79,7 @@ class Result {
         "pic": pic == null ? null : pic,
         "bio": bio == null ? null : bio,
         "chat": chat == null ? null : chat,
+        "image_url": image_url == null ? null : image_url,
         "created_at": createdAt == null ? null : createdAt.toIso8601String(),
       };
 }

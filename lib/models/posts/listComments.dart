@@ -45,6 +45,7 @@ class Result {
     @required this.comment,
     @required this.commentBy,
     @required this.createdAt,
+    @required this.image_url,
     @required this.updatedAt,
   });
 
@@ -53,6 +54,8 @@ class Result {
   final String comment;
   final List<String> commentBy;
   final DateTime createdAt;
+  final String image_url;
+
   final DateTime updatedAt;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -68,6 +71,7 @@ class Result {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        image_url: json["image_url"] == null ? null : json["image_url"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,6 +82,7 @@ class Result {
             ? null
             : List<dynamic>.from(commentBy.map((x) => x)),
         "created_at": createdAt == null ? null : createdAt.toIso8601String(),
+        "image_url": image_url == null ? null : image_url,
         "updated_at": updatedAt == null ? null : updatedAt.toIso8601String(),
       };
 }
