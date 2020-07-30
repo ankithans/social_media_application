@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:photo_view/photo_view.dart';
+import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
@@ -484,26 +485,30 @@ class _SinglePostViewState extends State<SinglePostView> {
     for (var i = 0; i < _listPosts.result[widget.count].images.length; i++) {
       img.add(_listPosts.result[widget.count].images[i].original);
       images.add(
-        ZoomOverlay(
-          twoTouchOnly: true,
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: CachedNetworkImage(
-              fit: BoxFit.fitWidth,
-              imageUrl: _listPosts.result[widget.count].images[i].original,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  Center(
-                child: CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                ),
-              ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+        AspectRatio(
+          aspectRatio: 16 / 9,
+          child: PhotoView(
+            imageProvider: NetworkImage(
+                _listPosts.result[widget.count].images[i].original),
+            loadingBuilder: (context, url) => Center(
+              child: CircularProgressIndicator(),
             ),
           ),
         ),
       );
     }
   }
+
+  //  imageProvider: CachedNetworkImage(
+  //             fit: BoxFit.fitWidth,
+  //             imageUrl: _listPosts.result[widget.count].images[i].original,
+  //             progressIndicatorBuilder: (context, url, downloadProgress) =>
+  //                 Center(
+  //               child: CircularProgressIndicator(
+  //                 value: downloadProgress.progress,
+  //               ),
+  //             ),
+  //           ),
 
   CarouselController buttonCarouselController = CarouselController();
   int _currentIndex = 0;
