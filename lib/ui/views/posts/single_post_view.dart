@@ -16,7 +16,8 @@ import 'package:social_media_application/models/profile/profile.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
 import 'package:social_media_application/ui/views/posts/comments_screen.dart';
-import 'package:social_media_application/ui/views/posts/update_post.dart';
+import 'package:social_media_application/ui/views/posts/update_post_photo.dart';
+import 'package:social_media_application/ui/views/posts/update_post_video.dart';
 import 'package:social_media_application/ui/views/posts/video_player.dart';
 import 'package:social_media_application/ui/views/profile/others_profile.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
@@ -27,8 +28,10 @@ import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
 class SinglePostView extends StatefulWidget {
   final int count;
   final Profile profile;
+  final bool showEditDel;
 
-  const SinglePostView({Key key, this.count, this.profile}) : super(key: key);
+  const SinglePostView({Key key, this.count, this.profile, this.showEditDel})
+      : super(key: key);
   @override
   _SinglePostViewState createState() => _SinglePostViewState();
 }
@@ -167,88 +170,106 @@ class _SinglePostViewState extends State<SinglePostView> {
       appBar: AppBar(
         title: Text('Post'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UpdatePost(
-                    post_id: profile.result.posts[widget.count].postId,
-                  ),
+          widget.showEditDel == false
+              ? Container()
+              : IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    profile.result.posts[widget.count].images.length == 0
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdatePost(
+                                post_id:
+                                    profile.result.posts[widget.count].postId,
+                              ),
+                            ),
+                          )
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdatePostPhoto(
+                                post_id:
+                                    profile.result.posts[widget.count].postId,
+                              ),
+                            ),
+                          );
+                  },
                 ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              showDialog<void>(
-                context: context,
-                builder: (BuildContext acontext) {
-                  return PlatformAlertDialog(
-                    title: Text('Are you sure to delete this Post?'),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Text('After Deleting the post '),
-                          Text('You will not able to retrieve the post again.'),
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      PlatformDialogAction(
-                        child: Text('Cancel'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      PlatformDialogAction(
-                        child: Text('Delete'),
-                        actionType: ActionType.Preferred,
-                        onPressed: () async {
-                          final ProgressDialog pr =
-                              ProgressDialog(context, isDismissible: false);
+          widget.showEditDel == false
+              ? Container()
+              : IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext acontext) {
+                        return PlatformAlertDialog(
+                          title: Text('Are you sure to delete this Post?'),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: <Widget>[
+                                Text('After Deleting the post '),
+                                Text(
+                                    'You will not able to retrieve the post again.'),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            PlatformDialogAction(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            PlatformDialogAction(
+                              child: Text('Delete'),
+                              actionType: ActionType.Preferred,
+                              onPressed: () async {
+                                final ProgressDialog pr = ProgressDialog(
+                                    context,
+                                    isDismissible: false);
 
-                          Navigator.pop(acontext);
-                          pr.show();
+                                Navigator.pop(acontext);
+                                pr.show();
 
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          uid = prefs.getInt('uid');
-                          print(uid);
-                          FormData formData = FormData.fromMap({
-                            'user_id': uid,
-                            'post_id':
-                                profile.result.posts[widget.count].postId,
-                          });
-                          const url =
-                              'https://www.mustdiscovertech.co.in/social/v1/';
-                          Dio dio = new Dio();
-                          try {
-                            Response response = await dio
-                                .post('${url}post/pdelete', data: formData);
-                            print(response);
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                uid = prefs.getInt('uid');
+                                print(uid);
+                                FormData formData = FormData.fromMap({
+                                  'user_id': uid,
+                                  'post_id':
+                                      profile.result.posts[widget.count].postId,
+                                });
+                                const url =
+                                    'https://www.mustdiscovertech.co.in/social/v1/';
+                                Dio dio = new Dio();
+                                try {
+                                  Response response = await dio.post(
+                                      '${url}post/pdelete',
+                                      data: formData);
+                                  print(response);
 
-                            pr.hide();
-                          } on DioError catch (e) {
-                            FlutterToast.showToast(
-                                msg:
-                                    'Not able delete this post at this moment. Please try again later');
-                            print(e.error);
-                            throw (e.error);
-                          }
-                          Navigator.pop(context, () {
-                            setState(() {});
-                          });
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          )
+                                  pr.hide();
+                                } on DioError catch (e) {
+                                  FlutterToast.showToast(
+                                      msg:
+                                          'Not able delete this post at this moment. Please try again later');
+                                  print(e.error);
+                                  throw (e.error);
+                                }
+                                Navigator.pop(context, () {
+                                  setState(() {});
+                                });
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                )
         ],
       ),
       body: SingleChildScrollView(
@@ -444,8 +465,8 @@ class _SinglePostViewState extends State<SinglePostView> {
                               Row(
                                 children: <Widget>[
                                   IconButton(
-                                    icon: widget.profile.result
-                                                .posts[widget.count].userLike ==
+                                    icon: profile.result.posts[widget.count]
+                                                .userLike ==
                                             1
                                         ? Icon(
                                             OMIcons.favorite,
