@@ -63,6 +63,7 @@ dependencies:
   file_picker: ^1.13.0+1
   platform_alert_dialog: ^1.0.0+2
   giphy_picker: ^1.0.4
+  flutter_tags: ^0.4.8+2
 
 dev_dependencies:
   flutter_test:
