@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:image/image.dart' as imageLib;
 import 'package:path/path.dart';
 import 'package:dio/dio.dart';
@@ -29,11 +30,14 @@ class _UpdatePostPhotoState extends State<UpdatePostPhoto> {
   TextEditingController _captionController = TextEditingController();
   TextEditingController _decriptionController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
+  TextEditingController _hashTagController = TextEditingController();
+
   String _caption = '';
   String _description = '';
   String _location = '';
   bool showEmojiTitle = false;
   bool showEmojiDescription = false;
+  List hashTags = [];
 
   void getPost() async {
     setState(() {
@@ -436,6 +440,57 @@ class _UpdatePostPhotoState extends State<UpdatePostPhoto> {
                           ],
                         ),
                       ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 30.0),
+                            child: TextField(
+                              controller: _hashTagController,
+                              style: TextStyle(fontSize: 18.0),
+                              decoration: InputDecoration(
+                                labelText: 'Hash Tags',
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () {
+                            setState(() {
+                              hashTags.add(_hashTagController.text);
+                              _hashTagController.text = '';
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Tags(
+                        itemCount: hashTags.length,
+                        itemBuilder: (int index) {
+                          return Tooltip(
+                              message: hashTags[index],
+                              child: ItemTags(
+                                index: 1,
+                                title: hashTags[index],
+
+                                removeButton: ItemTagsRemoveButton(
+                                  onRemoved: () {
+                                    // Remove the item from the data source.
+                                    setState(() {
+                                      // required
+                                      hashTags.removeAt(index);
+                                    });
+                                    //required
+                                    return true;
+                                  },
+                                ), // OR null,
+                              ));
+                        },
+                      ),
                     ),
                   ],
                 )
