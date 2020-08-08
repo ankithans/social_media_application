@@ -387,22 +387,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                 childAspectRatio: 1,
                               ),
                               itemBuilder: (BuildContext context, int index) {
-                                return FlatButton(
-                                  padding: EdgeInsets.all(0),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SinglePostView(
-                                          count: index,
-                                          profile: _profile,
+                                return Card(
+                                  color: Colors.grey[100],
+                                  elevation: 5,
+                                  child: FlatButton(
+                                    padding: EdgeInsets.all(0),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SinglePostView(
+                                            count: index,
+                                            profile: _profile,
+                                          ),
                                         ),
-                                      ),
-                                    ).whenComplete(() => {getProfile()});
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child: images[index],
+                                      ).whenComplete(() => {getProfile()});
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: images[index],
+                                    ),
                                   ),
                                 );
                               },

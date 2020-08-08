@@ -186,6 +186,7 @@ class _UpdatePostPhotoState extends State<UpdatePostPhoto> {
                     itemCount: getSinglePost.result.images.length,
                     itemBuilder: (context, index) {
                       return Card(
+                        color: Colors.grey[100],
                         child: Center(
                           child: Stack(
                             children: <Widget>[
@@ -270,7 +271,7 @@ class _UpdatePostPhotoState extends State<UpdatePostPhoto> {
                           itemCount: _files.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
-                              margin: EdgeInsets.all(0),
+                              color: Colors.grey[100],
                               child: Center(
                                 child: Stack(
                                   children: <Widget>[
