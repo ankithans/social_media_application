@@ -174,62 +174,70 @@ class _UpdatePostPhotoState extends State<UpdatePostPhoto> {
           : Column(
               children: <Widget>[
                 Expanded(
-                  child: PageView.builder(
-                    controller: PageController(
-                      viewportFraction: 0.6,
-                      initialPage: 0,
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount:
+                          getSinglePost.result.images.length >= 4 ? 5 : 3,
                     ),
+                    // controller: PageController(
+                    //   viewportFraction: 0.6,
+                    //   initialPage: 0,
+                    // ),
                     itemCount: getSinglePost.result.images.length,
                     itemBuilder: (context, index) {
-                      return Stack(
-                        children: <Widget>[
-                          Container(
-                            child: Image.network(
-                                getSinglePost.result.images[index].original),
-                          ),
-                          Positioned(
-                            top: 0,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.cancel,
-                                color: Colors.red,
+                      return Card(
+                        child: Center(
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                child: Image.network(getSinglePost
+                                    .result.images[index].original),
                               ),
-                              onPressed: () async {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                int uid = prefs.getInt('uid');
-                                print(uid);
-                                FormData formData = FormData.fromMap({
-                                  'user_id': uid,
-                                  'post_id': widget.post_id,
-                                  'url': getSinglePost
-                                      .result.images[index].original,
-                                });
-                                const url =
-                                    'https://www.mustdiscovertech.co.in/social/v1/';
-                                Dio dio = new Dio();
-                                try {
-                                  Response response = await dio.post(
-                                      '${url}post/pfiledelete',
-                                      data: formData);
-                                  print(response);
+                              Positioned(
+                                top: 0,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    int uid = prefs.getInt('uid');
+                                    print(uid);
+                                    FormData formData = FormData.fromMap({
+                                      'user_id': uid,
+                                      'post_id': widget.post_id,
+                                      'url': getSinglePost
+                                          .result.images[index].original,
+                                    });
+                                    const url =
+                                        'https://www.mustdiscovertech.co.in/social/v1/';
+                                    Dio dio = new Dio();
+                                    try {
+                                      Response response = await dio.post(
+                                          '${url}post/pfiledelete',
+                                          data: formData);
+                                      print(response);
 
-                                  getPost();
+                                      getPost();
 
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                } on DioError catch (e) {
-                                  print(e.error);
-                                  throw (e.error);
-                                }
-                              },
-                            ),
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                    } on DioError catch (e) {
+                                      print(e.error);
+                                      throw (e.error);
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       );
                     },
                   ),
@@ -245,76 +253,86 @@ class _UpdatePostPhotoState extends State<UpdatePostPhoto> {
                   },
                   text: "Add ",
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 _files.length != 0
                     ? Expanded(
-                        child: PageView.builder(
-                          controller: PageController(
-                            viewportFraction: 0.6,
-                            initialPage: 0,
+                        child: GridView.builder(
+                          // controller: PageController(
+                          //   viewportFraction: 0.6,
+                          //   initialPage: 0,
+                          // ),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: _files.length >= 4 ? 5 : 3,
                           ),
                           itemCount: _files.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  FlatButton(
-                                    padding: EdgeInsets.all(0),
-                                    onPressed: () async {
-                                      var image = imageLib.decodeImage(
-                                          _files[index].readAsBytesSync());
-                                      image = imageLib.copyResize(image,
-                                          width: 600);
-                                      String fileName =
-                                          basename(_files[index].path);
+                            return Card(
+                              margin: EdgeInsets.all(0),
+                              child: Center(
+                                child: Stack(
+                                  children: <Widget>[
+                                    FlatButton(
+                                      padding: EdgeInsets.all(0),
+                                      onPressed: () async {
+                                        var image = imageLib.decodeImage(
+                                            _files[index].readAsBytesSync());
+                                        image = imageLib.copyResize(image,
+                                            width: 600);
+                                        String fileName =
+                                            basename(_files[index].path);
 
-                                      Map imagefile = await Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                          builder: (context) =>
-                                              new PhotoFilterSelector(
-                                            title: Text("Photo Filter Example"),
-                                            image: image,
-                                            filters: presetFiltersList,
-                                            filename: fileName,
-                                            loader: Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                            fit: BoxFit.contain,
+                                        Map imagefile = await Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                            builder: (context) =>
+                                                new PhotoFilterSelector(
+                                              title:
+                                                  Text("Photo Filter Example"),
+                                              image: image,
+                                              filters: presetFiltersList,
+                                              filename: fileName,
+                                              loader: Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                              fit: BoxFit.contain,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                      if (imagefile != null &&
-                                          imagefile
-                                              .containsKey('image_filtered')) {
+                                        );
+                                        if (imagefile != null &&
+                                            imagefile.containsKey(
+                                                'image_filtered')) {
+                                          setState(() {
+                                            _files[index] =
+                                                imagefile['image_filtered'];
+                                          });
+                                          uploadList[index] =
+                                              await MultipartFile.fromFile(
+                                                  _files[index].path,
+                                                  filename: fileName);
+                                          print(_files[index].path);
+                                        }
+                                      },
+                                      child: Image.file(
+                                        _files[index],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.cancel,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
                                         setState(() {
-                                          _files[index] =
-                                              imagefile['image_filtered'];
+                                          _files.removeAt(index);
+                                          uploadList.removeAt(index);
                                         });
-                                        uploadList[index] =
-                                            await MultipartFile.fromFile(
-                                                _files[index].path,
-                                                filename: fileName);
-                                        print(_files[index].path);
-                                      }
-                                    },
-                                    child: Image.file(
-                                      _files[index],
+                                      },
                                     ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.cancel,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _files.removeAt(index);
-                                        uploadList.removeAt(index);
-                                      });
-                                    },
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             );
                           },
