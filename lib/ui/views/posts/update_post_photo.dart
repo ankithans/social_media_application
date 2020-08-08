@@ -173,6 +173,9 @@ class _UpdatePostPhotoState extends State<UpdatePostPhoto> {
             )
           : Column(
               children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
                 Expanded(
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
