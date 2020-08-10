@@ -64,6 +64,7 @@ dependencies:
   platform_alert_dialog: ^1.0.0+2
   giphy_picker: ^1.0.4
   flutter_tags: ^0.4.8+2
+  flutter_reaction_button: ^1.0.1
 
 dev_dependencies:
   flutter_test:

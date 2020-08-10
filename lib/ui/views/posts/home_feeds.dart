@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -20,6 +21,8 @@ import 'package:social_media_application/ui/views/posts/video_player.dart';
 import 'package:social_media_application/ui/views/profile/others_profile.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
 import 'package:social_media_application/ui/widgets/zoom_overlay.dart';
+import 'package:flutter_reaction_button/flutter_reaction_button.dart';
+import 'example_data.dart' as Example;
 
 ListPosts _listPosts;
 int uid;
@@ -519,6 +522,8 @@ class _SinglePostViewState extends State<SinglePostView> {
     return result;
   }
 
+  Reaction reaction;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -710,46 +715,72 @@ class _SinglePostViewState extends State<SinglePostView> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              IconButton(
-                                icon:
-                                    _listPosts.result[widget.count].userLike ==
-                                            1
-                                        ? Icon(
-                                            OMIcons.favorite,
-                                            color: Colors.red,
-                                            size: 28,
-                                          )
-                                        : Icon(
-                                            OMIcons.favoriteBorder,
-                                            color: Colors.black,
-                                            size: 28,
-                                          ),
-                                onPressed: () async {
-                                  FormData formData = FormData.fromMap({
-                                    'user_id': uid,
-                                    'post_id':
-                                        _listPosts.result[widget.count].postId,
-                                  });
-                                  const url =
-                                      'https://www.mustdiscovertech.co.in/social/v1/';
-                                  Dio dio = new Dio();
-                                  try {
-                                    Response response = await dio.post(
-                                        '${url}post/like',
-                                        data: formData);
-                                    print(response);
-                                    setState(() {
-                                      listPosts();
-                                    });
-                                    // LikePosts likePosts =
-                                    //     LikePosts.fromJson(response.data);
-                                    listLikes();
-                                  } on DioError catch (e) {
-                                    print(e.error);
-                                    throw (e.error);
-                                  }
-                                },
+                              SizedBox(
+                                width: 10,
                               ),
+                              Builder(
+                                builder: (ctx) => FlutterReactionButton(
+                                  onReactionChanged: (reaction1) {
+                                    setState(() {
+                                      reaction = reaction1;
+                                    });
+                                    Scaffold.of(ctx).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'reaction selected id: ${reaction1.id}'),
+                                      ),
+                                    );
+                                  },
+                                  shouldChangeReaction: true,
+                                  splashColor: Colors.red,
+                                  boxPosition: Position.TOP,
+                                  reactions: Example.flagsReactions,
+                                  initialReaction: reaction,
+                                  boxColor: Colors.black.withOpacity(0.5),
+                                  boxRadius: 10,
+                                  boxDuration: Duration(milliseconds: 500),
+                                ),
+                              ),
+                              // IconButton(
+                              //   icon:
+                              //       _listPosts.result[widget.count].userLike ==
+                              //               1
+                              //           ? Icon(
+                              //               OMIcons.favorite,
+                              //               color: Colors.red,
+                              //               size: 28,
+                              //             )
+                              //           : Icon(
+                              //               OMIcons.favoriteBorder,
+                              //               color: Colors.black,
+                              //               size: 28,
+                              //             ),
+                              //   onPressed: () async {
+                              //     FormData formData = FormData.fromMap({
+                              //       'user_id': uid,
+                              //       'post_id':
+                              //           _listPosts.result[widget.count].postId,
+                              //     });
+                              //     const url =
+                              //         'https://www.mustdiscovertech.co.in/social/v1/';
+                              //     Dio dio = new Dio();
+                              //     try {
+                              //       Response response = await dio.post(
+                              //           '${url}post/like',
+                              //           data: formData);
+                              //       print(response);
+                              //       setState(() {
+                              //         listPosts();
+                              //       });
+                              //       // LikePosts likePosts =
+                              //       //     LikePosts.fromJson(response.data);
+                              //       listLikes();
+                              //     } on DioError catch (e) {
+                              //       print(e.error);
+                              //       throw (e.error);
+                              //     }
+                              //   },
+                              // ),
 
                               // LikeButton(
                               //   onTap: (isLiked) async {

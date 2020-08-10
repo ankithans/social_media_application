@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -136,17 +137,12 @@ class _SinglePostViewState extends State<SinglePostView> {
           twoTouchOnly: true,
           child: AspectRatio(
             aspectRatio: 16 / 9,
-            child: CachedNetworkImage(
-              fit: BoxFit.fitWidth,
-              imageUrl:
-                  widget.profile.result.posts[widget.count].images[i].original,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  Center(
-                child: CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                ),
+            child: PhotoView(
+              imageProvider: NetworkImage(
+                  widget.profile.result.posts[widget.count].images[i].original),
+              loadingBuilder: (context, url) => Center(
+                child: CircularProgressIndicator(),
               ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
         ),

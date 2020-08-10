@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/repositories/api_client.dart';
 import 'package:social_media_application/repositories/api_repositories.dart';
@@ -57,16 +58,13 @@ class _ProfilePageState extends State<ProfilePage> {
   void listImages() async {
     for (var i = 0; i < _profile.result.posts.length; i++) {
       images.add(
-        CachedNetworkImage(
-          imageUrl: _profile.result.posts[i].images.length != 0
-              ? _profile.result.posts[i].images[0].thumbnail
-              : _profile.result.posts[i].videoThumb,
-          progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-            child: CircularProgressIndicator(
-              value: downloadProgress.progress,
-            ),
+        PhotoView(
+          imageProvider: _profile.result.posts[i].images.length != 0
+              ? NetworkImage(_profile.result.posts[i].images[0].thumbnail)
+              : NetworkImage(_profile.result.posts[i].videoThumb),
+          loadingBuilder: (context, url) => Center(
+            child: CircularProgressIndicator(),
           ),
-          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
       );
     }
