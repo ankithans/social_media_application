@@ -60,71 +60,73 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.grey[50],
-        title: Container(
-          decoration: BoxDecoration(
-              color: AppColors.darkColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              )),
-          child: _isLoading == false
-              ? SafeArea(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: FlatButton(
-                          onPressed: () {
-                            showSearch(
-                              context: context,
-                              delegate: SearchDistricts(_searchUsers),
-                            );
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.search),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                'Search Users',
-                                style: GoogleFonts.poppins(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Container(),
-
-          // child: TextField(
-          //   decoration: InputDecoration(
-          //     border: InputBorder.none,
-          //     prefixIcon: Icon(
-          //       FlutterIcons.search,
-          //       color: Colors.black,
-          //     ),
-          //     hintText: "Search",
-          //     hintStyle: TextStyle(
-          //       color: Colors.black,
-          //     ),
-          //   ),
-          // ),
-        ),
-      ),
       body: _isLoading
           ? Center(
               child: SpinKitThreeBounce(
                 color: Color(0xFFFF8B66),
               ),
             )
-          : Container(),
+          : Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5,
+                vertical: 10,
+              ),
+              child: SafeArea(
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: AppColors.darkColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      )),
+                  child: _isLoading == false
+                      ? Column(
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: FlatButton(
+                                onPressed: () {
+                                  showSearch(
+                                    context: context,
+                                    delegate: SearchDistricts(_searchUsers),
+                                  );
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.search),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'Search Users',
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(),
+
+                  // child: TextField(
+                  //   decoration: InputDecoration(
+                  //     border: InputBorder.none,
+                  //     prefixIcon: Icon(
+                  //       FlutterIcons.search,
+                  //       color: Colors.black,
+                  //     ),
+                  //     hintText: "Search",
+                  //     hintStyle: TextStyle(
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // ),
+                ),
+              ),
+            ),
     );
   }
 }
