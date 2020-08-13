@@ -53,6 +53,7 @@ class Result {
     @required this.comments,
     @required this.createdAt,
     @required this.updatedAt,
+    @required this.hashtag,
   });
 
   final int postId;
@@ -69,6 +70,7 @@ class Result {
   final List<Comment> comments;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final List<String> hashtag;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         postId: json["post_id"] == null ? null : json["post_id"],
@@ -84,6 +86,9 @@ class Result {
         author: json["author"] == null
             ? null
             : List<String>.from(json["author"].map((x) => x)),
+        hashtag: json["hashtag"] == null
+            ? null
+            : List<String>.from(json["hashtag"].map((x) => x)),
         totalLike: json["total_like"] == null ? null : json["total_like"],
         userLike: json["user_like"] == null ? null : json["user_like"],
         comments: json["comments"] == null
@@ -111,6 +116,8 @@ class Result {
         "description": description == null ? null : description,
         "author":
             author == null ? null : List<dynamic>.from(author.map((x) => x)),
+        "hashtag":
+            hashtag == null ? null : List<dynamic>.from(hashtag.map((x) => x)),
         "total_like": totalLike == null ? null : totalLike,
         "user_like": userLike == null ? null : userLike,
         "comments": comments == null

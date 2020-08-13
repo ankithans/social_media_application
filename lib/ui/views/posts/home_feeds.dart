@@ -11,6 +11,7 @@ import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:selectable_autolink_text/selectable_autolink_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media_application/models/posts/listLikes.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
@@ -524,6 +525,8 @@ class _SinglePostViewState extends State<SinglePostView> {
 
   Reaction reaction;
 
+  List hashTags = ['#ddd', '#wfwrw', '#ggd'];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -588,9 +591,35 @@ class _SinglePostViewState extends State<SinglePostView> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
+                  _listPosts.result[widget.count].hashtag != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SelectableAutoLinkText(
+                            _listPosts.result[widget.count].hashtag
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            style: const TextStyle(color: Colors.black87),
+                            linkStyle: const TextStyle(color: Colors.blue),
+                            highlightedLinkStyle: TextStyle(
+                              color: Colors.deepOrangeAccent,
+                              backgroundColor:
+                                  Colors.deepOrangeAccent.withAlpha(0x33),
+                            ),
+                            linkRegExpPattern:
+                                '(@[\\w]+|#[\\w]+|${AutoLinkUtils.urlRegExpPattern})',
+                            onTransformDisplayLink: AutoLinkUtils.shrinkUrl,
+                            onDebugMatch: (match) {
+                              // for debug
+                              print(
+                                  'DebugMatch:[${match.start}-${match.end}]`${match.group(0)}`');
+                            },
+                          ),
+                        )
+                      : Container(),
+                  // SizedBox(
+                  //   height: 8,
+                  // ),
                   // GestureDetector(
                   //   child: Stack(
                   //     alignment: Alignment.center,
@@ -724,12 +753,12 @@ class _SinglePostViewState extends State<SinglePostView> {
                                     setState(() {
                                       reaction = reaction1;
                                     });
-                                    Scaffold.of(ctx).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'reaction selected id: ${reaction1.id}'),
-                                      ),
-                                    );
+                                    // Scaffold.of(ctx).showSnackBar(
+                                    //   SnackBar(
+                                    //     content: Text(
+                                    //         'reaction selected id: ${reaction1.id}'),
+                                    //   ),
+                                    // );
                                   },
                                   shouldChangeReaction: true,
                                   splashColor: Colors.red,

@@ -92,6 +92,7 @@ class _CreateNewPostState extends State<CreateNewPost> {
                     'photo': widget.uploadList,
                     'description': _decriptionController.text,
                     'location': _locationController.text,
+                    'hashtag': hashTags,
                   });
                   const url = 'https://www.mustdiscovertech.co.in/social/v1/';
                   Dio dio = new Dio();
@@ -369,10 +370,13 @@ class _CreateNewPostState extends State<CreateNewPost> {
                       IconButton(
                         icon: Icon(Icons.add),
                         onPressed: () {
-                          setState(() {
-                            hashTags.add(_hashTagController.text);
-                            _hashTagController.text = '';
-                          });
+                          if (_hashTagController.text.startsWith('#')) {
+                            setState(() {
+                              hashTags.add(_hashTagController.text);
+                              _hashTagController.text = '';
+                            });
+                          } else
+                            FlutterToast.showToast(msg: 'Not a hashTag');
                         },
                       ),
                     ],
@@ -383,23 +387,24 @@ class _CreateNewPostState extends State<CreateNewPost> {
                       itemCount: hashTags.length,
                       itemBuilder: (int index) {
                         return Tooltip(
-                            message: hashTags[index],
-                            child: ItemTags(
-                              index: 1,
-                              title: hashTags[index],
+                          message: hashTags[index],
+                          child: ItemTags(
+                            index: 1,
+                            title: hashTags[index],
 
-                              removeButton: ItemTagsRemoveButton(
-                                onRemoved: () {
-                                  // Remove the item from the data source.
-                                  setState(() {
-                                    // required
-                                    hashTags.removeAt(index);
-                                  });
-                                  //required
-                                  return true;
-                                },
-                              ), // OR null,
-                            ));
+                            removeButton: ItemTagsRemoveButton(
+                              onRemoved: () {
+                                // Remove the item from the data source.
+                                setState(() {
+                                  // required
+                                  hashTags.removeAt(index);
+                                });
+                                //required
+                                return true;
+                              },
+                            ), // OR null,
+                          ),
+                        );
                       },
                     ),
                   ),

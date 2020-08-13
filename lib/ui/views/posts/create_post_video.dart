@@ -159,6 +159,7 @@ class _CreatePostVideoState extends State<CreatePostVideo> {
                     'video_thumb': widget.thumbnail,
                     'description': _decriptionController.text,
                     'location': _locationController.text,
+                    'hashtag': hashTags,
                   });
                   const url = 'https://www.mustdiscovertech.co.in/social/v1/';
                   Dio dio = new Dio();
@@ -440,10 +441,13 @@ class _CreatePostVideoState extends State<CreatePostVideo> {
                       IconButton(
                         icon: Icon(Icons.add),
                         onPressed: () {
-                          setState(() {
-                            hashTags.add(_hashTagController.text);
-                            _hashTagController.text = '';
-                          });
+                          if (_hashTagController.text.startsWith('#')) {
+                            setState(() {
+                              hashTags.add(_hashTagController.text);
+                              _hashTagController.text = '';
+                            });
+                          } else
+                            FlutterToast.showToast(msg: 'Not a hashTag');
                         },
                       ),
                     ],
