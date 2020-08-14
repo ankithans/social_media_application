@@ -13,11 +13,13 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:selectable_autolink_text/selectable_autolink_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media_application/models/posts/HashTagPost.dart';
 import 'package:social_media_application/models/posts/listLikes.dart';
 import 'package:social_media_application/models/posts/lists_posts.dart';
 import 'package:social_media_application/ui/views/authentication/welcomePage.dart';
 import 'package:social_media_application/ui/views/posts/comments_screen.dart';
 import 'package:social_media_application/ui/views/posts/friends.dart';
+import 'package:social_media_application/ui/views/posts/hashTagSearchResults.dart';
 import 'package:social_media_application/ui/views/posts/video_player.dart';
 import 'package:social_media_application/ui/views/profile/others_profile.dart';
 import 'package:social_media_application/ui/views/profile/profilePage.dart';
@@ -606,6 +608,47 @@ class _SinglePostViewState extends State<SinglePostView> {
                               backgroundColor:
                                   Colors.deepOrangeAccent.withAlpha(0x33),
                             ),
+                            onTap: (link) async {
+                              HashTagPost hashTagPost;
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              uid = prefs.getInt('uid');
+                              print(uid);
+                              FormData formData = FormData.fromMap({
+                                'user_id': uid,
+                                'hashtag': link,
+                              });
+                              const url =
+                                  'https://www.mustdiscovertech.co.in/social/v1/';
+                              Dio dio = new Dio();
+                              try {
+                                Response response = await dio.post(
+                                    '${url}post/tagpostlisting',
+                                    data: formData);
+                                print(response);
+                                setState(() {
+                                  hashTagPost =
+                                      HashTagPost.fromJson(response.data);
+                                });
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HashTagSearch(
+                                      hashTagPost: hashTagPost,
+                                    ),
+                                  ),
+                                );
+                              } on DioError catch (e) {
+                                print(e.error);
+                                throw (e.error);
+                              }
+                            },
                             linkRegExpPattern:
                                 '(@[\\w]+|#[\\w]+|${AutoLinkUtils.urlRegExpPattern})',
                             onTransformDisplayLink: AutoLinkUtils.shrinkUrl,
